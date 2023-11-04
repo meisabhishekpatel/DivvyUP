@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function SignUp() {
     return (
@@ -6,11 +7,14 @@ export default function SignUp() {
             <div className="flex flex-col  items-center min-h-screen pt-6 sm:justify-center sm:pt-0 bg-gray-50">
                 <div className="mt-[5rem]">
                     <a href="/" class="flex items-center">
-                        <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" alt="" />
+                        <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" loading="lazy" alt="" />
                         <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">SplitWiz</span>
                     </a>
                 </div>
                 <div className="w-full px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:max-w-lg sm:rounded-lg">
+                    <h1 className="text-3xl font-semibold text-center text-blue-700 uppercase">
+                        Sign Up
+                    </h1>
                     <form>
                         <div>
                             <label
@@ -87,9 +91,9 @@ export default function SignUp() {
                     <div className="mt-4 text-grey-600">
                         Already have an account?{" "}
                         <span>
-                            <a className="text-blue-600 hover:underline" href="#">
+                            <Link className="text-blue-600 hover:underline" to="/">
                                 Log in
-                            </a>
+                            </Link>
                         </span>
                     </div>
                     <div className="flex items-center w-full my-4">
