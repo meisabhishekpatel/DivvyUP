@@ -1,11 +1,15 @@
 import './App.css';
+import Login from './Components/Login';
+import NavBar from './Components/NavBar';
+import SignUp from './Components/SignUp';
+
 
 function App() {
   return (
     <div>
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
+      <NavBar />
+      {/* <Login /> */}
+      <SignUp />
     </div>
   );
 }
