@@ -1,10 +1,13 @@
 const express = require("express");
+const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
-const InitiateMongoServer = require("./config/db");
 const user = require("./router/user");
 const cors = require("cors");
+const connectDB = require("./config/config");
+dotenv.config();
 
-InitiateMongoServer();
+
+connectDB();
 
 const app = express();
 app.use(cors());

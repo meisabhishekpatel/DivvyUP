@@ -27,9 +27,9 @@ router.post(
     const body = req.body
 
     console.log(req);
-    const username = body.username 
-    const email =  body.email 
-    const password =  body.password 
+    const username = body.username
+    const email = body.email
+    const password = body.password
 
     try {
       let user = await User.findOne({
@@ -94,8 +94,8 @@ router.post(
     }
 
     const body = req.body
-    const email =  body.email 
-    const password =  body.password 
+    const email = body.email
+    const password = body.password
 
     try {
       let user = await User.findOne({
@@ -107,17 +107,13 @@ router.post(
         });
       }
 
-     const isMatch = await bcrypt.compare(password , user.password)
+      const isMatch = await bcrypt.compare(password, user.password)
 
-     if(!isMatch){
+      if (!isMatch) {
         return res.status(401).json({
-            msg: "Incorrect Password",
-          });
-     }
-
-
-
-
+          msg: "Incorrect Password",
+        });
+      }
 
       const payload = {
         user: {

@@ -15,6 +15,18 @@ const UserSchema = new mongoose.Schema(
         password: {
             type: String,
             require: true,
+        },
+        friends: {
+            type: [],
+            require: false,
+        },
+        friendBalance: {
+            type: [],
+            require: false,
+        },
+        Recurring_payments: {
+            type: [{}],
+            require: false,
         }
     },
     { timestamps: true }

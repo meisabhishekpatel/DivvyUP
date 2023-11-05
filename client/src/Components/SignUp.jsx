@@ -1,9 +1,33 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios"
 
 export default function SignUp() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [userName, setUserName] = useState("");
+    const navigate = useNavigate();
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        const data = {
+            username: userName,
+            email: email,
+            password: password
+        }
+        console.log(data);
+        try {
+            await axios.post("http://localhost:4000/user/signup", data)
+                .then((res) => {
+                    localStorage.clear()
+                    localStorage.setItem("token", JSON.stringify(res.data.token))
+                    navigate("/login")
+                })
+
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     return (
         <div>
@@ -24,6 +48,7 @@ export default function SignUp() {
                                 <input
                                     type="text"
                                     name="name"
+                                    onChange={(e) => setUserName(e.target.value)}
                                     className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 />
                             </div>
@@ -39,6 +64,7 @@ export default function SignUp() {
                                 <input
                                     type="email"
                                     name="email"
+                                    onChange={(e) => setEmail(e.target.value)}
                                     className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 />
                             </div>
@@ -54,11 +80,12 @@ export default function SignUp() {
                                 <input
                                     type="password"
                                     name="password"
+                                    onChange={(e) => setPassword(e.target.value)}
                                     className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 />
                             </div>
                         </div>
-                        <div className="mt-4">
+                        {/* <div className="mt-4">
                             <label
                                 htmlFor="password_confirmation"
                                 className="block text-sm font-medium text-gray-700 undefined"
@@ -72,15 +99,15 @@ export default function SignUp() {
                                     className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 />
                             </div>
-                        </div>
-                        <a
+                        </div> */}
+                        {/* <a
                             href="#"
                             className="text-xs text-blue-600 hover:underline"
                         >
                             Forget Password?
-                        </a>
+                        </a> */}
                         <div className="flex items-center mt-4">
-                            <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-700 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                            <button onClick={(e) => handleSubmit(e)} className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-700 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
                                 Sign Up
                             </button>
                         </div>
