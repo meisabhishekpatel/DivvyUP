@@ -17,6 +17,7 @@ export default function Login() {
                             Email
                         </label>
                         <input
+                            placeholder='Email'
                             type="email"
                             className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                         />
@@ -29,6 +30,7 @@ export default function Login() {
                             Password
                         </label>
                         <input
+                            placeholder='Password'
                             type="password"
                             className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                         />
