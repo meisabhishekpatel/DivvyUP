@@ -3,7 +3,7 @@ import './App.css';
 import Login from './Components/Login';
 import NavBar from './Components/NavBar';
 import SignUp from './Components/SignUp';
-import Home from './Screens/Home';
+import LandingPage from './Pages/LandingPage';
 
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
         <NavBar />
       </div>
       <Routes>
-        <Route path='/' element={<Home />}></Route>
+        <Route path='/' element={<LandingPage />}></Route>
         <Route path='/login' element={<Login />}></Route>
         <Route path='/signup' element={<SignUp />}></Route>
       </Routes>

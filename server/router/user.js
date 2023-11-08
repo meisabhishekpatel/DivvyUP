@@ -1,5 +1,4 @@
 const express = require("express");
-
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -10,70 +9,31 @@ const router = express.Router();
 router.post(
   "/signup",
   [
-    check("username", "Please Enter a Valid Username").not().isEmpty(),
+    check("name", "Please Enter a Valid Username").not().isEmpty(),
     check("email", "Please enter a valid email").isEmail(),
     check("password", "Please enter a valid password").isLength({
       min: 6,
     }),
   ],
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        errors: errors.array(),
-      });
+    const { name, email, password, confirmpassword } = req.body;
+    if (!name || !email || !password) {
+      return res.status(422).json("please fill the field properly")
     }
-
-    const body = req.body
-
-    console.log(req);
-    const username = body.username
-    const email = body.email
-    const password = body.password
-
     try {
-      let user = await User.findOne({
-        email,
-      });
-      if (user) {
-        return res.status(400).json({
-          msg: "User Already Exists",
-        });
+      const userExist = await User.findOne({ email: email });
+      if (userExist) {
+        return res.status(422).json({ error: "user already exists" });
+      } else if (password !== confirmpassword) {
+        return res.status(422).json({ error: "password are not matching" });
+      } else {
+        const user = new User({ name, email, password });
+        await user.save();
+        res.status(201).json({ message: "User registered Successfully" });
       }
-
-      user = new User({
-        username,
-        email,
-        password,
-      });
-
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(password, salt);
-
-      await user.save();
-
-      const payload = {
-        user: {
-          id: user.id,
-        },
-      };
-
-      jwt.sign(
-        payload,
-        "randomString",
-        {
-          expiresIn: 10000,
-        },
-        (err, token) => {
-          if (err) throw err;
-          res.status(200).json({
-            token,
-          });
-        }
-      );
-    } catch (err) {
-      console.log(err.message);
-      res.status(500).send("Error in Saving");
+    }
+    catch (e) {
+      console.log(e);
     }
   }
 );
@@ -86,57 +46,33 @@ router.post(
     }),
   ],
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        errors: errors.array(),
-      });
-    }
-
-    const body = req.body
-    const email = body.email
-    const password = body.password
-
     try {
-      let user = await User.findOne({
-        email,
-      });
-      if (!user) {
-        return res.status(400).json({
-          msg: "User Not Registered",
-        });
+      const { email, password } = req.body;
+      if (!email || !password) {
+        return res.status(400).json({ error: "incomplete details" })
       }
-
-      const isMatch = await bcrypt.compare(password, user.password)
-
-      if (!isMatch) {
-        return res.status(401).json({
-          msg: "Incorrect Password",
-        });
-      }
-
-      const payload = {
-        user: {
-          id: user.id,
-        },
-      };
-
-      jwt.sign(
-        payload,
-        "randomString",
-        {
-          expiresIn: 3600,
-        },
-        (err, token) => {
-          if (err) throw err;
-          res.status(200).json({
-            token,
-          });
+      const userLogin = await User.findOne({ email: email });
+      if (userLogin) {
+        isMatch = await bcrypt.compare(password, userLogin.password);
+        const token = await userLogin.generateAuthToken();
+        console.log(token);
+        res.cookie("jwttoken", token, {
+          expires: new Date(Date.now() + 25892000000),
+          httpOnly: true
+        })
+        if (isMatch)
+          res.json({ message: "user signin sucessfull" });
+        else {
+          res.json({ message: "invalid Credentials" })
         }
-      );
-    } catch (err) {
-      console.log(err.message);
-      res.status(500).send("Server Error");
+      }
+      else {
+        res.json({ message: "invalid Credentials" })
+
+      }
+    } catch (e) {
+      console.log(e);
+
     }
   }
 );

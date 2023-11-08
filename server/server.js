@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const user = require("./router/user");
 const cors = require("cors");
+const morgan = require('morgan');
 const connectDB = require("./config/config");
 dotenv.config();
 
@@ -11,6 +12,7 @@ connectDB();
 
 const app = express();
 app.use(cors());
+app.use(morgan("dev"));
 
 // middleware
 app.use(bodyParser.json());
@@ -23,7 +25,6 @@ app.get("/", (req, res) => {
 });
 
 // router
-
 app.use("/user", user);
 
 app.listen(PORT, (req, res) => {

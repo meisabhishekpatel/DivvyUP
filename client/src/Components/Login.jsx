@@ -4,27 +4,44 @@ import axios from "axios"
 
 
 export default function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [user, setUser] = useState({
+        email: "", password: ""
+    });
     const navigate = useNavigate();
-
-    async function handleSubmit(e) {
-        e.preventDefault();
-        const data = {
-            email: email,
-            password: password
-        }
-        console.log(data);
+    let name, value;
+    const handleInputs = (e) => {
         try {
-            await axios.post("http://localhost:4000/user/login", data)
-                .then((res) => {
-                    localStorage.clear()
-                    localStorage.setItem("token", JSON.stringify(res.data.token))
-                    navigate("/")
-                })
-
+            name = e.target.name;
+            value = e.target.value;
+            setUser({ ...user, [name]: value, })
         } catch (e) {
             console.log(e);
+        }
+
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const { email, password } = user;
+        const res = await fetch("/user/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email, password
+            })
+        });
+        const data = await res.json()
+
+        if (data.status === 422 || !data) {
+            alert("invalid details");
+            console.log("invalid details");
+        }
+        else {
+            alert("Login successfull");
+            console.log("Login successfull");
+            navigate("/");
         }
     }
 
@@ -45,7 +62,9 @@ export default function Login() {
                         <input
                             placeholder='Email'
                             type="email"
-                            onChange={(e) => setEmail(e.target.value)}
+                            name="email"
+                            value={user.email}
+                            onChange={handleInputs}
                             className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                         />
                     </div>
@@ -59,7 +78,9 @@ export default function Login() {
                         <input
                             placeholder='Password'
                             type="password"
-                            onChange={(e) => setPassword(e.target.value)}
+                            name="password"
+                            value={user.password}
+                            onChange={handleInputs}
                             className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                         />
                     </div>
@@ -70,7 +91,7 @@ export default function Login() {
                         Forget Password?
                     </a>
                     <div className="mt-6">
-                        <button onClick={(e) => handleSubmit(e)} className="w-full px-4 py-2 text-decoration-none tracking-wide text-white transition-colors duration-200 transform bg-blue-700 rounded-md hover:bg-blue-800 focus:outline-none focus:bg-blue-600">
+                        <button onClick={handleSubmit} className="w-full px-4 py-2 text-decoration-none tracking-wide text-white transition-colors duration-200 transform bg-blue-700 rounded-md hover:bg-blue-800 focus:outline-none focus:bg-blue-600">
                             Login
                         </button>
                     </div>
@@ -91,7 +112,7 @@ export default function Login() {
                     {" "}
                     Don't have an account?{" "}
                     <Link
-                        button="/signup"
+                        to="/signup"
                         className="font-medium text-blue-700 hover:underline"
                     >
                         Sign up

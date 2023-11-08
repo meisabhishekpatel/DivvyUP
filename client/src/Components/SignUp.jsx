@@ -3,31 +3,71 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios"
 
 export default function SignUp() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [userName, setUserName] = useState("");
+    const [user, setUser] = useState({
+        name: "", email: "", password: "", confirmpassword: ""
+    });
     const navigate = useNavigate();
 
-    async function handleSubmit(e) {
-        e.preventDefault();
-        const data = {
-            username: userName,
-            email: email,
-            password: password
-        }
-        console.log(data);
-        try {
-            await axios.post("http://localhost:4000/user/signup", data)
-                .then((res) => {
-                    localStorage.clear()
-                    localStorage.setItem("token", JSON.stringify(res.data.token))
-                    navigate("/login")
-                })
+    let name, value;
 
+
+    const handleInputs = (e) => {
+        try {
+            name = e.target.name;
+            value = e.target.value;
+            setUser({ ...user, [name]: value, })
         } catch (e) {
             console.log(e);
         }
+
     }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const { name, email, password, confirmpassword } = user;
+        const res = await fetch("/user/signup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name, email, password, confirmpassword
+            })
+        });
+
+        const data = await res.json()
+
+        if (data.status === 422 || !data) {
+            alert("invalid details");
+            console.log("invalid details");
+        }
+        else {
+            alert("signup successfull");
+            console.log("sign up successfull");
+            navigate("/login");
+        }
+
+    }
+
+    // async function handleSubmit(e) {
+    //     e.preventDefault();
+    //     const data = {
+    //         username: userName,
+    //         email: email,
+    //         password: password
+    //     }
+    //     try {
+    //         await axios.post("http://localhost:4000/user/signup", data)
+    //             .then((res) => {
+    //                 localStorage.clear()
+    //                 localStorage.setItem("token", JSON.stringify(res.data.token))
+    //                 navigate("/login")
+    //             })
+
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
 
     return (
         <div>
@@ -48,7 +88,8 @@ export default function SignUp() {
                                 <input
                                     type="text"
                                     name="name"
-                                    onChange={(e) => setUserName(e.target.value)}
+                                    value={user.name}
+                                    onChange={handleInputs}
                                     className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 />
                             </div>
@@ -64,7 +105,8 @@ export default function SignUp() {
                                 <input
                                     type="email"
                                     name="email"
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={user.email}
+                                    onChange={handleInputs}
                                     className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 />
                             </div>
@@ -80,14 +122,15 @@ export default function SignUp() {
                                 <input
                                     type="password"
                                     name="password"
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    value={user.password}
+                                    onChange={handleInputs}
                                     className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 />
                             </div>
                         </div>
-                        {/* <div className="mt-4">
+                        <div className="mt-4">
                             <label
-                                htmlFor="password_confirmation"
+                                htmlFor="confirmpassword"
                                 className="block text-sm font-medium text-gray-700 undefined"
                             >
                                 Confirm Password
@@ -95,11 +138,12 @@ export default function SignUp() {
                             <div className="flex flex-col items-start">
                                 <input
                                     type="password"
-                                    name="password_confirmation"
+                                    name="confirmpassword"
+                                    onChange={handleInputs}
                                     className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 />
                             </div>
-                        </div> */}
+                        </div>
                         {/* <a
                             href="#"
                             className="text-xs text-blue-600 hover:underline"
@@ -107,7 +151,7 @@ export default function SignUp() {
                             Forget Password?
                         </a> */}
                         <div className="flex items-center mt-4">
-                            <button onClick={(e) => handleSubmit(e)} className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-700 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                            <button onClick={handleSubmit} className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-700 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
                                 Sign Up
                             </button>
                         </div>
@@ -115,7 +159,7 @@ export default function SignUp() {
                     <div className="mt-4 text-grey-600">
                         Already have an account?{" "}
                         <span>
-                            <Link className="text-blue-600 hover:underline" to="/">
+                            <Link className="text-blue-600 hover:underline" to="/login">
                                 Log in
                             </Link>
                         </span>
