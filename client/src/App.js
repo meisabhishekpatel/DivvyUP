@@ -4,18 +4,63 @@ import Login from './Components/Login';
 import NavBar from './Components/NavBar';
 import SignUp from './Components/SignUp';
 import LandingPage from './Pages/LandingPage';
+import Home from './Pages/Home';
+import Dashboard from './Pages/DashBoard';
+import Groups from './Pages/Groups';
+import AddGroup from './Pages/Groups/Addgroup';
 
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="App">
-        <NavBar />
-      </div>
       <Routes>
-        <Route path='/' element={<LandingPage />}></Route>
-        <Route path='/login' element={<Login />}></Route>
-        <Route path='/signup' element={<SignUp />}></Route>
+        <Route
+          path='/'
+          element={
+            <div>
+              <NavBar />
+              <LandingPage />
+            </div>
+          }
+
+        />
+        <Route
+          path='/home'
+          element={
+            <div className=''>
+              <Dashboard />
+              <Home />
+            </div>
+          }
+        />
+        <Route
+          path='/groups'
+          element={
+            <div className=''>
+              <Groups />
+            </div>
+          }
+        />
+        <Route
+          path='/addgroup'
+          element={
+            <div className=''>
+              <AddGroup />
+            </div>
+          }
+        />
+        <Route
+          path='/login'
+          element={
+            <Login />
+          }
+        />
+        <Route
+          path='/signup'
+          element={
+            <SignUp />
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
