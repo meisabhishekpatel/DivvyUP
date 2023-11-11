@@ -20,7 +20,6 @@ function App() {
           path='/'
           element={
             <div>
-              <NavBar />
               <LandingPage />
             </div>
           }
