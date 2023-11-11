@@ -8,6 +8,8 @@ import Home from './Pages/Home';
 import Dashboard from './Pages/DashBoard';
 import Groups from './Pages/Groups';
 import AddGroup from './Pages/Groups/Addgroup';
+import GroupDetail from './Pages/Groups/GroupDetail';
+import AddExpense from './Pages/Groups/AddExpense';
 
 
 function App() {
@@ -40,6 +42,14 @@ function App() {
               <Groups />
             </div>
           }
+        />
+        <Route
+          path="/group/detail/:groupId"
+          element={<GroupDetail />}
+        />
+        <Route
+          path="/group/:groupId/addexpense"
+          element={<AddExpense />}
         />
         <Route
           path='/addgroup'

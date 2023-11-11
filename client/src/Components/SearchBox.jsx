@@ -40,7 +40,7 @@ const SearchMember = ({
 
     const handleAddMember = (e) => {
         if (memberList.length === 5) {
-            showToast("Maximum 5 members are allowed in the group", "warning");
+            alert("Maximum 5 members are allowed in the group", "warning");
             return;
         }
         if (memberList.find((member) => member.email === searchedUser.email)) {
@@ -54,7 +54,6 @@ const SearchMember = ({
                 handleAdd(searchedUser.id);
             }
             alert("Member added : success");
-            showToast("Member added", "success");
             setSearchedUser({});
             setFoundUser(false);
             setEmail("");
