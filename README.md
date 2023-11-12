@@ -1,1 +1,1 @@
-# SplitWiz
+# DivvyUP
