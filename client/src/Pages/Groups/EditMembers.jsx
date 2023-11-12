@@ -59,14 +59,18 @@ export default function Modal({
                                     </div>
                                 </div>
                                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                                    <div className="border-red-100">
+                                        <button
+                                            type={buttonType}
+                                            className="ml-3 border-red-100"
+                                            onClick={() => handleDelete(memberId)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
                                     <button
-                                        type={buttonType}
-                                        margin="ml-3"
-                                        onClick={() => handleDelete(memberId)}
-                                    >
-                                        {buttonText}
-                                    </button>
-                                    <button type="secondary" onClick={() => setOpen(false)}>
+                                        type="secondary"
+                                        onClick={() => setOpen(false)}>
                                         Cancel
                                     </button>
                                 </div>

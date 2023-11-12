@@ -62,10 +62,10 @@ export default function Modal({
                                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                                     <button
                                         type={buttonType}
-                                        margin="ml-3"
+                                        className="ml-3"
                                         onClick={() => handleDelete(memberId)}
                                     >
-                                        {buttonText}
+                                        Delete
                                     </button>
                                     <button type="secondary" onClick={() => setOpen(false)}>
                                         Cancel

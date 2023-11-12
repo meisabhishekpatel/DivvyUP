@@ -11,6 +11,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import EditMembers from "./EditMembers";
 import ExpenseList from "./ExpenseList";
+import getUserDeatils from "../../GetData/UserDetails";
+import axios from "axios";
 
 const GroupDetail = () => {
     const [open, setOpen] = useState(false);
@@ -22,36 +24,30 @@ const GroupDetail = () => {
     const { groupId } = useParams();
     const expenseList = [];
     const settledExpenseList = [];
+    const [group, setGroup] = useState({});
     const [memberList, setMemberList] = useState([]);
-    // const {
-    //     // group,
-    //     expenseList,
-    //     fetchExpenses,
-    //     // fetchGroupById,
-    //     memberList,
-    //     settledExpenseList,
-    //     setMemberList,
-    // } = useContext(GroupContext);
-
-
-    // const currentUser: any = authService.getCurrentUser();
-    const currentUser = {
-        name: "Abhishek",
-        email: "abhishek.20214053@gmail.com",
-        id: "dnfajndvaokonoafnvaof"
-    }
-    const group = {
-        _id: "bdfjandjakvda",
-        name: "Banaras",
-        description: "dnandvak anvifnoa nviaonfva nianvof",
-        totalExpenses: 500,
-        members: ["Ram", "Shyam", "Suresh"]
-    }
+    const [currentUser, setCurrentUser] = useState({});
 
     useEffect(() => {
-        // if (groupId) {
-        //   fetchGroupById(groupId);
-        // }
+        getUserDeatils(setCurrentUser);
+    }, [])
+
+    const fetchGroupById = async (_id) => {
+        if (!_id) return;
+        const result = await axios.get(`/group/${_id}`);
+        if (result) {
+            setGroup(result.data);
+            setMemberList(result.data.members);
+        } else {
+            alert("Group not found", "error");
+            navigate("/groups");
+        }
+    };
+
+    useEffect(() => {
+        if (groupId) {
+            fetchGroupById(groupId);
+        }
     }, []);
 
     useEffect(() => {
@@ -65,53 +61,56 @@ const GroupDetail = () => {
     }, [group]);
 
     const handleAddMember = async (memberId) => {
-        // if (memberId) {
-        //     const result = await groupService.addMember(group._id, memberId);
-        //     if (result) {
-        //         window.location.reload();
-        //     }
-        // }
+        try {
+            if (memberId) {
+                const result = await axios.post(`http://localhost:4000/group/${groupId}/member/${memberId}`);
+                if (result) {
+                    window.location.reload();
+                }
+            }
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     const handleMemberDelete = async (memberId) => {
-        // if (group.members.length === 1) {
-        //     showToast("Cannot delete last member", "error");
-        //     setOpen(false);
-        //     return;
-        // }
-        // if (memberId) {
-        //     const result = await groupService.removeMember(group._id, memberId);
-        //     if (result) {
-        //         showToast("Member removed", "success");
-        //         // fetchGroupById(groupId);
-        //         setOpen(false);
-
-        //         if (memberId === currentUser.id) {
-        //             window.location.href = "/";
-        //         } else {
-        //             window.location.reload();
-        //         }
-        //         return;
-        //     }
-        // }
-        // alert("Something went wrong", "error");
+        if (group.members.length === 1) {
+            alert("Cannot delete last member", "error");
+            setOpen(false);
+            return;
+        }
+        if (memberId) {
+            const result = await axios.delete(`http://localhost:4000/group/${groupId}/member/${memberId}`);
+            if (result) {
+                alert("Member removed", "success");
+                fetchGroupById(groupId);
+                setOpen(false);
+                if (memberId === currentUser._id) {
+                    window.location.href = "/";
+                } else {
+                    window.location.reload();
+                }
+                return;
+            }
+        }
+        alert("Something went wrong", "error");
     };
 
     const handleGroupDelete = async () => {
-        // if (groupId) {
-        //     const result = await groupService.deleteMember(groupId);
+        if (groupId) {
+            const result = await axios.delete(`http://localhost:4000/group/${groupId}`);
 
-        //     if (result.data) {
-        //         alert("Group Deleted", "success");
-        //         setOpenDeleteModal(false);
-        //         setTimeout(() => {
-        //             window.location.href = "/groups";
-        //         }, 500);
-        //         return;
-        //     }
-        // }
+            if (result.data) {
+                alert("Group Deleted", "success");
+                setOpenDeleteModal(false);
+                setTimeout(() => {
+                    window.location.href = "/groups";
+                }, 500);
+                return;
+            }
+        }
 
-        // showToast("Something went wrong", "error");
+        alert("Something went wrong", "error");
     };
 
     if (!group._id) return <h1>Loading</h1>;
@@ -124,7 +123,7 @@ const GroupDetail = () => {
                     <Breadcrumb
                         paths={[
                             { name: "Groups", to: "/groups" },
-                            { name: "Group Detail", to: `/group/details/${group._id}` },
+                            { name: "Group Detail", to: `/group/detail/${group._id}` },
                         ]}
                     />
                     <div className="mt-2 flex md:items-center md:justify-between">

@@ -23,3 +23,4 @@ const getUserDeatils = async (setCurrentUser) => {
 }
 
 export default getUserDeatils;
+

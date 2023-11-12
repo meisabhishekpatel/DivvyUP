@@ -23,7 +23,7 @@ const FormInput = ({
             <div className="relative w-full">
                 {showLeadingIcon && (
                     <div className="absolute mt-1 inset-y-1 left-0 pl-3 flex items-center pointer-events-none">
-                        <span className="text-gray-500">$</span>
+                        <span className="text-gray-500">₹</span>
                     </div>
                 )}
                 <input
