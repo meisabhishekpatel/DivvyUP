@@ -1,12 +1,14 @@
 import { ExternalLinkIcon, PlusCircleIcon } from "@heroicons/react/outline";
 import { ReactComponent as Group } from "../images/group.svg";
 import { ReactComponent as MoneyBag } from "../images/MoneyBag.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BarGraph from "../Components/Graph/BarChart";
 import PieGraph from "../Components/Graph/PieChart";
+import { useEffect } from "react";
 // import Dashboard from "./Dashboard";
 
 const Home = () => {
+    const navigate = useNavigate();
     // const { groupList } = useContext(GroupContext);
     const groupList = [{
         _id: "bdfjandjakvda",
@@ -33,6 +35,31 @@ const Home = () => {
         totalExpenses: 500,
         members: ["Ram", "Shyam", "Suresh"]
     }];
+
+    const callHomePage = async () => {
+        try {
+            const res = await fetch("/user/details", {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+                credentials: "include"
+            });
+            const data = await res.json();
+            // console.log(data);
+            if (!res.status === 200) {
+                alert("Error");
+            }
+        } catch (err) {
+            console.log(err);
+            navigate("/")
+        }
+    }
+
+    useEffect(() => {
+        callHomePage();
+    }, [])
 
 
     return (

@@ -1,13 +1,19 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import getUserDeatils from "../GetData/UserDetails";
+import { useCookies } from 'react-cookie';
+import cookie from "js-cookie"
 
 const Profile = () => {
-    const currentUser = {
-        name: "Abhishek",
-
-    }
+    const navigate = useNavigate();
+    // const [cookie, setCookie, removeCookie] = useCookies(['jwttoken']);
+    const [currentUser, setUser] = useState({});
+    useEffect(() => {
+        getUserDeatils(setUser);
+    }, [])
     return (
         <Menu as="div" className="relative ml-3">
             <div>
@@ -39,20 +45,20 @@ const Profile = () => {
                 <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <Menu.Item>
                         {({ active }) => (
-                            <Link
-                                to="/"
+                            <a
+                                onClick={() => { navigate('/'); cookie.remove('jwttoken') }}
                                 className={(
                                     active ? "bg-gray-100" : "",
                                     "block px-4 py-2 text-sm text-gray-700"
                                 )}
                             >
                                 Logout
-                            </Link>
+                            </a>
                         )}
                     </Menu.Item>
                 </Menu.Items>
             </Transition>
-        </Menu>
+        </Menu >
     );
 };
 

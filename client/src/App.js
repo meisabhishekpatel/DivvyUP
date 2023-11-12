@@ -38,6 +38,7 @@ function App() {
           path='/groups'
           element={
             <div className=''>
+              <Dashboard />
               <Groups />
             </div>
           }

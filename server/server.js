@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const user = require("./router/user");
+const group = require("./router/group")
 const cors = require("cors");
 const morgan = require('morgan');
 const connectDB = require("./config/config");
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 
 // router
 app.use("/user", user);
+app.use("/group", group);
 
 app.listen(PORT, (req, res) => {
   console.log(`Server Started at PORT ${PORT}`);

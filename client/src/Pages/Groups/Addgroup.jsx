@@ -4,12 +4,14 @@ import Breadcrumb from "../../Components/BreadCrumb";
 import SearchMember from "../../Components/SearchBox";
 // import button from "components/button";
 // import FormInput from "components/FormInput";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 // import { authService, groupService } from "services";
 // import ToastContext from "contexts/ToastContext";
 // import GroupContext from "contexts/GroupContext";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../../Components/FormInput";
+import getUserDeatils from "../../GetData/UserDetails";
+import axios from "axios";
 
 
 const schema = {
@@ -19,31 +21,26 @@ const schema = {
 
 const AddGroup = () => {
     const navigate = useNavigate();
-    // const currentUser: any = authService.getCurrentUser();
-    const currentUser = {
-        name: "Abhishek",
-        email: "abhishek.20214053@gmail.com",
-        id: "dnfajndvaokonoafnvaof"
-    }
-    // const { fetchGroups } = useContext(GroupContext);
+
+    const [currentUser, setCurrentUser] = useState({});
     const [group, setGroup] = useState({
         name: "",
         description: "",
     });
-    const [memberList, setMemberList] = useState([
-        {
-            name: currentUser.name,
-            email: currentUser.email,
-            id: currentUser.id,
-        },
-    ]);
+    const [memberList, setMemberList] = useState([]);
 
-    // const { showToast } = useContext(ToastContext);
-
-
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        try {
+            await axios.post("http://localhost:4000/group/addgroup", {
+                ...group,
+                members: memberList.map((member) => member.id),
+            });
+            alert("Group added successfully", "success");
+            navigate("/groups");
+        } catch (error) {
+            console.log(error);
+        }
     };
 
 
@@ -54,6 +51,19 @@ const AddGroup = () => {
     const handleRemoveMember = (id) => {
         setMemberList(memberList.filter((member) => member.id !== id));
     };
+
+    useEffect(() => {
+        getUserDeatils(setCurrentUser);
+    }, []);
+    useEffect(() => {
+        setMemberList([
+            {
+                name: currentUser.name,
+                email: currentUser.email,
+                id: currentUser.id,
+            },
+        ])
+    }, [currentUser])
 
     return (
         <div className="mt-4 flex h-[calc(100vh-180px)] flex-1 flex-col px-4  sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl">

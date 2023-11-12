@@ -4,38 +4,32 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const User = require("../modal/User");
+const Authenticate = require("../middleware/authenticate");
+const cookieParser = require("cookie-parser");
 const router = express.Router();
+router.use(cookieParser());
 
-router.post(
-  "/signup",
-  [
-    check("name", "Please Enter a Valid Username").not().isEmpty(),
-    check("email", "Please enter a valid email").isEmail(),
-    check("password", "Please enter a valid password").isLength({
-      min: 6,
-    }),
-  ],
-  async (req, res) => {
-    const { name, email, password, confirmpassword } = req.body;
-    if (!name || !email || !password) {
-      return res.status(422).json("please fill the field properly")
-    }
-    try {
-      const userExist = await User.findOne({ email: email });
-      if (userExist) {
-        return res.status(422).json({ error: "user already exists" });
-      } else if (password !== confirmpassword) {
-        return res.status(422).json({ error: "password are not matching" });
-      } else {
-        const user = new User({ name, email, password });
-        await user.save();
-        res.status(201).json({ message: "User registered Successfully" });
-      }
-    }
-    catch (e) {
-      console.log(e);
+router.post("/signup", async (req, res) => {
+  const { name, email, password, confirmpassword } = req.body;
+  if (!name || !email || !password) {
+    return res.status(422).json("please fill the field properly")
+  }
+  try {
+    const userExist = await User.findOne({ email: email });
+    if (userExist) {
+      return res.status(422).json({ error: "user already exists" });
+    } else if (password !== confirmpassword) {
+      return res.status(422).json({ error: "password are not matching" });
+    } else {
+      const user = new User({ name, email, password });
+      await user.save();
+      res.status(201).json({ message: "User registered Successfully" });
     }
   }
+  catch (e) {
+    console.log(e);
+  }
+}
 );
 router.post(
   "/login",
@@ -76,5 +70,9 @@ router.post(
     }
   }
 );
+
+router.get('/details', Authenticate, (req, res) => {
+  res.send(req.rootUser);
+})
 
 module.exports = router;

@@ -1,6 +1,7 @@
 import { CheckIcon } from "@heroicons/react/outline";
 import SearchInput from "./SearchInput";
 import { useState, useContext } from "react";
+import axios from "axios";
 
 const SearchMember = ({
     memberList,
@@ -23,13 +24,9 @@ const SearchMember = ({
 
     const doSearch = async () => {
         try {
-            // const result = await findUserByEmail(email);
-            const result = {
-                name: "Sdnajnf",
-                email: "adbvjaifkjankv@gmail.com"
-            }
-            if (result) {
-                setSearchedUser(result);
+            const result = await axios.get(`http://localhost:4000/group/getDetailsByEmail/${email}`);
+            if (result.data) {
+                setSearchedUser(result.data);
                 setFoundUser(true);
             }
         } catch (error) {

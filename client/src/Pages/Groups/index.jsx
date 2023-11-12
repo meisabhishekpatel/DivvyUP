@@ -33,7 +33,7 @@ const Groups = () => {
     }];
 
     return (
-        <div className="">
+        <div className="relative float-right w-[90%]">
             {/* Page Heading */}
             <div className="mt-4 flex flex-1 flex-col justify-end px-4 sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl">
                 <div>

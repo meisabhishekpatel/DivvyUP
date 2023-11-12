@@ -20,6 +20,8 @@ export default function Login() {
 
     }
 
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { email, password } = user;
@@ -40,8 +42,7 @@ export default function Login() {
         }
         else {
             alert("Login successfull");
-            console.log("Login successfull");
-            navigate("/");
+            navigate("/home");
         }
     }
 
