@@ -1,6 +1,6 @@
-const getUserDeatils = async (setCurrentUser) => {
+const getGroupDetails = async (set, _id) => {
     try {
-        const res = await fetch("/user/details", {
+        const res = await fetch(`/group/member/${_id}`, {
             method: "GET",
             headers: {
                 Accept: "application/json",
@@ -9,14 +9,13 @@ const getUserDeatils = async (setCurrentUser) => {
             credentials: "include"
         });
         const data = await res.json();
-        setCurrentUser(data);
+        set(data);
         if (!res.status === 200) {
             alert("Error");
         }
     } catch (err) {
         console.log(err);
-        // navigate("/")
     }
 }
 
-export default getUserDeatils;
+export default getGroupDetails;

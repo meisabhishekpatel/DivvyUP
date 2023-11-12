@@ -52,8 +52,8 @@ const Home = () => {
                 alert("Error");
             }
         } catch (err) {
-            console.log(err);
             navigate("/")
+            console.log(err);
         }
     }
 

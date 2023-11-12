@@ -1,36 +1,20 @@
 import { PlusCircleIcon, UserGroupIcon } from "@heroicons/react/outline";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
-// import { Loading } from "components";
-// import GroupContext from "contexts/GroupContext";
-// import { useContext } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import getGroupDetails from "../../GetData/GroupDetails";
+import getUserDeatils from "../../GetData/UserDetails";
 const Groups = () => {
-    // const { groupList } = useContext(GroupContext);
-    const groupList = [{
-        _id: "bdfjandjakvda",
-        name: "Banaras",
-        description: "dnandvak anvifnoa nviaonfva nianvof",
-        totalExpenses: 500,
-        members: ["Ram", "Shyam", "Suresh"]
-    }, {
-        _id: "bdfjandjakvda",
-        name: "Banaras",
-        description: "dnandvak anvifnoa nviaonfva nianvof",
-        totalExpenses: 500,
-        members: ["Ram", "Shyam", "Suresh"]
-    }, {
-        _id: "bdfjandjakvda",
-        name: "Banaras",
-        description: "dnandvak anvifnoa nviaonfva nianvof",
-        totalExpenses: 500,
-        members: ["Ram", "Shyam", "Suresh"]
-    }, {
-        _id: "bdfjandjakvda",
-        name: "Banaras",
-        description: "dnandvak anvifnoa nviaonfva nianvof",
-        totalExpenses: 500,
-        members: ["Ram", "Shyam", "Suresh"]
-    }];
+
+    const [groupList, setGroup] = useState();
+    const [currentUser, setCurrentUser] = useState({});
+
+    useEffect(() => {
+        getUserDeatils(setCurrentUser);
+    }, [])
+    useEffect(() => {
+        getGroupDetails(setGroup, currentUser._id);
+    }, [currentUser])
 
     return (
         <div className="relative float-right w-[90%]">

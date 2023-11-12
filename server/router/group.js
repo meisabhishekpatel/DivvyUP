@@ -19,30 +19,21 @@ router.post("/addgroup", async (req, res) => {
     }
 });
 
-router.get('/getDetailsByEmail/:email', async (req, res) => {
-    try {
-        const user = await User.findOne({ email: req.params.email });
-        if (!user) return res.status(404).json("User not found.");
-        delete user.password;
-        res.send({
-            name: user.name,
-            email: user.email,
-            id: user._id,
-        });
-    } catch (err) {
-        console.log(err);
-    }
-})
+router.get("/member/:memberId", async (req, res) => {
+    const memberId = req.params.memberId;
+    let groups = await Group.find({ members: memberId }).lean();
+    groups = groups.map(async (group) => {
+        // const totalExpenses = await Expense.countDocuments({ group: group._id });
+        const totalExpenses = 5000;
+        return {
+            ...group,
+            totalExpenses,
+        };
+    });
+    groups = await Promise.all(groups);
+    res.send(groups);
+});
 
-// router.get("/:email", authMiddleWare, async (req, res) => {
-//     const user = await User.findOne({ email: req.params.email });
-//     if (!user) return res.status(404).send("User not found.");
-//     delete user.password;
-//     res.send({
-//         name: user.name,
-//         email: user.email,
-//         id: user._id,
-//     });
-// });
+
 
 module.exports = router;

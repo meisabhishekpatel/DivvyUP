@@ -71,6 +71,21 @@ router.post(
   }
 );
 
+router.get('/getDetailsByEmail/:email', async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.params.email });
+    if (!user) return res.status(404).json("User not found.");
+    delete user.password;
+    res.send({
+      name: user.name,
+      email: user.email,
+      id: user._id,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+})
+
 router.get('/details', Authenticate, (req, res) => {
   res.send(req.rootUser);
 })
