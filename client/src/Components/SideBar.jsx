@@ -12,6 +12,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     const [navigation, setNavigation] = useState([
         { name: "Home", href: "/home", icon: HomeIcon, current: false },
         { name: "Groups", href: "/groups", icon: UserGroupIcon, current: false },
+        { name: "Individual", href: "/groups", icon: UserGroupIcon, current: false },
     ]);
     const { pathname } = useLocation();
     useEffect(() => {
@@ -84,9 +85,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                             </Transition.Child>
                             <div className="flex flex-shrink-0 items-center px-4">
                                 <Link to="/">
-                                    <span className="sr-only">Split Bill</span>
+                                    <span className="sr-only">Divvy UP</span>
                                     <p className="text-2xl font-bold">
-                                        Split <span className="text-blue-600">Bill</span>
+                                        Divvy <span className="text-blue-600">UP</span>
                                     </p>
                                 </Link>
                             </div>
@@ -132,9 +133,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-300 bg-white pt-5 pb-4">
                     <div className="flex flex-shrink-0 items-center px-4">
                         <Link to="/">
-                            <span className="sr-only">Split Bill</span>
+                            <span className="sr-only">Divvy UP</span>
                             <p className="text-2xl font-bold">
-                                Divvy<span className="text-blue-600">Up</span>
+                                Divvy<span className="text-blue-600">UP</span>
                             </p>
                         </Link>
                     </div>

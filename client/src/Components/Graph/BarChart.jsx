@@ -1,5 +1,7 @@
 // import GroupContext from "contexts/GroupContext";
-import React, { useContext } from "react";
+import React, { useState, useEffect } from "react";
+import getGroupDetails from "../../GetData/GroupDetails";
+import getUserDeatils from "../../GetData/UserDetails";
 import {
     BarChart,
     Bar,
@@ -34,32 +36,15 @@ const getData = (groupList) => {
 };
 
 export default function BarGraph() {
-    // const { groupList } = useContext(GroupContext);
-    const groupList = [{
-        _id: "bdfjandjakvda",
-        name: "Banaras",
-        description: "dnandvak anvifnoa nviaonfva nianvof",
-        totalExpenses: "5000",
-        members: ["Ram", "Shyam", "Suresh"]
-    }, {
-        _id: "bdfjandjakvda",
-        name: "Banaras",
-        description: "dnandvak anvifnoa nviaonfva nianvof",
-        totalExpenses: "5000",
-        members: ["Ram", "Shyam", "Suresh"]
-    }, {
-        _id: "bdfjandjakvda",
-        name: "Banaras",
-        description: "dnandvak anvifnoa nviaonfva nianvof",
-        totalExpenses: 500,
-        members: ["Ram", "Shyam", "Suresh"]
-    }, {
-        _id: "bdfjandjakvda",
-        name: "Banaras",
-        description: "dnandvak anvifnoa nviaonfva nianvof",
-        totalExpenses: 500,
-        members: ["Ram", "Shyam", "Suresh"]
-    }];
+    const [groupList, setGroup] = useState({});
+    const [currentUser, setCurrentUser] = useState({});
+
+    useEffect(() => {
+        getUserDeatils(setCurrentUser);
+    }, [])
+    useEffect(() => {
+        getGroupDetails(setGroup, currentUser._id);
+    }, [currentUser])
     return (
         <div className="flex flex-col items-center justify-start">
             <p className="pb-6 text-xl  font-semibold"> Group vs Expense Count</p>

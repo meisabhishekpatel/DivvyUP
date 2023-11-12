@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 const getUserDeatils = async (setCurrentUser) => {
+    // const navigate = useNavigate();
     try {
         const res = await fetch("/user/details", {
             method: "GET",
@@ -10,12 +13,12 @@ const getUserDeatils = async (setCurrentUser) => {
         });
         const data = await res.json();
         setCurrentUser(data);
-        if (!res.status === 200) {
+        if (!res) {
             alert("Error");
         }
     } catch (err) {
         console.log(err);
-        // navigate("/")
+        // navigate("/");
     }
 }
 

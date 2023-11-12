@@ -4,37 +4,22 @@ import { ReactComponent as MoneyBag } from "../images/MoneyBag.svg";
 import { Link, useNavigate } from "react-router-dom";
 import BarGraph from "../Components/Graph/BarChart";
 import PieGraph from "../Components/Graph/PieChart";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import getGroupDetails from "../GetData/GroupDetails";
+import getUserDeatils from "../GetData/UserDetails";
 // import Dashboard from "./Dashboard";
 
 const Home = () => {
     const navigate = useNavigate();
-    // const { groupList } = useContext(GroupContext);
-    const groupList = [{
-        _id: "bdfjandjakvda",
-        name: "Banaras",
-        description: "dnandvak anvifnoa nviaonfva nianvof",
-        totalExpenses: 500,
-        members: ["Ram", "Shyam", "Suresh"]
-    }, {
-        _id: "bdfjandjakvda",
-        name: "Banaras",
-        description: "dnandvak anvifnoa nviaonfva nianvof",
-        totalExpenses: 500,
-        members: ["Ram", "Shyam", "Suresh"]
-    }, {
-        _id: "bdfjandjakvda",
-        name: "Banaras",
-        description: "dnandvak anvifnoa nviaonfva nianvof",
-        totalExpenses: 500,
-        members: ["Ram", "Shyam", "Suresh"]
-    }, {
-        _id: "bdfjandjakvda",
-        name: "Banaras",
-        description: "dnandvak anvifnoa nviaonfva nianvof",
-        totalExpenses: 500,
-        members: ["Ram", "Shyam", "Suresh"]
-    }];
+    const [groupList, setGroup] = useState([]);
+    const [currentUser, setCurrentUser] = useState({});
+
+    useEffect(() => {
+        getUserDeatils(setCurrentUser);
+    }, [])
+    useEffect(() => {
+        getGroupDetails(setGroup, currentUser._id);
+    }, [currentUser])
 
     const callHomePage = async () => {
         try {
