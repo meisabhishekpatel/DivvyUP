@@ -1,23 +1,12 @@
 import { UserGroupIcon, XIcon } from "@heroicons/react/outline";
-import Joi from "joi";
 import Breadcrumb from "../../Components/BreadCrumb";
 import SearchMember from "../../Components/SearchBox";
-// import button from "components/button";
-// import FormInput from "components/FormInput";
-import { useContext, useEffect, useState } from "react";
-// import { authService, groupService } from "services";
-// import ToastContext from "contexts/ToastContext";
-// import GroupContext from "contexts/GroupContext";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../../Components/FormInput";
 import getUserDeatils from "../../GetData/UserDetails";
 import axios from "axios";
 
-
-const schema = {
-    name: Joi.string().required().min(1).max(50).label("Name"),
-    description: Joi.string().allow("").label("Description"),
-};
 
 const AddGroup = () => {
     const navigate = useNavigate();
@@ -60,7 +49,7 @@ const AddGroup = () => {
             {
                 name: currentUser.name,
                 email: currentUser.email,
-                id: currentUser.id,
+                id: currentUser._id,
             },
         ])
     }, [currentUser])
