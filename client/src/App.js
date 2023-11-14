@@ -10,6 +10,7 @@ import Groups from './Pages/Groups';
 import AddGroup from './Pages/Groups/Addgroup';
 import GroupDetail from './Pages/Groups/GroupDetail';
 import AddExpense from './Pages/Groups/AddExpense';
+import Individual from './Pages/Individual/Individual';
 
 
 function App() {
@@ -71,7 +72,17 @@ function App() {
             <SignUp />
           }
         />
+        <Route
+          path='/individual'
+          element={
+            <Individual />
+          }
+        />
+
+        
       </Routes>
+
+      
     </BrowserRouter>
   );
 }

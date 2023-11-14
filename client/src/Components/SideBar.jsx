@@ -12,7 +12,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     const [navigation, setNavigation] = useState([
         { name: "Home", href: "/home", icon: HomeIcon, current: false },
         { name: "Groups", href: "/groups", icon: UserGroupIcon, current: false },
-        { name: "Individual", href: "/groups", icon: UserGroupIcon, current: false },
+        { name: "Individual", href: "/individual", icon: UserGroupIcon, current: false },
     ]);
     const { pathname } = useLocation();
     useEffect(() => {
