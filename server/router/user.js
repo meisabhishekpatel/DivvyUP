@@ -12,7 +12,7 @@ router.use(cookieParser());
 router.post("/signup", async (req, res) => {
   const { name, email, password, confirmpassword } = req.body;
   if (!name || !email || !password) {
-    return res.status(422).json("please fill the field properly")
+    return res.status(422).json({ error: "please fill the field properly" })
   }
   try {
     const userExist = await User.findOne({ email: email });
@@ -49,7 +49,7 @@ router.post(
       if (userLogin) {
         isMatch = await bcrypt.compare(password, userLogin.password);
         const token = await userLogin.generateAuthToken();
-        console.log(token);
+        // console.log(token);
         res.cookie("jwttoken", token, {
           expires: new Date(Date.now() + 25892000000),
           httpOnly: true
@@ -57,11 +57,11 @@ router.post(
         if (isMatch)
           res.json({ message: "user signin sucessfull" });
         else {
-          res.json({ message: "invalid Credentials" })
+          res.status(422).json({ error: "invalid Credentials" })
         }
       }
       else {
-        res.json({ message: "invalid Credentials" })
+        res.json({ error: "invalid Credentials" })
 
       }
     } catch (e) {

@@ -35,10 +35,9 @@ export default function Login() {
             })
         });
         const data = await res.json()
-
-        if (data.status === 422 || !data) {
-            alert("invalid details");
-            console.log("invalid details");
+        if (!data.message || !data) {
+            alert(data.error);
+            console.log(data.error);
         }
         else {
             alert("Login successfull");
@@ -85,12 +84,6 @@ export default function Login() {
                             className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                         />
                     </div>
-                    <a
-                        href="#"
-                        className="text-xs text-blue-700 hover:underline"
-                    >
-                        Forget Password?
-                    </a>
                     <div className="mt-6">
                         <button onClick={handleSubmit} className="w-full px-4 py-2 text-decoration-none tracking-wide text-white transition-colors duration-200 transform bg-blue-700 rounded-md hover:bg-blue-800 focus:outline-none focus:bg-blue-600">
                             Login

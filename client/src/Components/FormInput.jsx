@@ -44,9 +44,9 @@ const FormInput = ({
                 />
                 {type === "password" && !error && (
                     <span className="absolute inset-y-2 right-1 text-zinc-500 ">
-                        <Button type="icon" onClick={() => setShowPassword(!showPassword)}>
+                        <button type="icon" onClick={() => setShowPassword(!showPassword)}>
                             {showPassword ? <FiEyeOff /> : <FiEye />}
-                        </Button>
+                        </button>
                     </span>
                 )}
                 {error && (
@@ -55,11 +55,13 @@ const FormInput = ({
                     </span>
                 )}
             </div>
-            {error && (
-                <p className="mt-1 flex  items-center text-red-600">
-                    <span>{error}</span>
-                </p>
-            )}
+            {
+                error && (
+                    <p className="mt-1 flex  items-center text-red-600">
+                        <span>{error}</span>
+                    </p>
+                )
+            }
         </div>
     );
 };

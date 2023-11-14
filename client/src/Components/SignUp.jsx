@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios"
 
 export default function SignUp() {
     const [user, setUser] = useState({
@@ -36,14 +35,14 @@ export default function SignUp() {
         });
 
         const data = await res.json()
-
-        if (data.status === 422 || !data) {
-            alert("invalid details");
-            console.log("invalid details");
+        // console.log(data);
+        if (!data.message || !data) {
+            alert(data.error);
+            // console.log("invalid details");
         }
         else {
             alert("signup successfull");
-            console.log("sign up successfull");
+            // console.log("sign up successfull");
             navigate("/login");
         }
 
