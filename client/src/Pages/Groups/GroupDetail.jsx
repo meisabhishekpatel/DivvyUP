@@ -8,7 +8,7 @@ import Breadcrumb from "../../Components/BreadCrumb";
 import SearchMember from "../../Components/SearchBox";
 import Modal from "./DeleteGroup";
 import { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import EditMembers from "./EditMembers";
 import ExpenseList from "./ExpenseList";
 import getUserDeatils from "../../GetData/UserDetails";
@@ -16,6 +16,7 @@ import axios from "axios";
 import Button from "../../Components/Button";
 
 const GroupDetail = () => {
+    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState("");
     const [deleteMember, setDeleteMember] = useState("");

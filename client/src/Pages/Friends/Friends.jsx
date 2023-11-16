@@ -6,7 +6,7 @@ import {
 import Tabs from "../../Components/Tabs";
 import Breadcrumb from "../../Components/BreadCrumb";
 import { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import EditMembers from "./EditFriend";
 import ExpenseList from "./ExpenseList";
 import getUserDeatils from "../../GetData/UserDetails";
@@ -15,6 +15,7 @@ import Button from "../../Components/Button";
 import SearchFriend from "../../Components/SearchFriendBox";
 
 const Friends = () => {
+    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState("");
     const [deleteMember, setDeleteMember] = useState("");
@@ -38,7 +39,7 @@ const Friends = () => {
             console.log((result.data));
             setFriendList(result.data.friends);
         } else {
-            alert("Group not found", "error");
+            alert("Friend not found", "error");
             navigate("/groups");
         }
     };
