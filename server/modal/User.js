@@ -18,6 +18,7 @@ const UserSchema = new mongoose.Schema(
         },
         friends: {
             type: [],
+            ref: "User",
             require: false,
         },
         friendBalance: {

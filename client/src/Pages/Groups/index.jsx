@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import getGroupDetails from "../../GetData/GroupDetails";
 import getUserDeatils from "../../GetData/UserDetails";
+import Button from "../../Components/Button";
+
 const Groups = () => {
 
     const [groupList, setGroup] = useState();
@@ -17,7 +19,7 @@ const Groups = () => {
     }, [currentUser])
 
     return (
-        <div className="relative float-right w-[90%]">
+        <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
             {/* Page Heading */}
             <div className="mt-4 flex flex-1 flex-col justify-end px-4 sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl">
                 <div>
@@ -38,7 +40,7 @@ const Groups = () => {
                             <li>
                                 <div className="flex">
                                     <Link
-                                        to="/"
+                                        to="/home"
                                         className="text-sm font-medium text-gray-500 hover:text-gray-700"
                                     >
                                         Home
@@ -67,14 +69,15 @@ const Groups = () => {
                     </div>
                     <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
                         <Link to="/addgroup">
-                            <button leftIcon={<PlusCircleIcon className="w-5" />}>
-                                Add Group
+                            <button className="flex">
+                                <PlusCircleIcon className="w-5" />
+                                <span>ㅤ</span>Add Group
                             </button>
                         </Link>
                     </div>
                     <div className="flex flex-shrink-0 md:mt-0 md:ml-4 md:hidden">
                         <Link to="/addgroup">
-                            <button>
+                            <button className="">
                                 <PlusCircleIcon className="w-5" />
                             </button>
                         </Link>
@@ -137,14 +140,14 @@ const Groups = () => {
 
                                                         <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
                                                             <Link to={`/group/detail/${group._id}`}>
-                                                                <button
+                                                                <Button
                                                                     type="link"
                                                                     rightIcon={
                                                                         <ChevronRightIcon className="w-5" />
                                                                     }
                                                                 >
                                                                     Open{" "}
-                                                                </button>
+                                                                </Button>
                                                             </Link>
                                                         </td>
                                                     </tr>

@@ -21,7 +21,7 @@ const Breadcrumb = ({ paths }) => {
                     <li>
                         <div className="flex">
                             <Link
-                                to="/"
+                                to="/home"
                                 className="text-sm font-medium text-gray-500 hover:text-gray-700"
                             >
                                 Home

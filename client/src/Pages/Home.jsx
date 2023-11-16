@@ -7,7 +7,7 @@ import PieGraph from "../Components/Graph/PieChart";
 import { useState, useEffect } from "react";
 import getGroupDetails from "../GetData/GroupDetails";
 import getUserDeatils from "../GetData/UserDetails";
-// import Dashboard from "./Dashboard";
+import Button from "../Components/Button";
 
 const Home = () => {
     const navigate = useNavigate();
@@ -48,7 +48,7 @@ const Home = () => {
 
 
     return (
-        <div className="relative float-right w-[90%]">
+        <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
             <div className="my-10 px-0 sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl">
                 {/* Group Overview */}
                 <div className="my-12">
@@ -56,12 +56,12 @@ const Home = () => {
                         <h1 className="text-2xl font-bold">Your Groups</h1>
                         {groupList.length > 3 && (
                             <Link to="/groups">
-                                <button
+                                <Button
                                     type="link"
                                     rightIcon={<ExternalLinkIcon className="w-5" />}
                                 >
                                     View All{" "}
-                                </button>
+                                </Button>
                             </Link>
                         )}
                     </div>
@@ -106,12 +106,12 @@ const Home = () => {
                                     </div>
                                     <div className="flex justify-end bg-gray-100 p-2">
                                         <Link to={`/group/detail/${group._id}`}>
-                                            <button
+                                            <Button
                                                 type="link"
                                                 rightIcon={<ExternalLinkIcon className="w-5" />}
                                             >
                                                 Open
-                                            </button>
+                                            </Button>
                                         </Link>
                                     </div>
                                 </div>
@@ -120,12 +120,14 @@ const Home = () => {
                                 <div>
                                     <Link to="/addgroup" className="h-56 shadow-sm sm:w-3/4">
                                         <div className="flex h-56 min-w-full cursor-pointer flex-col items-center  justify-center rounded border-2 border-dashed hover:bg-gray-50 sm:min-w-0">
-                                            <p>
-                                                <PlusCircleIcon className="mb-4 w-10 stroke-1 text-gray-600" />{" "}
-                                            </p>
-                                            <p className="text-2xl font-medium text-gray-600">
-                                                Add Group
-                                            </p>
+                                            <Button type="link">
+                                                <p className="flex justify-center">
+                                                    <PlusCircleIcon className="mb-4 w-10 stroke-1 text-gray-600" />{" "}
+                                                </p>
+                                                <p className="text-2xl font-medium text-gray-600 dark:text-white">
+                                                    Add Group
+                                                </p>
+                                            </Button>
                                         </div>
                                     </Link>
                                 </div>

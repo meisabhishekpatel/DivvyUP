@@ -7,11 +7,13 @@ import {
 
 } from "@heroicons/react/outline";
 import { Link, useLocation } from "react-router-dom";
+import Button from "./Button";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     const [navigation, setNavigation] = useState([
         { name: "Home", href: "/home", icon: HomeIcon, current: false },
         { name: "Groups", href: "/groups", icon: UserGroupIcon, current: false },
+        { name: "Friends", href: "/friends", icon: UserGroupIcon, current: false },
         { name: "Individual", href: "/individual", icon: UserGroupIcon, current: false },
     ]);
     const { pathname } = useLocation();
@@ -73,14 +75,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                 leaveTo="opacity-0"
                             >
                                 <div className="absolute top-0 right-0 -mr-12 pt-2">
-                                    <button
+                                    <Button
                                         type="button"
                                         className="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                                         onClick={() => setSidebarOpen(false)}
                                     >
                                         <span className="sr-only">Close sidebar</span>
                                         <XIcon className="h-6 w-6 text-white" aria-hidden="true" />
-                                    </button>
+                                    </Button>
                                 </div>
                             </Transition.Child>
                             <div className="flex flex-shrink-0 items-center px-4">

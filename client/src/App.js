@@ -11,6 +11,7 @@ import AddGroup from './Pages/Groups/Addgroup';
 import GroupDetail from './Pages/Groups/GroupDetail';
 import AddExpense from './Pages/Groups/AddExpense';
 import Individual from './Pages/Individual/Individual';
+import Friends from './Pages/Friends/Friends';
 
 
 function App() {
@@ -46,16 +47,27 @@ function App() {
         />
         <Route
           path="/group/detail/:groupId"
-          element={<GroupDetail />}
+          element={
+            <div className=''>
+              <Dashboard />
+              <GroupDetail />
+            </div>
+          }
         />
         <Route
           path="/group/:groupId/addexpense"
-          element={<AddExpense />}
+          element={
+            <div className=''>
+              <Dashboard />
+              <AddExpense />
+            </div>
+          }
         />
         <Route
           path='/addgroup'
           element={
             <div className=''>
+              <Dashboard />
               <AddGroup />
             </div>
           }
@@ -78,11 +90,20 @@ function App() {
             <Individual />
           }
         />
+        <Route
+          path='/friends'
+          element={
+            <div className=''>
+              <Dashboard />
+              <Friends />
+            </div>
+          }
+        />
 
-        
+
       </Routes>
 
-      
+
     </BrowserRouter>
   );
 }

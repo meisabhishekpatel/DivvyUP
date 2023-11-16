@@ -15,7 +15,6 @@ export default function Dashboard() {
         <>
             <div className="h-full">
                 <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-
                 <div className="lg:pl-64 flex flex-col flex-1 h-full">
                     <div className="relative z-10 flex-shrink-0 flex h-16 bg-white border-b border-gray-200">
                         <button

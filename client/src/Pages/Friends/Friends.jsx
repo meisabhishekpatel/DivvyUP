@@ -5,41 +5,38 @@ import {
 } from "@heroicons/react/outline";
 import Tabs from "../../Components/Tabs";
 import Breadcrumb from "../../Components/BreadCrumb";
-import SearchMember from "../../Components/SearchBox";
-import Modal from "./DeleteGroup";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import EditMembers from "./EditMembers";
+import EditMembers from "./EditFriend";
 import ExpenseList from "./ExpenseList";
 import getUserDeatils from "../../GetData/UserDetails";
 import axios from "axios";
 import Button from "../../Components/Button";
+import SearchFriend from "../../Components/SearchFriendBox";
 
-const GroupDetail = () => {
+const Friends = () => {
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState("");
     const [deleteMember, setDeleteMember] = useState("");
 
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-    const { groupId } = useParams();
     const [expenseList, setExpenseList] = useState([]);
     const [settledExpenseList, setSettledExpenseList] = useState([]);
     const [group, setGroup] = useState({});
-    const [memberList, setMemberList] = useState([]);
+    const [friendList, setFriendList] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
 
     useEffect(() => {
         getUserDeatils(setCurrentUser);
     }, [])
 
-    const fetchGroupById = async (_id) => {
+    const fetchFriendsById = async (_id) => {
         if (!_id) return;
-        const result = await axios.get(`/group/${_id}`);
+        const result = await axios.get(`/friends/${_id}`);
         if (result) {
             console.log((result.data));
-            setGroup(result.data);
-            setMemberList(result.data.members);
+            setFriendList(result.data.friends);
         } else {
             alert("Group not found", "error");
             navigate("/groups");
@@ -47,37 +44,37 @@ const GroupDetail = () => {
     };
 
     useEffect(() => {
-        if (groupId) {
-            fetchGroupById(groupId);
-        }
-    }, []);
-
-    const fetchExpenses = async (groupId) => {
-        if (!groupId) return;
-        const result = await axios.get(`http://localhost:4000/expense/group/${groupId}/member/${currentUser._id}`);
-        if (result) {
-            const { activeExpenses, settledExpenses } = result.data;
-            if (activeExpenses || settledExpenses) {
-                setExpenseList(activeExpenses || []);
-                setSettledExpenseList(settledExpenses || []);
-            }
-        }
-    };
-
-    useEffect(() => {
-        if (groupId) {
-            fetchExpenses(groupId);
+        if (currentUser._id) {
+            fetchFriendsById(currentUser._id);
         }
     }, [currentUser]);
+
+    const fetchExpenses = async (groupId) => {
+        // if (!groupId) return;
+        // const result = await axios.get(`http://localhost:4000/expense/group/${groupId}/member/${currentUser._id}`);
+        // if (result) {
+        //     const { activeExpenses, settledExpenses } = result.data;
+        //     if (activeExpenses || settledExpenses) {
+        //         setExpenseList(activeExpenses || []);
+        //         setSettledExpenseList(settledExpenses || []);
+        //     }
+        // }
+    };
+
+    // useEffect(() => {
+    //     if (groupId) {
+    //         fetchExpenses(groupId);
+    //     }
+    // }, [currentUser]);
 
     const groupDeleteTitle = useMemo(() => {
         return `Delete ${group.name}`;
     }, [group]);
 
-    const handleAddMember = async (memberId) => {
+    const handleAddMember = async (friendId) => {
         try {
-            if (memberId) {
-                const result = await axios.post(`http://localhost:4000/group/${groupId}/member/${memberId}`);
+            if (friendId) {
+                const result = await axios.post(`http://localhost:4000/friends/${currentUser._id}/friend/${friendId}`);
                 if (result) {
                     window.location.reload();
                 }
@@ -88,22 +85,18 @@ const GroupDetail = () => {
     };
 
     const handleMemberDelete = async (memberId) => {
-        if (group.members.length === 1) {
-            alert("Cannot delete last member", "error");
-            setOpen(false);
-            return;
-        }
+        // if (group.members.length === 1) {
+        //     alert("Cannot delete last friend you'll be lonely");
+        //     setOpen(false);
+        //     return;
+        // }
         if (memberId) {
-            const result = await axios.delete(`http://localhost:4000/group/${groupId}/member/${memberId}`);
+            const result = await axios.delete(`http://localhost:4000/friends/${currentUser._id}/friend/${memberId}`);
             if (result) {
-                alert("Member removed", "success");
-                fetchGroupById(groupId);
+                alert("Friend removed", "success");
+                fetchFriendsById(currentUser._id);
                 setOpen(false);
-                if (memberId === currentUser._id) {
-                    window.location.href = "/";
-                } else {
-                    window.location.reload();
-                }
+                window.location.reload();
                 return;
             }
         }
@@ -111,23 +104,23 @@ const GroupDetail = () => {
     };
 
     const handleGroupDelete = async () => {
-        if (groupId) {
-            const result = await axios.delete(`http://localhost:4000/group/${groupId}`);
+        // if (groupId) {
+        //     const result = await axios.delete(`http://localhost:4000/group/${groupId}`);
 
-            if (result.data) {
-                alert("Group Deleted", "success");
-                setOpenDeleteModal(false);
-                setTimeout(() => {
-                    window.location.href = "/groups";
-                }, 500);
-                return;
-            }
-        }
+        //     if (result.data) {
+        //         alert("Group Deleted", "success");
+        //         setOpenDeleteModal(false);
+        //         setTimeout(() => {
+        //             window.location.href = "/groups";
+        //         }, 500);
+        //         return;
+        //     }
+        // }
 
-        alert("Something went wrong", "error");
+        // alert("Something went wrong", "error");
     };
 
-    if (!group._id) return <h1>Loading</h1>;
+    // if (!group._id) return <h1>Loading</h1>;
 
     return (
         <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
@@ -136,8 +129,7 @@ const GroupDetail = () => {
                 <div>
                     <Breadcrumb
                         paths={[
-                            { name: "Groups", to: "/groups" },
-                            { name: "Group Detail", to: `/group/detail/${group._id}` },
+                            { name: "Friends", to: "/friends" },
                         ]}
                     />
                     <div className="mt-2 flex md:items-center md:justify-between">
@@ -191,22 +183,22 @@ const GroupDetail = () => {
                     <div className="flex flex-col justify-start sm:col-span-2">
                         <div className="my-2">
                             <p className="text-sm font-medium uppercase text-gray-500">
-                                Add Member
+                                Add Friend
                             </p>
-                            <SearchMember
-                                memberList={memberList}
-                                setMemberList={setMemberList}
+                            <SearchFriend
+                                memberList={friendList}
+                                setMemberList={setFriendList}
                                 handleAdd={handleAddMember}
                             />
                         </div>
                         <div className="my-2 rounded border shadow-sm ">
                             <p className=" rounded-t bg-gray-800 p-2 text-sm font-semibold uppercase text-white">
-                                Members
+                                Friends
                             </p>
                             <div className="divide-y-2 p-2">
-                                {memberList &&
-                                    memberList.length > 0 &&
-                                    memberList.map((member) => (
+                                {friendList &&
+                                    friendList.length > 0 &&
+                                    friendList.map((member) => (
                                         <div
                                             key={member._id}
                                             className="flex items-center justify-between"
@@ -231,7 +223,7 @@ const GroupDetail = () => {
                                     ))}
                             </div>
                         </div>
-                        <div className="my-2 mt-6 rounded border-2 border-dashed border-red-200 p-2 shadow-sm">
+                        {/* <div className="my-2 mt-6 rounded border-2 border-dashed border-red-200 p-2 shadow-sm">
                             <p className="text-sm font-semibold uppercase text-red-600">
                                 Danger Zone
                             </p>
@@ -244,7 +236,7 @@ const GroupDetail = () => {
                             >
                                 Delete Group
                             </Button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <EditMembers
@@ -258,20 +250,9 @@ const GroupDetail = () => {
                     buttonType="danger"
                     handleDelete={handleMemberDelete}
                 />
-                <Modal
-                    title={groupDeleteTitle}
-                    memberId={groupId}
-                    icon={<ExclamationIcon className="w-5 text-red-600" />}
-                    open={openDeleteModal}
-                    setOpen={setOpenDeleteModal}
-                    text="Are you sure you want to delete this group? All expense related to this group will be deleted."
-                    buttonText="Delete"
-                    buttonType="danger"
-                    handleDelete={handleGroupDelete}
-                />
             </div>
         </div>
     );
 };
 
-export default GroupDetail;
+export default Friends;

@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const user = require("./router/user");
 const group = require("./router/group")
+const friends = require("./router/friends")
 const individual = require("./router/individual")
 const expense = require("./router/expense")
 const cors = require("cors");
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 // router
 app.use("/user", user);
 app.use("/group", group);
+app.use("/friends", friends);
 app.use("/expense", expense);
 app.use("/individual", individual);
 
