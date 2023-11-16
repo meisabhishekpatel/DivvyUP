@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose")
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -85,6 +86,27 @@ router.get('/getDetailsByEmail/:email', async (req, res) => {
     console.log(err);
   }
 })
+
+router.get("/settledMembers", async (req, res) => {
+  const { userIds } = req.query;
+
+  if (!userIds) return res.send("no id received")
+
+  const parsedUserIds = JSON.parse(userIds);
+
+  if (!parsedUserIds || parsedUserIds.length < 1)
+    return res.send([]);
+
+  const result = await User.find(
+    {
+      _id: {
+        $in: parsedUserIds.map((id) => new mongoose.Types.ObjectId(id)),
+      },
+    },
+    { name: 1, _id: 1 }
+  ).lean();
+  return res.send(result);
+});
 
 router.get('/details', Authenticate, (req, res) => {
   res.send(req.rootUser);

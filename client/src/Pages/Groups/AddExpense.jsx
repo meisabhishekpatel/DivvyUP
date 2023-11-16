@@ -1,23 +1,26 @@
 import Breadcrumb from "../../Components/BreadCrumb";
 import FormInput from "../../Components/FormInput";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import getUserDeatils from "../../GetData/UserDetails";
+import axios from "axios";
 
 const AddExpense = ({ group }) => {
     const { groupId } = useParams();
-    const currentUser = {
-        name: "Abhishek",
-        email: "abhishek.20214053@gmail.com",
-        id: "dnfajndvaokonoafnvaof",
-    };
-
-    const [data, setData] = useState({
-        description: "",
-        amount: "",
-        groupId: groupId,
-        paidBy: currentUser.id,
-    });
-
+    const [currentUser, setCurrentUser] = useState({});
+    useEffect(() => {
+        getUserDeatils(setCurrentUser);
+    }, [])
+    const [data, setData] = useState({});
+    useEffect(() => {
+        // console.log(currentUser);
+        setData({
+            description: "",
+            amount: "",
+            groupId: groupId,
+            paidBy: currentUser._id,
+        })
+    }, [currentUser])
 
     const handleChange = ({ currentTarget: input }) => {
         setData({ ...data, [input.name]: input.value });
@@ -29,7 +32,20 @@ const AddExpense = ({ group }) => {
     };
 
     const doSubmit = async () => {
-
+        try {
+            const result = await axios.post("http://localhost:4000/expense/addExpense", data);
+            if (result.data) {
+                alert("Expense Added");
+                setData({
+                    description: "",
+                    amount: "",
+                    groupId: groupId,
+                    paidBy: currentUser._id,
+                })
+            }
+        } catch (err) {
+            alert(err);
+        }
     };
 
     return (

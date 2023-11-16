@@ -1,61 +1,52 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { XIcon, ReplyIcon, CheckCircleIcon } from "@heroicons/react/outline";
-import { Fragment, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Fragment, useEffect, useState } from "react";
+import axios from "axios";
 
 const ExpenseDetailModal = ({
     children,
     open = false,
     setOpen,
-    expense = true,
-    settled = false,
+    expense,
+
+    settled,
+    currentUser
 }) => {
-    const currentUser = {
-        name: "Abhishek",
-        email: "abhishek.20214053@gmail.com",
-        id: "dnfajndvaokonoafnvaof"
-    }
 
-    const navigate = useNavigate();
-
-    // const { showToast } = useContext(ToastContext);
-    // const { fetchExpenses } = useContext(GroupContext);
     const handleSettleExpense = async () => {
-        // const response = await expenseService.settleExpense(
-        //     expense._id,
-        //     currentUser.id
-        // );
-        // if (response) {
-        //     showToast("Expense settled", "success");
-        //     setOpen(false);
-        //     await fetchExpenses(expense.group);
-        // }
+        const response = await axios.post(`http://localhost:4000/expense/${expense._id}/settle/${currentUser._id}`)
+        if (response) {
+            alert("Expense settled", "success");
+            setOpen(false);
+            window.location.reload();
+        }
     };
     const handleRevertExpense = async () => {
-        // const response = await expenseService.revertExpense(
-        //     expense._id,
-        //     currentUser.id
-        // );
+        const response = await axios.post(`http://localhost:4000/expense/${expense._id}/revert/${currentUser._id}`)
 
-        // if (response) {
-        //     showToast("Expense reverted", "success");
-        //     setOpen(false);
-        //     await fetchExpenses(expense.group);
-        // }
+        if (response) {
+            alert("Expense reverted", "success");
+            setOpen(false);
+            window.location.reload();
+        }
     };
 
     const [settledMembers, setSettledMembers] = useState([]);
 
-    // useEffect(() => {
-    //     async function fetchUser() {
-    //         const result = await userService.fetchUsersByIds(expense.settledMembers);
-    //         setSettledMembers(result);
-    //     }
+    async function fetchUser() {
+        const result = await axios.get("http://localhost:4000/user/settledMembers", {
+            params: {
+                userIds: JSON.stringify(expense.settledMembers),
+            },
+        });
+        setSettledMembers(result.data);
+    }
 
-    //     if (expense && expense.settledMembers.length > 0) {
-    //         fetchUser();
-    //     }
-    // }, [expense]);
+    useEffect(() => {
+        if (expense && expense.settledMembers.length > 0) {
+            fetchUser();
+        }
+    }, [expense]);
 
     return (
         <>
@@ -95,33 +86,33 @@ const ExpenseDetailModal = ({
                                             <div className="mt-4 flex items-center justify-between">
                                                 <div>
                                                     <p className="text-2xl font-semibold leading-5 text-gray-700">
-                                                        shuaibivbdajvnaijbvdja
+                                                        {expense.description}
                                                     </p>
                                                     <p className="mt-2 leading-5 text-gray-500">
                                                         Paid by{" "}
                                                         <span className="font-medium text-gray-600">
-                                                            Abhishek
+                                                            {expense.paidBy.name}
                                                         </span>
                                                     </p>
                                                 </div>
                                                 <div>
                                                     <p className="mt-2 text-xl font-semibold leading-5 text-gray-700 sm:text-3xl">
-                                                        $ {Number(expense.amount).toFixed(2)}
+                                                        ₹ {Number(expense.amount).toFixed(2)}
                                                     </p>
                                                 </div>
                                             </div>
                                             <div className="mt-3">
-                                                {"ifbajdf jav jiavjdi" === currentUser.id ? (
+                                                {expense.paidBy._id === currentUser._id ? (
                                                     <div className="justify-self-center text-lg font-semibold text-green-600">
                                                         <p>
                                                             You Lent{" "}
                                                             <span>
-                                                                ${" "}
+                                                                ₹{" "}
                                                                 {
                                                                     expense?.membersBalance?.find(
                                                                         (member) =>
                                                                             member?.memberId?.toString() ===
-                                                                            currentUser.id
+                                                                            currentUser._id
                                                                     ).balance
                                                                 }
                                                             </span>
@@ -135,13 +126,13 @@ const ExpenseDetailModal = ({
                                                         <p>
                                                             {settled ? "Settled" : "You Owe"}{" "}
                                                             <span>
-                                                                ${" "}
+                                                                ₹{" "}
                                                                 {
                                                                     expense?.membersBalance
                                                                         ?.find(
                                                                             (member) =>
                                                                                 member?.memberId?.toString() ===
-                                                                                currentUser.id
+                                                                                currentUser._id
                                                                         )
                                                                         .balance.split("-")[1]
                                                                 }
@@ -181,7 +172,7 @@ const ExpenseDetailModal = ({
                                                 )}
                                             </div>
                                         </div>
-                                        {"dhafdk vakjd vjad vajd" !== currentUser.id && !settled && (
+                                        {expense.paidBy._id !== currentUser._id && !settled && (
                                             <div className="mt-3 flex justify-end border-t bg-gray-100 p-3">
                                                 <button type="success" onClick={handleSettleExpense}>
                                                     Settle Up

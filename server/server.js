@@ -3,12 +3,12 @@ const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const user = require("./router/user");
 const group = require("./router/group")
-const individual=require("./router/individual")
+const individual = require("./router/individual")
+const expense = require("./router/expense")
 const cors = require("cors");
 const morgan = require('morgan');
 const connectDB = require("./config/config");
 dotenv.config();
-
 
 connectDB();
 
@@ -29,7 +29,8 @@ app.get("/", (req, res) => {
 // router
 app.use("/user", user);
 app.use("/group", group);
-app.use("/individual",individual);
+app.use("/expense", expense);
+app.use("/individual", individual);
 
 app.listen(PORT, (req, res) => {
   console.log(`Server Started at PORT ${PORT}`);

@@ -22,8 +22,8 @@ const GroupDetail = () => {
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
     const { groupId } = useParams();
-    const expenseList = [];
-    const settledExpenseList = [];
+    const [expenseList, setExpenseList] = useState([]);
+    const [settledExpenseList, setSettledExpenseList] = useState([]);
     const [group, setGroup] = useState({});
     const [memberList, setMemberList] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
@@ -36,6 +36,7 @@ const GroupDetail = () => {
         if (!_id) return;
         const result = await axios.get(`/group/${_id}`);
         if (result) {
+            console.log((result.data));
             setGroup(result.data);
             setMemberList(result.data.members);
         } else {
@@ -50,11 +51,23 @@ const GroupDetail = () => {
         }
     }, []);
 
+    const fetchExpenses = async (groupId) => {
+        if (!groupId) return;
+        const result = await axios.get(`http://localhost:4000/expense/group/${groupId}/member/${currentUser._id}`);
+        if (result) {
+            const { activeExpenses, settledExpenses } = result.data;
+            if (activeExpenses || settledExpenses) {
+                setExpenseList(activeExpenses || []);
+                setSettledExpenseList(settledExpenses || []);
+            }
+        }
+    };
+
     useEffect(() => {
-        // if (groupId) {
-        // fetchExpenses(groupId);
-        // }
-    }, []);
+        if (groupId) {
+            fetchExpenses(groupId);
+        }
+    }, [currentUser]);
 
     const groupDeleteTitle = useMemo(() => {
         return `Delete ${group.name}`;
@@ -160,14 +173,14 @@ const GroupDetail = () => {
                                     label: "Active",
                                     content: (
                                         <>
-                                            <ExpenseList expenseList={expenseList} />
+                                            <ExpenseList currentUser={currentUser} expenseList={expenseList} />
                                         </>
                                     ),
                                 },
                                 {
                                     label: "Settled",
                                     content: (
-                                        <ExpenseList expenseList={settledExpenseList} settled />
+                                        <ExpenseList currentUser={currentUser} expenseList={settledExpenseList} settled />
                                     ),
                                 },
                             ]}

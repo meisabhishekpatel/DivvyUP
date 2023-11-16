@@ -1,15 +1,10 @@
 import { ChevronRightIcon, CurrencyRupeeIcon } from "@heroicons/react/outline";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ExpenseDetailModal from "./ExpenseModel";
 
-const ExpenseList = ({ expenseList, settled = false }) => {
+const ExpenseList = ({ currentUser, expenseList, settled = false }) => {
     const [showExpenseDetail, setShowExpenseDetail] = useState(false);
     const [selectedExpense, setSelectedExpense] = useState();
-    const currentUser = {
-        name: "Abhishek",
-        email: "abhishek.20214053@gmail.com",
-        id: "dnfajndvaokonoafnvaof"
-    }
 
     return (
         <>
@@ -29,7 +24,7 @@ const ExpenseList = ({ expenseList, settled = false }) => {
                                     {expense.description}
                                 </p>
                                 <p className="text-md font-medium text-gray-500">
-                                    $ {Number(expense.amount).toFixed(2)}
+                                    ₹{Number(expense.amount).toFixed(2)}
                                 </p>
                             </div>
                             <div className="col-span-2 hidden justify-self-center text-sm text-gray-500 sm:block">
@@ -48,15 +43,15 @@ const ExpenseList = ({ expenseList, settled = false }) => {
                                     </span>
                                 </p>
                             </div>
-                            {expense.paidBy._id === currentUser.id ? (
+                            {expense.paidBy._id === currentUser._id ? (
                                 <div className="justify-self-center text-sm font-semibold text-green-600">
                                     <p>You Lent</p>
-                                    <p>
-                                        ${" "}
+                                    <p className="">
+                                        ₹{" "}
                                         {
                                             expense?.membersBalance?.find(
                                                 (member) =>
-                                                    member?.memberId?.toString() === currentUser.id
+                                                    member?.memberId?.toString() === currentUser._id
                                             ).balance
                                         }
                                     </p>
@@ -67,14 +62,13 @@ const ExpenseList = ({ expenseList, settled = false }) => {
                                         } justify-self-center text-sm font-semibold`}
                                 >
                                     {settled ? <p>You Paid</p> : <p>You Owe</p>}
-                                    <p>
-                                        ${" "}
+                                    <p className="">
+                                        ₹{" "}
                                         {
-                                            expense?.membersBalance
-                                                ?.find(
-                                                    (member) =>
-                                                        member?.memberId?.toString() === currentUser.id
-                                                )
+                                            expense?.membersBalance?.find(
+                                                (member) =>
+                                                    member?.memberId?.toString() == currentUser._id
+                                            )
                                                 .balance.split("-")[1]
                                         }
                                     </p>
@@ -100,6 +94,7 @@ const ExpenseList = ({ expenseList, settled = false }) => {
                 </div>
             )}
             <ExpenseDetailModal
+                currentUser={currentUser}
                 expense={selectedExpense}
                 settled={settled}
                 open={showExpenseDetail}
