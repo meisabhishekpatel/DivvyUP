@@ -8,7 +8,6 @@ const ExpenseDetailModal = ({
     open = false,
     setOpen,
     expense,
-
     settled,
     currentUser
 }) => {

@@ -9,7 +9,6 @@ import Dashboard from './Pages/DashBoard';
 import Groups from './Pages/Groups';
 import AddGroup from './Pages/Groups/Addgroup';
 import GroupDetail from './Pages/Groups/GroupDetail';
-import AddExpense from './Pages/Groups/AddExpense';
 import Individual from './Pages/Individual/Individual';
 import Friends from './Pages/Friends/Friends';
 import { QueryClient,QueryClientProvider } from '@tanstack/react-query';
@@ -62,24 +61,6 @@ function App() {
             </div>
           }
         />
-        <Route
-          path="/group/:groupId/addexpense"
-          element={
-            <div className=''>
-              <Dashboard />
-              <AddExpense />
-            </div>
-          }
-        />
-        {/* <Route
-          path="/addfriendexpense/:friendId"
-          element={
-            <div className=''>
-              <Dashboard />
-              <AddFriendExpense />
-            </div>
-          }
-        /> */}
         <Route
           path='/addgroup'
           element={

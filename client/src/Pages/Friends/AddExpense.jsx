@@ -6,26 +6,18 @@ import getUserDeatils from "../../GetData/UserDetails";
 import axios from "axios";
 
 const Addexpense = ({
+    currentUser,
     friend,
     open = false,
     setOpen,
 }) => {
-    const [expenseList, setExpenseList] = useState([]);
-    const [settledExpenseList, setSettledExpenseList] = useState([]);
-    const [currentUser, setCurrentUser] = useState({});
-    useEffect(() => {
-        getUserDeatils(setCurrentUser);
-    }, [])
-    const [data, setData] = useState({});
+    const [data, setData] = useState({
+        description: "",
+        amount: "",
+        friendId: friend,
+        paidBy: currentUser._id,
+    });
 
-    useEffect(() => {
-        setData({
-            description: "",
-            amount: "",
-            friendId: friend,
-            paidBy: currentUser._id,
-        })
-    }, [currentUser])
 
     const handleChange = ({ currentTarget: input }) => {
         setData({ ...data, [input.name]: input.value });
@@ -50,6 +42,7 @@ const Addexpense = ({
                     friendId: friend,
                     paidBy: currentUser._id,
                 })
+                window.location.reload();
             }
         } catch (err) {
             alert(err);

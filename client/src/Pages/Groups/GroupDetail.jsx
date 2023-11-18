@@ -11,6 +11,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import EditMembers from "./EditMembers";
 import ExpenseList from "./ExpenseList";
+import AddgroupExpense from "./AddExpense"
 import getUserDeatils from "../../GetData/UserDetails";
 import axios from "axios";
 import Button from "../../Components/Button";
@@ -20,9 +21,8 @@ const GroupDetail = () => {
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState("");
     const [deleteMember, setDeleteMember] = useState("");
-
+    const [openAddExpense, setAddExpense] = useState(false);
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
-
     const { groupId } = useParams();
     const [expenseList, setExpenseList] = useState([]);
     const [settledExpenseList, setSettledExpenseList] = useState([]);
@@ -148,12 +148,16 @@ const GroupDetail = () => {
                             </h2>
                         </div>
                         <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
-                            <Link to={`/group/${group._id}/addexpense`}>
-                                <button className="flex">
-                                    <PlusCircleIcon className="w-5 mr-2" />
-                                    Add Expense
-                                </button>
-                            </Link>
+                            <button
+                                onClick={() => {
+                                    setAddExpense(true);
+                                    // setTitle(`Remove ${member.name}`);
+                                    // setDeleteMember(member._id);
+                                }}
+                                className="flex">
+                                <PlusCircleIcon className="w-5 mr-2" />
+                                Add Expense
+                            </button>
                         </div>
                         <div className="flex flex-shrink-0 md:mt-0 md:ml-4 md:hidden">
                             <Link to={`/group/${group._id}/addexpense`}>
@@ -248,6 +252,12 @@ const GroupDetail = () => {
                         </div>
                     </div>
                 </div>
+                <AddgroupExpense
+                    open={openAddExpense}
+                    setOpen={setAddExpense}
+                    currentUser={currentUser}
+                    groupId={groupId}
+                />
                 <EditMembers
                     title={title}
                     memberId={deleteMember}
