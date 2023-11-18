@@ -12,9 +12,14 @@ router.post("/:userId/friend/:friendId", async (req, res) => {
     const friendId = req.params.friendId;
     const user = await User.findById(userId);
     if (!user) {
-        return res.status(404).json("Group not found");
+        return res.status(404).json("User not found");
     }
     user.friends.push(friendId);
+    const friend = await User.findById(friendId);
+    if(!friend){
+        return res.status(404).json("Friend Not found");
+    }
+    friend.friends.push(userId);
     // const members = await User.find(
     //     { _id: { $in: user.friends } },
     //     { name: 1, _id: 1 }
@@ -36,7 +41,7 @@ router.post("/:userId/friend/:friendId", async (req, res) => {
     //         );
     //     })
     // );
-
+    await friend.save();
     await user.save();
     res.send(user);
 });
@@ -66,14 +71,22 @@ router.delete("/:userId/friend/:friendId", async (req, res) => {
     const friendId = req.params.friendId;
     const user = await User.findById(userId);
     if (!user) {
-        return res.status(404).send("Group not found");
+        return res.status(404).send("User not found");
+    }
+    const friend = await User.findById(friendId);
+    if(!friend) {
+        return res.status(404).send("Friend not found");
     }
 
     const index = user.friends.indexOf(friendId);
-
+    const Friendindex = friend.friends.indexOf(userId);
     if (index > -1) {
         user.friends.splice(index, 1);
         await user.save();
+    }
+    if (Friendindex > -1) {
+        friend.friends.splice(Friendindex, 1);
+        await friend.save();
     }
 
     // const members = await User.find(
