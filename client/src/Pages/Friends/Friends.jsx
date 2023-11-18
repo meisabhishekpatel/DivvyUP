@@ -11,7 +11,6 @@ import EditMembers from "./EditFriend";
 import ExpenseList from "./ExpenseList";
 import getUserDeatils from "../../GetData/UserDetails";
 import axios from "axios";
-import Button from "../../Components/Button";
 import SearchFriend from "../../Components/SearchFriendBox";
 
 const Friends = () => {
@@ -19,14 +18,12 @@ const Friends = () => {
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState("");
     const [deleteMember, setDeleteMember] = useState("");
-
-    const [openDeleteModal, setOpenDeleteModal] = useState(false);
-
     const [expenseList, setExpenseList] = useState([]);
     const [settledExpenseList, setSettledExpenseList] = useState([]);
     const [group, setGroup] = useState({});
     const [friendList, setFriendList] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
+    const [Loading,setLoading]=useState(false);
 
     useEffect(() => {
         getUserDeatils(setCurrentUser);
@@ -34,14 +31,15 @@ const Friends = () => {
 
     const fetchFriendsById = async (_id) => {
         if (!_id) return;
+        setLoading(true);
         const result = await axios.get(`/friends/${_id}`);
         if (result) {
-            console.log((result.data));
             setFriendList(result.data.friends);
         } else {
             alert("Friend not found", "error");
             navigate("/groups");
         }
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -50,27 +48,22 @@ const Friends = () => {
         }
     }, [currentUser]);
 
-    const fetchExpenses = async (groupId) => {
-        // if (!groupId) return;
-        // const result = await axios.get(`http://localhost:4000/expense/group/${groupId}/member/${currentUser._id}`);
-        // if (result) {
-        //     const { activeExpenses, settledExpenses } = result.data;
-        //     if (activeExpenses || settledExpenses) {
-        //         setExpenseList(activeExpenses || []);
-        //         setSettledExpenseList(settledExpenses || []);
-        //     }
-        // }
+    const fetchExpenses = async () => {
+        const result = await axios.get(`http://localhost:4000/expense/user/${currentUser._id}`);
+        if (result) {
+            const { activeExpenses, settledExpenses } = result.data;
+            if (activeExpenses || settledExpenses) {
+                setExpenseList(activeExpenses || []);
+                setSettledExpenseList(settledExpenses || []);
+            }
+        }
     };
 
-    // useEffect(() => {
-    //     if (groupId) {
-    //         fetchExpenses(groupId);
-    //     }
-    // }, [currentUser]);
+    useEffect(() => {
+            fetchExpenses();
+    }, [currentUser]);
 
-    const groupDeleteTitle = useMemo(() => {
-        return `Delete ${group.name}`;
-    }, [group]);
+    
 
     const handleAddMember = async (friendId) => {
         try {
@@ -86,11 +79,6 @@ const Friends = () => {
     };
 
     const handleMemberDelete = async (memberId) => {
-        // if (group.members.length === 1) {
-        //     alert("Cannot delete last friend you'll be lonely");
-        //     setOpen(false);
-        //     return;
-        // }
         if (memberId) {
             const result = await axios.delete(`http://localhost:4000/friends/${currentUser._id}/friend/${memberId}`);
             if (result) {
@@ -104,22 +92,7 @@ const Friends = () => {
         alert("Something went wrong", "error");
     };
 
-    const handleGroupDelete = async () => {
-        // if (groupId) {
-        //     const result = await axios.delete(`http://localhost:4000/group/${groupId}`);
-
-        //     if (result.data) {
-        //         alert("Group Deleted", "success");
-        //         setOpenDeleteModal(false);
-        //         setTimeout(() => {
-        //             window.location.href = "/groups";
-        //         }, 500);
-        //         return;
-        //     }
-        // }
-
-        // alert("Something went wrong", "error");
-    };
+    
 
     // if (!group._id) return <h1>Loading</h1>;
 
@@ -139,14 +112,14 @@ const Friends = () => {
                                 {group.name}
                             </h2>
                         </div>
-                        <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
-                            <Link to={`/group/${group._id}/addexpense`}>
+                        {/* <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
+                            <Link to={`/friend/${currentUser._id}/addexpense`}>
                                 <button className="flex">
                                     <PlusCircleIcon className="w-5 mr-2" />
                                     Add Expense
                                 </button>
                             </Link>
-                        </div>
+                        </div> */}
                         <div className="flex flex-shrink-0 md:mt-0 md:ml-4 md:hidden">
                             <Link to={`/group/${group._id}/addexpense`}>
                                 <button>
@@ -158,7 +131,6 @@ const Friends = () => {
                 </div>
                 <div className="flex flex-col pt-6 sm:grid sm:h-[calc(100vh-180px)] sm:grid-cols-4 sm:space-x-4">
                     <div className="w-full overflow-y-auto sm:col-span-2">
-                        {/* Expense List */}
                         <p className="mb-2 text-sm font-medium uppercase text-gray-500">
                             Expense List
                         </p>
@@ -167,9 +139,7 @@ const Friends = () => {
                                 {
                                     label: "Active",
                                     content: (
-                                        <>
                                             <ExpenseList currentUser={currentUser} expenseList={expenseList} />
-                                        </>
                                     ),
                                 },
                                 {
@@ -197,7 +167,7 @@ const Friends = () => {
                                 Friends
                             </p>
                             <div className="divide-y-2 p-2">
-                                {friendList &&
+                                {(Loading?<p>Loading</p>: friendList &&
                                     friendList.length > 0 &&
                                     friendList.map((member) => (
                                         <div
@@ -211,8 +181,15 @@ const Friends = () => {
                                                 <p className="text-sm text-gray-600">{member.email}</p>
                                             </div>
                                             <div>
+                                            </div>
+                                            <div className="flex">
+                                                <Link to={`/addfriendexpense/${member._id}`} >
+                                                <PlusCircleIcon 
+                                                    className="cursor-pointer w-5 text-green mr-8"
+                                                 />
+                                                 </Link>
                                                 <TrashIcon
-                                                    className="w-5 text-red-600"
+                                                    className="cursor-pointer w-5 text-red-600"
                                                     onClick={() => {
                                                         setOpen(true);
                                                         setTitle(`Remove ${member.name}`);
@@ -221,7 +198,7 @@ const Friends = () => {
                                                 />
                                             </div>
                                         </div>
-                                    ))}
+                                    )))}
                             </div>
                         </div>
                         {/* <div className="my-2 mt-6 rounded border-2 border-dashed border-red-200 p-2 shadow-sm">

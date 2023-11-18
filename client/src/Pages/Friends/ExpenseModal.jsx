@@ -8,13 +8,12 @@ const ExpenseDetailModal = ({
     open = false,
     setOpen,
     expense,
-
     settled,
     currentUser
 }) => {
 
     const handleSettleExpense = async () => {
-        const response = await axios.post(`http://localhost:4000/expense/${expense._id}/settle/${currentUser._id}`)
+        const response = await axios.post(`http://localhost:4000/expense/${expense._id}/friendsettle/${currentUser._id}`)
         if (response) {
             alert("Expense settled", "success");
             setOpen(false);
@@ -22,7 +21,7 @@ const ExpenseDetailModal = ({
         }
     };
     const handleRevertExpense = async () => {
-        const response = await axios.post(`http://localhost:4000/expense/${expense._id}/revert/${currentUser._id}`)
+        const response = await axios.post(`http://localhost:4000/expense/${expense._id}/friendrevert/${currentUser._id}`)
 
         if (response) {
             alert("Expense reverted", "success");

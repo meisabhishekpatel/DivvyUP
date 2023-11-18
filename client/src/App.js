@@ -12,10 +12,19 @@ import GroupDetail from './Pages/Groups/GroupDetail';
 import AddExpense from './Pages/Groups/AddExpense';
 import Individual from './Pages/Individual/Individual';
 import Friends from './Pages/Friends/Friends';
+import { QueryClient,QueryClientProvider } from '@tanstack/react-query';
+import AddFriendExpense from './Pages/Friends/AddFriendExpense';
 
-
+const queryClient = new QueryClient({
+  defaultOptions:{
+    queries:{
+      staleTime:3600000
+    }
+  }
+})
 function App() {
   return (
+    <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <Routes>
         <Route
@@ -64,6 +73,15 @@ function App() {
           }
         />
         <Route
+          path="/addfriendexpense/:friendId"
+          element={
+            <div className=''>
+              <Dashboard />
+              <AddFriendExpense />
+            </div>
+          }
+        />
+        <Route
           path='/addgroup'
           element={
             <div className=''>
@@ -99,12 +117,9 @@ function App() {
             </div>
           }
         />
-
-
       </Routes>
-
-
     </BrowserRouter>
+    </QueryClientProvider>
   );
 }
 

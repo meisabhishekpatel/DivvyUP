@@ -4,10 +4,15 @@ import { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import getUserDeatils from "../../GetData/UserDetails";
 import axios from "axios";
+import Tabs from "../../Components/Tabs";
+import ExpenseList from "./ExpenseList";
 
-const AddExpense = ({ group }) => {
-    const { groupId } = useParams();
+const AddFriendExpense = ({ group }) => {
+    const [expenseList, setExpenseList] = useState([]);
+    const [settledExpenseList, setSettledExpenseList] = useState([]);
+    const { friendId } = useParams();
     const [currentUser, setCurrentUser] = useState({});
+    const [friend,setFriend]=useState({});
     useEffect(() => {
         getUserDeatils(setCurrentUser);
     }, [])
@@ -17,7 +22,7 @@ const AddExpense = ({ group }) => {
         setData({
             description: "",
             amount: "",
-            groupId: groupId,
+            friendId: friendId,
             paidBy: currentUser._id,
         })
     }, [currentUser])
@@ -26,6 +31,20 @@ const AddExpense = ({ group }) => {
         setData({ ...data, [input.name]: input.value });
     };
 
+    const fetchExpenses = async () => {
+        if (!friendId) return;
+        console.log(currentUser);
+        const result = await axios.get(`http://localhost:4000/expense/user/${currentUser._id}`);
+        if (result) {
+            const { activeExpenses, settledExpenses } = result.data;
+            if (activeExpenses || settledExpenses) {
+                setExpenseList(activeExpenses || []);
+                setSettledExpenseList(settledExpenses || []);
+            }
+        }
+    };
+
+
     const handleAddExpense = async (e) => {
         e.preventDefault();
         doSubmit();
@@ -33,13 +52,13 @@ const AddExpense = ({ group }) => {
 
     const doSubmit = async () => {
         try {
-            const result = await axios.post("http://localhost:4000/expense/addExpense", data);
+            const result = await axios.post("http://localhost:4000/expense/addFriendExpense", data);
             if (result.data) {
                 alert("Expense Added");
                 setData({
                     description: "",
                     amount: "",
-                    groupId: groupId,
+                    friendId: friendId,
                     paidBy: currentUser._id,
                 })
             }
@@ -49,12 +68,12 @@ const AddExpense = ({ group }) => {
     };
 
     return (
+        <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
         <div className="mt-4 h-full flex-1 px-4 flex flex-col  sm:px-6 xl:max-w-6xl lg:mx-auto lg:px-8">
             <Breadcrumb
                 paths={[
-                    { name: "Groups", to: "/groups" },
-                    { name: "Group Detail", to: `/group/detail/${groupId}` },
-                    { name: "Add Expense", to: `/group/${groupId}/addexpense` },
+                    { name: "Friends", to: `/friends` },
+                    { name: "Friend Detail", to: `/addfriendExpense/${friendId}` },
                 ]}
             />
             <div className="mt-2 md:flex md:items-center md:justify-between">
@@ -64,8 +83,29 @@ const AddExpense = ({ group }) => {
                     </h2>
                 </div>
             </div>
-
-            <div className="max-w-lg mt-6">
+            <div className="flex flex-col pt-6 sm:grid sm:h-[calc(100vh-180px)] sm:grid-cols-4 sm:space-x-4">
+                    {/* <div className="w-full overflow-y-auto sm:col-span-2">
+                        <p className="mb-2 text-sm font-medium uppercase text-gray-500">
+                            Expense List
+                        </p>
+                        <Tabs
+                            tabs={[
+                                {
+                                    label: "Active",
+                                    content: (
+                                            <ExpenseList currentUser={currentUser} expenseList={expenseList} />
+                                    ),
+                                },
+                                {
+                                    label: "Settled",
+                                    content: (
+                                        <ExpenseList currentUser={currentUser} expenseList={settledExpenseList} settled />
+                                    ),
+                                },
+                            ]}
+                        />
+                    </div> */}
+                    <div className="max-w-lg mt-6">
                 <FormInput
                     label="Description"
                     name="description"
@@ -91,8 +131,12 @@ const AddExpense = ({ group }) => {
                     Add Expense
                 </button>
             </div>
+            </div>
+
+            
+        </div>
         </div>
     );
 };
 
-export default AddExpense;
+export default AddFriendExpense;

@@ -8,8 +8,9 @@ import Button from "../../Components/Button";
 
 const Groups = () => {
 
-    const [groupList, setGroup] = useState();
+    const [groupList, setGroup] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
+    // const [Loading,setLoading]=useState(false);
 
     useEffect(() => {
         getUserDeatils(setCurrentUser);
@@ -83,7 +84,7 @@ const Groups = () => {
                         </Link>
                     </div>
                 </div>
-                {groupList ? (
+                {(groupList ? (
                     groupList.length > 0 ? (
                         <div className="mt-12 flex flex-col">
                             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -171,7 +172,7 @@ const Groups = () => {
                     )
                 ) : (
                     <h1>loading</h1>
-                )}
+                ))}
             </div>
         </div>
     );

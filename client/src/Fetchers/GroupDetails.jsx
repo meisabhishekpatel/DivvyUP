@@ -1,4 +1,4 @@
-const getGroupDetails = async (set, _id) => {
+const getGroupDetails = async (_id) => {
     try {
         const res = await fetch(`/group/member/${_id}`, {
             method: "GET",
@@ -8,12 +8,11 @@ const getGroupDetails = async (set, _id) => {
             },
             credentials: "include"
         });
-        if (!res) {
+        const data = await res.json();
+        if (!res.status === 200) {
             alert("Error");
         }
-        const data = await res.json();
-        set(data);
-        
+        return data;
     } catch (err) {
         console.log(err);
     }
