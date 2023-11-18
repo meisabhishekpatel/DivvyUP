@@ -7,7 +7,8 @@ import Tabs from "../../Components/Tabs";
 import Breadcrumb from "../../Components/BreadCrumb";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import EditMembers from "./EditFriend";
+import AddExpense from "./AddExpense";
+import EditMembers from "./EditFriend"
 import ExpenseList from "./ExpenseList";
 import getUserDeatils from "../../GetData/UserDetails";
 import axios from "axios";
@@ -16,6 +17,7 @@ import SearchFriend from "../../Components/SearchFriendBox";
 const Friends = () => {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
+    const [openAddExpense, setAddExpense] = useState(false);
     const [title, setTitle] = useState("");
     const [deleteMember, setDeleteMember] = useState("");
     const [expenseList, setExpenseList] = useState([]);
@@ -23,7 +25,8 @@ const Friends = () => {
     const [group, setGroup] = useState({});
     const [friendList, setFriendList] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
-    const [Loading,setLoading]=useState(false);
+    const [Loading, setLoading] = useState(false);
+    const [friend, setFriend] = useState();
 
     useEffect(() => {
         getUserDeatils(setCurrentUser);
@@ -60,10 +63,10 @@ const Friends = () => {
     };
 
     useEffect(() => {
-            fetchExpenses();
+        fetchExpenses();
     }, [currentUser]);
 
-    
+
 
     const handleAddMember = async (friendId) => {
         try {
@@ -92,7 +95,7 @@ const Friends = () => {
         alert("Something went wrong", "error");
     };
 
-    
+
 
     // if (!group._id) return <h1>Loading</h1>;
 
@@ -139,7 +142,7 @@ const Friends = () => {
                                 {
                                     label: "Active",
                                     content: (
-                                            <ExpenseList currentUser={currentUser} expenseList={expenseList} />
+                                        <ExpenseList currentUser={currentUser} expenseList={expenseList} />
                                     ),
                                 },
                                 {
@@ -167,7 +170,7 @@ const Friends = () => {
                                 Friends
                             </p>
                             <div className="divide-y-2 p-2">
-                                {(Loading?<p>Loading</p>: friendList &&
+                                {(Loading ? <p>Loading</p> : friendList &&
                                     friendList.length > 0 &&
                                     friendList.map((member) => (
                                         <div
@@ -183,11 +186,15 @@ const Friends = () => {
                                             <div>
                                             </div>
                                             <div className="flex">
-                                                <Link to={`/addfriendexpense/${member._id}`} >
-                                                <PlusCircleIcon 
+                                                <PlusCircleIcon
                                                     className="cursor-pointer w-5 text-green mr-8"
-                                                 />
-                                                 </Link>
+                                                    onClick={() => {
+                                                        setAddExpense(true);
+                                                        setFriend(member._id);
+                                                        // setTitle(`Remove ${member.name}`);
+                                                        // setDeleteMember(member._id);
+                                                    }}
+                                                />
                                                 <TrashIcon
                                                     className="cursor-pointer w-5 text-red-600"
                                                     onClick={() => {
@@ -217,6 +224,12 @@ const Friends = () => {
                         </div> */}
                     </div>
                 </div>
+                <AddExpense
+                    open={openAddExpense}
+                    setOpen={setAddExpense}
+                    currentUser={currentUser}
+                    friend={friend}
+                />
                 <EditMembers
                     title={title}
                     memberId={deleteMember}

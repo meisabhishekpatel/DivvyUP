@@ -13,7 +13,6 @@ import AddExpense from './Pages/Groups/AddExpense';
 import Individual from './Pages/Individual/Individual';
 import Friends from './Pages/Friends/Friends';
 import { QueryClient,QueryClientProvider } from '@tanstack/react-query';
-import AddFriendExpense from './Pages/Friends/AddFriendExpense';
 
 const queryClient = new QueryClient({
   defaultOptions:{
@@ -72,7 +71,7 @@ function App() {
             </div>
           }
         />
-        <Route
+        {/* <Route
           path="/addfriendexpense/:friendId"
           element={
             <div className=''>
@@ -80,7 +79,7 @@ function App() {
               <AddFriendExpense />
             </div>
           }
-        />
+        /> */}
         <Route
           path='/addgroup'
           element={
