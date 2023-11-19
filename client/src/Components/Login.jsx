@@ -25,23 +25,17 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { email, password } = user;
-        const res = await fetch("/user/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                email, password
-            })
-        });
-        const data = await res.json()
-        if (!data.message || !data) {
-            alert(data.error);
-            console.log(data.error);
-        }
-        else {
-            alert("Login successfull");
-            navigate("/home");
+        try {
+            const res = await axios.post("http://localhost:3000/user/login", { email, password })
+            if (!res.data.error) {
+                alert(res.data.message);
+                navigate("/home")
+            }
+            else {
+                alert(res.data.error)
+            }
+        } catch (err) {
+            alert(err.response.data.error)
         }
     }
 
