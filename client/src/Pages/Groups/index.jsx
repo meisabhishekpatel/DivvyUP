@@ -2,26 +2,30 @@ import { PlusCircleIcon, UserGroupIcon } from "@heroicons/react/outline";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import BeatLoader from "react-spinners/BeatLoader";
 import getGroupDetails from "../../GetData/GroupDetails";
-import getUserDeatils from "../../GetData/UserDetails";
+import getUserDetails from "../../GetData/UserDetails";
 import Button from "../../Components/Button";
 
 const Groups = () => {
-
     const [groupList, setGroup] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
-    // const [Loading,setLoading]=useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        getUserDeatils(setCurrentUser);
-    }, [])
+        setLoading(true);
+        getUserDetails(setCurrentUser)
+            .finally(() => setLoading(false));
+    }, []);
+
     useEffect(() => {
-        getGroupDetails(setGroup, currentUser._id);
-    }, [currentUser])
+        setLoading(true);
+        getGroupDetails(setGroup, currentUser._id)
+            .finally(() => setLoading(false));
+    }, [currentUser]);
 
     return (
         <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
-            {/* Page Heading */}
             <div className="mt-4 flex flex-1 flex-col justify-end px-4 sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl">
                 <div>
                     <nav className="sm:hidden" aria-label="Back">
@@ -84,95 +88,76 @@ const Groups = () => {
                         </Link>
                     </div>
                 </div>
-                {(groupList ? (
-                    groupList.length > 0 ? (
-                        <div className="mt-12 flex flex-col">
-                            <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                                <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                                    <div className="overflow-hidden rounded border-b border-gray-200 shadow">
-                                        <table className="min-w-full divide-y divide-gray-200">
-                                            <thead className="bg-gray-800">
-                                                <tr>
-                                                    <th
-                                                        scope="col"
-                                                        className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                                    >
-                                                        Name
-                                                    </th>
-                                                    <th
-                                                        scope="col"
-                                                        className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                                    >
-                                                        Description
-                                                    </th>
-
-                                                    <th
-                                                        scope="col"
-                                                        className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                                    >
-                                                        Members
-                                                    </th>
-                                                    <th
-                                                        scope="col"
-                                                        className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-white"
-                                                    >
-                                                        Total Expenses
-                                                    </th>
-                                                    <th scope="col" className="relative px-6 py-3">
-                                                        <span className="sr-only">Edit</span>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody className="divide-y divide-gray-200 bg-white">
-                                                {groupList.map((group) => (
-                                                    <tr key={group._id}>
-                                                        <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
-                                                            {group.name}
-                                                        </td>
-                                                        <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                                            {group.description}
-                                                        </td>
-                                                        <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                                            {group.members?.length}
-                                                        </td>
-                                                        <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                                            {group?.totalExpenses}
-                                                        </td>
-
-                                                        <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
-                                                            <Link to={`/group/detail/${group._id}`}>
-                                                                <Button
-                                                                    type="link"
-                                                                    rightIcon={
-                                                                        <ChevronRightIcon className="w-5" />
-                                                                    }
-                                                                >
-                                                                    Open{" "}
-                                                                </Button>
-                                                            </Link>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="mt-10 flex h-52 w-full flex-col items-center justify-center border-2 border-dashed">
-                            <UserGroupIcon className="w-10 stroke-1" />
-                            <p className="mt-1 w-full text-center text-xl font-semibold sm:text-3xl">
-                                No Groups
-                            </p>
-                            <p className="text-md mt-2 text-gray-600 sm:text-lg">
-                                Add group to split the bills
-                            </p>
-                        </div>
-                    )
+                {loading ? (
+                    <div className="flex items-center justify-center h-32">
+                        {/* React-Spinners BeatLoader */}
+                        <BeatLoader color="#4F46E5" size={10} />
+                    </div>
                 ) : (
-                    <h1>loading</h1>
-                ))}
+                    <>
+                        {groupList.length > 0 ? (
+                            <div className="mt-12 overflow-x-auto">
+                                <table className="min-w-full divide-y divide-gray-200">
+                                    <thead className="bg-gray-800 text-white">
+                                        <tr>
+                                            <th className="px-6 py-3 text-left text-sm font-semibold uppercase">
+                                                Name
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-sm font-semibold uppercase">
+                                                Description
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-sm font-semibold uppercase">
+                                                Members
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-sm font-semibold uppercase">
+                                                Total Expenses
+                                            </th>
+                                            <th className="px-6 py-3"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="bg-white divide-y divide-gray-200">
+                                        {groupList.map((group) => (
+                                            <tr key={group._id}>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    {group.name}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    {group.description}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    {group.members?.length}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    {group.totalExpenses}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                    <Link to={`/group/detail/${group._id}`}>
+                                                        <Button
+                                                            type="link"
+                                                            rightIcon={<ChevronRightIcon className="w-5" />}
+                                                        >
+                                                            Open
+                                                        </Button>
+                                                    </Link>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        ) : (
+                            <div className="mt-10 flex h-52 w-full flex-col items-center justify-center border-2 border-dashed">
+                                <UserGroupIcon className="w-10 stroke-1" />
+                                <p className="mt-1 w-full text-center text-xl font-semibold sm:text-3xl">
+                                    No Groups
+                                </p>
+                                <p className="text-md mt-2 text-gray-600 sm:text-lg">
+                                    Add a group to split the bills
+                                </p>
+                            </div>
+                        )}
+                    </>
+                )}
             </div>
         </div>
     );
