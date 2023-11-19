@@ -2,7 +2,6 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import FormInput from "../../Components/FormInput";
 import { useContext, useState, useEffect } from "react";
-import getUserDeatils from "../../GetData/UserDetails";
 import axios from "axios";
 
 const Addexpense = ({
@@ -17,7 +16,14 @@ const Addexpense = ({
         friendId: friend,
         paidBy: currentUser._id,
     });
-
+    useEffect(() => {
+        setData({
+            description: "",
+            amount: "",
+            friendId: friend,
+            paidBy: currentUser._id,
+        })
+    }, [friend])
 
     const handleChange = ({ currentTarget: input }) => {
         setData({ ...data, [input.name]: input.value });

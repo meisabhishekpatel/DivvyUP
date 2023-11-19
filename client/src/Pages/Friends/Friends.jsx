@@ -191,6 +191,7 @@ const Friends = () => {
                                                     onClick={() => {
                                                         setAddExpense(true);
                                                         setFriend(member._id);
+                                                        console.log(friend);
                                                         // setTitle(`Remove ${member.name}`);
                                                         // setDeleteMember(member._id);
                                                     }}

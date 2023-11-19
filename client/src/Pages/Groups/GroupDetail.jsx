@@ -38,7 +38,7 @@ const GroupDetail = () => {
         if (!_id) return;
         const result = await axios.get(`/group/${_id}`);
         if (result) {
-            console.log((result.data));
+            // console.log((result.data));
             setGroup(result.data);
             setMemberList(result.data.members);
         } else {
