@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import getGroupDetails from "../GetData/GroupDetails";
 import getUserDeatils from "../GetData/UserDetails";
 import Button from "../Components/Button";
+import axios from 'axios';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -23,24 +24,24 @@ const Home = () => {
 
     const callHomePage = async () => {
         try {
-            const res = await fetch("/user/details", {
-                method: "GET",
+            const response = await axios.get("/user/details", {
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json"
                 },
-                credentials: "include"
+                withCredentials: true
             });
-            const data = await res.json();
-            // console.log(data);
-            if (!res.status === 200) {
+
+            const data = response.data;
+
+            if (response.status !== 200) {
                 alert("Error");
             }
-        } catch (err) {
-            navigate("/")
-            console.log(err);
+        } catch (error) {
+            navigate("/");
+            console.error(error);
         }
-    }
+    };
 
     useEffect(() => {
         callHomePage();
