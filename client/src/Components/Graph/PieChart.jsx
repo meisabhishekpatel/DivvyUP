@@ -1,22 +1,25 @@
+import axios from "axios";
 import React, { useEffect } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 // import { userService } from "services";
 
 const COLORS = ["#0088FE", "#FFBB28"];
 
-export default function PieGraph() {
+export default function PieGraph({ currentUser }) {
     const [data, setData] = React.useState([{ name: "", value: 0 }]);
 
-    //   useEffect(() => {
-    //     const fetchExpenses = async () => {
-    //       const result = await userService.findExpenseForUser();
-    //       setData([
-    //         { name: "Lent", value: Number(result.lent) },
-    //         { name: "Owe", value: Math.abs(+result.owe) },
-    //       ]);
-    //     };
-    //     // fetchExpenses();
-    //   }, []);
+    const fetchExpenses = async () => {
+        const result = await axios.get(`http://localhost:3000/user/expenses/${currentUser._id}`);
+        console.log(result);
+        setData([
+            { name: "Lent", value: Number(result.lent) },
+            { name: "Owe", value: Math.abs(+result.owe) },
+        ]);
+    };
+
+    useEffect(() => {
+        fetchExpenses();
+    }, [currentUser]);
 
     return (
         <div className="flex flex-col items-center">
