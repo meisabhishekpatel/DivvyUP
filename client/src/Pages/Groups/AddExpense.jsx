@@ -23,7 +23,7 @@ const Addexpense = ({
             groupId: groupId,
             paidBy: currentUser._id,
         })
-    }, [groupId])
+    }, [groupId, currentUser])
 
     const handleChange = ({ currentTarget: input }) => {
         setData({ ...data, [input.name]: input.value });

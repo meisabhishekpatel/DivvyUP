@@ -85,7 +85,10 @@ function App() {
         <Route
           path='/individual'
           element={
+            <>
+            <Dashboard />
             <Individual />
+            </>
           }
         />
         <Route

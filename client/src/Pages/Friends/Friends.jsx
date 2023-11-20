@@ -34,7 +34,7 @@ const Friends = () => {
     const [group, setGroup] = useState({});
     const [friendList, setFriendList] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
-    const [Loading, setLoading] = useState(false);
+    const [Loading, setLoading] = useState(true);
     const [friend, setFriend] = useState();
 
     useEffect(() => {
@@ -67,6 +67,7 @@ const Friends = () => {
 
     const fetchExpenses = async () => {
         try {
+            setLoading(true);
             const result = await axios.get(`http://localhost:4000/expense/user/${currentUser._id}`);
             if (result) {
                 const { activeExpenses, settledExpenses } = result.data;
@@ -77,6 +78,8 @@ const Friends = () => {
             }
         } catch (error) {
             console.error("Error fetching expenses:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -137,90 +140,83 @@ const Friends = () => {
                         </Link>
                     </div>
                 </div>
-                {Loading ? (
-                    <div className="flex justify-center items-center h-full">
-                        {/* <ClipLoader css={override} size={50} color={"#123abc"} loading={Loading} /> */}
-                        <BeatLoader />
+                <div className="flex flex-col pt-6 sm:grid sm:h-[calc(100vh-180px)] sm:grid-cols-4 sm:space-x-4">
+                    <div className="w-full overflow-y-auto sm:col-span-2">
+                        <p className="mb-2 text-sm font-medium uppercase text-gray-500">
+                            Expense List
+                        </p>
+                        {Loading ? <BeatLoader /> : (<Tabs
+                            tabs={[
+                                {
+                                    label: "Active",
+                                    content: (
+                                        <ExpenseList currentUser={currentUser} expenseList={expenseList} />
+                                    ),
+                                },
+                                {
+                                    label: "Settled",
+                                    content: (
+                                        <ExpenseList currentUser={currentUser} expenseList={settledExpenseList} settled />
+                                    ),
+                                },
+                            ]}
+                        />)}
                     </div>
-                ) : (
-                    <div className="flex flex-col pt-6 sm:grid sm:h-[calc(100vh-180px)] sm:grid-cols-4 sm:space-x-4">
-                        <div className="w-full overflow-y-auto sm:col-span-2">
-                            <p className="mb-2 text-sm font-medium uppercase text-gray-500">
-                                Expense List
+                    <div className="flex flex-col justify-start sm:col-span-2">
+                        <div className="my-2">
+                            <p className="text-sm font-medium uppercase text-gray-500">
+                                Add Friend
                             </p>
-                            <Tabs
-                                tabs={[
-                                    {
-                                        label: "Active",
-                                        content: (
-                                            <ExpenseList currentUser={currentUser} expenseList={expenseList} />
-                                        ),
-                                    },
-                                    {
-                                        label: "Settled",
-                                        content: (
-                                            <ExpenseList currentUser={currentUser} expenseList={settledExpenseList} settled />
-                                        ),
-                                    },
-                                ]}
+                            <SearchFriend
+                                memberList={friendList}
+                                setMemberList={setFriendList}
+                                handleAdd={handleAddMember}
                             />
                         </div>
-                        <div className="flex flex-col justify-start sm:col-span-2">
-                            <div className="my-2">
-                                <p className="text-sm font-medium uppercase text-gray-500">
-                                    Add Friend
-                                </p>
-                                <SearchFriend
-                                    memberList={friendList}
-                                    setMemberList={setFriendList}
-                                    handleAdd={handleAddMember}
-                                />
-                            </div>
-                            <div className="my-2 rounded border shadow-sm ">
-                                <p className=" rounded-t bg-gray-800 p-2 text-sm font-semibold uppercase text-white">
-                                    Friends
-                                </p>
-                                <div className="divide-y-2 p-2">
-                                    {friendList &&
-                                        friendList.length > 0 &&
-                                        friendList.map((member) => (
-                                            <div
-                                                key={member._id}
-                                                className="flex items-center justify-between"
-                                            >
-                                                <div>
-                                                    <p className="mt-1 text-sm font-semibold text-gray-700 ">
-                                                        {member.name}
-                                                    </p>
-                                                    <p className="text-sm text-gray-600">{member.email}</p>
-                                                </div>
-                                                <div>
-                                                </div>
-                                                <div className="flex">
-                                                    <PlusCircleIcon
-                                                        className="cursor-pointer w-5 text-green mr-8"
-                                                        onClick={() => {
-                                                            setAddExpense(true);
-                                                            setFriend(member._id);
-                                                            console.log(friend);
-                                                        }}
-                                                    />
-                                                    <TrashIcon
-                                                        className="cursor-pointer w-5 text-red-600"
-                                                        onClick={() => {
-                                                            setOpen(true);
-                                                            setTitle(`Remove ${member.name}`);
-                                                            setDeleteMember(member._id);
-                                                        }}
-                                                    />
-                                                </div>
+                        <div className="my-2 rounded border shadow-sm ">
+                            <p className=" rounded-t bg-gray-800 p-2 text-sm font-semibold uppercase text-white">
+                                Friends
+                            </p>
+                            {Loading ? <BeatLoader /> : (<div className="divide-y-2 p-2">
+                                {friendList &&
+                                    friendList.length > 0 &&
+                                    friendList.map((member) => (
+                                        <div
+                                            key={member._id}
+                                            className="flex items-center justify-between"
+                                        >
+                                            <div>
+                                                <p className="mt-1 text-sm font-semibold text-gray-700 ">
+                                                    {member.name}
+                                                </p>
+                                                <p className="text-sm text-gray-600">{member.email}</p>
                                             </div>
-                                        ))}
-                                </div>
-                            </div>
+                                            <div>
+                                            </div>
+                                            <div className="flex">
+                                                <PlusCircleIcon
+                                                    className="cursor-pointer w-5 text-green mr-8"
+                                                    onClick={() => {
+                                                        setAddExpense(true);
+                                                        setFriend(member._id);
+                                                        console.log(friend);
+                                                    }}
+                                                />
+                                                <TrashIcon
+                                                    className="cursor-pointer w-5 text-red-600"
+                                                    onClick={() => {
+                                                        setOpen(true);
+                                                        setTitle(`Remove ${member.name}`);
+                                                        setDeleteMember(member._id);
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                            </div>)}
                         </div>
                     </div>
-                )}
+                </div>
                 <AddExpense
                     open={openAddExpense}
                     setOpen={setAddExpense}

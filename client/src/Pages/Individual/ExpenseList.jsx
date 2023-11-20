@@ -52,7 +52,7 @@ const ExpenseList = ({ currentUser, expenseList, settled = false }) => {
                                             expense?.membersBalance?.find(
                                                 (member) =>
                                                     member?.memberId?.toString() === currentUser._id
-                                            )?.balance
+                                            ).balance
                                         }
                                     </p>
                                 </div>
@@ -69,7 +69,7 @@ const ExpenseList = ({ currentUser, expenseList, settled = false }) => {
                                                 (member) =>
                                                     member?.memberId?.toString() == currentUser._id
                                             )
-                                                ?.balance.split("-")[1]
+                                                .balance.split("-")[1]
                                         }
                                     </p>
                                 </div>

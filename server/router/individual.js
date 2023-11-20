@@ -4,30 +4,29 @@ const IndividualSchema = require("../modal/Individual")
 const router = express.Router();
 
 router.post("/add-expense", async (req, res) => {
-    const { title, amount, category, description, date } = req.body
+    const { addedBy, amount,type, category, description, date } = req.body
 
     const income = IndividualSchema({
-        title,
+        addedBy,
         amount,
+        type,
         category,
         description,
         date: Date.now()
     })
 
     try {
-        if (!title || !category || !description) {
+        if (!addedBy || !category || !description || !type) {
             return res.status(400).json({ message: 'All fields are required!' })
         }
         if (amount <= 0 || !amount) {
             return res.status(400).json({ message: 'Amount must be a positive number!' })
         }
         await income.save()
-        res.status(200).json({ message: 'expense Added' })
+        return res.status(200).json({ message: 'Expense Added' })
     } catch (error) {
-        res.status(500).json({ message: 'Server Error' })
+        return res.status(500).json({ message: 'Server Error' })
     }
-
-    console.log(income)
 });
 
 router.get("/get-expenses", async (req, res) => {

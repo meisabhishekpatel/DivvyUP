@@ -1,8 +1,4 @@
-import {
-    ExclamationIcon,
-    PlusCircleIcon,
-    TrashIcon,
-} from "@heroicons/react/outline";
+import { CircularProgress } from "@mui/material";
 import Tabs from "../../Components/Tabs";
 import Breadcrumb from "../../Components/BreadCrumb";
 import SearchMember from "../../Components/SearchBox";
@@ -11,10 +7,16 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import EditMembers from "./EditMembers";
 import ExpenseList from "./ExpenseList";
-import AddgroupExpense from "./AddExpense"
+import AddgroupExpense from "./AddExpense";
 import getUserDeatils from "../../GetData/UserDetails";
 import axios from "axios";
 import Button from "../../Components/Button";
+import {
+    ExclamationIcon,
+    PlusCircleIcon,
+    TrashIcon,
+} from "@heroicons/react/outline";
+import BeatLoader from "react-spinners/BeatLoader";
 
 const GroupDetail = () => {
     const navigate = useNavigate();
@@ -29,47 +31,62 @@ const GroupDetail = () => {
     const [group, setGroup] = useState({});
     const [memberList, setMemberList] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         getUserDeatils(setCurrentUser);
-    }, [])
+    }, []);
 
-    const fetchGroupById = async (_id) => {
-        if (!_id) return;
-        const result = await axios.get(`/group/${_id}`);
-        if (result) {
-            // console.log((result.data));
-            setGroup(result.data);
-            setMemberList(result.data.members);
-        } else {
-            alert("Group not found", "error");
-            navigate("/groups");
+    const fetchData = async (groupId) => {
+        setLoading(true);
+        try {
+            const result = await axios.get(`/group/${groupId}`);
+            if (result) {
+                setGroup(result.data);
+                setMemberList(result.data.members);
+            } else {
+                alert("Group not found", "error");
+                navigate("/groups");
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
         if (groupId) {
-            fetchGroupById(groupId);
+            fetchData(groupId);
         }
-    }, []);
-
-    const fetchExpenses = async (groupId) => {
-        if (!groupId) return;
-        const result = await axios.get(`http://localhost:4000/expense/group/${groupId}/member/${currentUser._id}`);
-        if (result) {
-            const { activeExpenses, settledExpenses } = result.data;
-            if (activeExpenses || settledExpenses) {
-                setExpenseList(activeExpenses || []);
-                setSettledExpenseList(settledExpenses || []);
-            }
-        }
-    };
+    }, [groupId]);
 
     useEffect(() => {
+        const fetchExpenses = async (groupId) => {
+            setLoading(true);
+            try {
+                if (!groupId) return;
+                const result = await axios.get(
+                    `http://localhost:4000/expense/group/${groupId}/member/${currentUser._id}`
+                );
+                if (result) {
+                    const { activeExpenses, settledExpenses } = result.data;
+                    if (activeExpenses || settledExpenses) {
+                        setExpenseList(activeExpenses || []);
+                        setSettledExpenseList(settledExpenses || []);
+                    }
+                }
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         if (groupId) {
             fetchExpenses(groupId);
         }
-    }, [currentUser]);
+    }, [groupId, currentUser]);
 
     const groupDeleteTitle = useMemo(() => {
         return `Delete ${group.name}`;
@@ -78,7 +95,9 @@ const GroupDetail = () => {
     const handleAddMember = async (memberId) => {
         try {
             if (memberId) {
-                const result = await axios.post(`http://localhost:4000/group/${groupId}/member/${memberId}`);
+                const result = await axios.post(
+                    `http://localhost:4000/group/${groupId}/member/${memberId}`
+                );
                 if (result) {
                     window.location.reload();
                 }
@@ -90,15 +109,17 @@ const GroupDetail = () => {
 
     const handleMemberDelete = async (memberId) => {
         if (group.members.length === 1) {
-            alert("Cannot delete last member", "error");
+            alert("Cannot delete the last member", "error");
             setOpen(false);
             return;
         }
         if (memberId) {
-            const result = await axios.delete(`http://localhost:4000/group/${groupId}/member/${memberId}`);
+            const result = await axios.delete(
+                `http://localhost:4000/group/${groupId}/member/${memberId}`
+            );
             if (result) {
                 alert("Member removed", "success");
-                fetchGroupById(groupId);
+                fetchData(groupId);
                 setOpen(false);
                 if (memberId === currentUser._id) {
                     window.location.href = "/";
@@ -113,7 +134,9 @@ const GroupDetail = () => {
 
     const handleGroupDelete = async () => {
         if (groupId) {
-            const result = await axios.delete(`http://localhost:4000/group/${groupId}`);
+            const result = await axios.delete(
+                `http://localhost:4000/group/${groupId}`
+            );
 
             if (result.data) {
                 alert("Group Deleted", "success");
@@ -128,12 +151,10 @@ const GroupDetail = () => {
         alert("Something went wrong", "error");
     };
 
-    if (!group._id) return <h1>Loading</h1>;
-
+    // if (loading) return <div className="flex justify-center"><BeatLoader /></div>;
     return (
         <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
             <div className="flex h-[calc(100vh-64px)] flex-1 flex-col px-4 pt-3  sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl">
-                {/* Page Header */}
                 <div>
                     <Breadcrumb
                         paths={[
@@ -151,10 +172,9 @@ const GroupDetail = () => {
                             <button
                                 onClick={() => {
                                     setAddExpense(true);
-                                    // setTitle(`Remove ${member.name}`);
-                                    // setDeleteMember(member._id);
                                 }}
-                                className="flex">
+                                className="flex"
+                            >
                                 <PlusCircleIcon className="w-5 mr-2" />
                                 Add Expense
                             </button>
@@ -170,28 +190,34 @@ const GroupDetail = () => {
                 </div>
                 <div className="flex flex-col pt-6 sm:grid sm:h-[calc(100vh-180px)] sm:grid-cols-4 sm:space-x-4">
                     <div className="w-full overflow-y-auto sm:col-span-2">
-                        {/* Expense List */}
                         <p className="mb-2 text-sm font-medium uppercase text-gray-500">
                             Expense List
                         </p>
-                        <Tabs
+                        {loading ? <BeatLoader /> : (<Tabs
                             tabs={[
                                 {
                                     label: "Active",
                                     content: (
                                         <>
-                                            <ExpenseList currentUser={currentUser} expenseList={expenseList} />
+                                            <ExpenseList
+                                                currentUser={currentUser}
+                                                expenseList={expenseList}
+                                            />
                                         </>
                                     ),
                                 },
                                 {
                                     label: "Settled",
                                     content: (
-                                        <ExpenseList currentUser={currentUser} expenseList={settledExpenseList} settled />
+                                        <ExpenseList
+                                            currentUser={currentUser}
+                                            expenseList={settledExpenseList}
+                                            settled
+                                        />
                                     ),
                                 },
                             ]}
-                        />
+                        />)}
                     </div>
                     <div className="flex flex-col justify-start sm:col-span-2">
                         <div className="my-2">
@@ -208,7 +234,7 @@ const GroupDetail = () => {
                             <p className=" rounded-t bg-gray-800 p-2 text-sm font-semibold uppercase text-white">
                                 Members
                             </p>
-                            <div className="divide-y-2 p-2">
+                            {loading ? <BeatLoader /> : (<div className="divide-y-2 p-2">
                                 {memberList &&
                                     memberList.length > 0 &&
                                     memberList.map((member) => (
@@ -234,13 +260,12 @@ const GroupDetail = () => {
                                             </div>
                                         </div>
                                     ))}
-                            </div>
+                            </div>)}
                         </div>
                         <div className="my-2 mt-6 rounded border-2 border-dashed border-red-200 p-2 shadow-sm">
                             <p className="text-sm font-semibold uppercase text-red-600">
                                 Danger Zone
                             </p>
-
                             <Button
                                 type="secondaryDanger"
                                 width="w-full"
@@ -252,6 +277,13 @@ const GroupDetail = () => {
                         </div>
                     </div>
                 </div>
+
+                {/* {loading && (
+                    <div className="flex justify-center items-center h-full">
+                        <CircularProgress />
+                    </div>
+                )} */}
+
                 <AddgroupExpense
                     open={openAddExpense}
                     setOpen={setAddExpense}
@@ -275,7 +307,7 @@ const GroupDetail = () => {
                     icon={<ExclamationIcon className="w-5 text-red-600" />}
                     open={openDeleteModal}
                     setOpen={setOpenDeleteModal}
-                    text="Are you sure you want to delete this group? All expense related to this group will be deleted."
+                    text="Are you sure you want to delete this group? All expenses related to this group will be deleted."
                     buttonText="Delete"
                     buttonType="danger"
                     handleDelete={handleGroupDelete}
