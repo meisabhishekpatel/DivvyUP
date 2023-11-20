@@ -15,6 +15,9 @@ const friendExpenseSchema = new mongoose.Schema({
         required: true,
         default: Date.now,
     },
+    category: {
+        type: String,
+    },
     friend:{
         type:String,
         ref:"User",

@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import FormInput from "../../Components/FormInput";
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
+import InputCategory from "../../Components/InputCategory";
 
 const Addexpense = ({
     currentUser,
@@ -13,6 +14,7 @@ const Addexpense = ({
     const [data, setData] = useState({
         description: "",
         amount: "",
+        category: "Other",
         friendId: friend,
         paidBy: currentUser._id,
     });
@@ -20,6 +22,7 @@ const Addexpense = ({
         setData({
             description: "",
             amount: "",
+            category: "Other",
             friendId: friend,
             paidBy: currentUser._id,
         })
@@ -45,6 +48,7 @@ const Addexpense = ({
                 setData({
                     description: "",
                     amount: "",
+                    category: "Other",
                     friendId: friend,
                     paidBy: currentUser._id,
                 })
@@ -54,6 +58,15 @@ const Addexpense = ({
             alert(err);
         }
     };
+
+    const handleCategoryChange = (value) => {
+        data.category = value;
+    };
+
+    const categories = [
+
+        "Other", "Food", "Entertainment", "Tax", "Travel", "Loans"
+    ]
 
     return (
         <Transition.Root show={open} as={Fragment}>
@@ -84,6 +97,12 @@ const Addexpense = ({
                             <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                     <div className="max-w-lg mt-6">
+                                        <InputCategory
+                                            type="Category"
+                                            label="Category"
+                                            values={categories}
+                                            onValueChange={handleCategoryChange}
+                                        />
                                         <FormInput
                                             label="Description"
                                             name="description"
