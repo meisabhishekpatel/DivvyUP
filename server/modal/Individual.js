@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 
-const IndividualSchema = new mongoose.Schema({
+const individualSchema = new mongoose.Schema({
     addedBy:{
         type:String,
         required:true,
@@ -27,4 +27,5 @@ const IndividualSchema = new mongoose.Schema({
     },
 }, {timestamps: true})
 
-module.exports = mongoose.model('Expense', IndividualSchema)
+const IndividualExpense=mongoose.model('individualExpense', individualSchema)
+module.exports = IndividualExpense;

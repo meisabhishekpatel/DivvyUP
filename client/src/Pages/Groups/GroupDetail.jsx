@@ -180,11 +180,11 @@ const GroupDetail = () => {
                             </button>
                         </div>
                         <div className="flex flex-shrink-0 md:mt-0 md:ml-4 md:hidden">
-                            <Link to={`/group/${group._id}/addexpense`}>
-                                <button>
-                                    <PlusCircleIcon className="w-5" />
-                                </button>
-                            </Link>
+                            <button onClick={() => {
+                                setAddExpense(true);
+                            }}>
+                                <PlusCircleIcon className="w-5" />
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -313,7 +313,7 @@ const GroupDetail = () => {
                     handleDelete={handleGroupDelete}
                 />
             </div>
-        </div>
+        </div >
     );
 };
 

@@ -6,21 +6,57 @@ import BeatLoader from "react-spinners/BeatLoader";
 import getGroupDetails from "../../GetData/GroupDetails";
 import getUserDetails from "../../GetData/UserDetails";
 import Button from "../../Components/Button";
+import {
+  ExclamationIcon,
+  TrashIcon,
+} from "@heroicons/react/outline";
+import AddExpense from "./AddExpense";
+import axios from "axios";
+import EditExpense from "./EditExpense";
 
 const Individual = () => {
-  const [groupList, setGroup] = useState([]);
+  const [expenseList, setExpense] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [loading, setLoading] = useState(false);
-
+  const [openAddExpense, setAddExpense] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState();
+  const [deleteExpense, setDeleteExpense] = useState(false)
   useEffect(() => {
-    setLoading(true);
     getUserDetails(setCurrentUser)
-      .finally(() => setLoading(false));
   }, []);
 
+  const individualExpense = async () => {
+    try {
+      const id = currentUser._id;
+      if (id) {
+        const res = await axios.get(`http://localhost:4000/individual/get-expenses/${id}`);
+        if (res.data)
+          setExpense(res.data);
+      }
+    } catch (err) {
+      alert("something went wrong")
+    }
+  }
+  const handleExpenseDelete = async (Id) => {
+    if (Id) {
+      const result = await axios.delete(
+        `http://localhost:4000/individual/delete-expense/${Id}`
+      );
+      if (result) {
+        alert("Expense deleted", "success");
+        // fetchData(groupId);
+        setOpen(false);
+        window.location.reload();
+      }
+      return;
+    }
+    alert("Something went wrong", "error");
+  };
+
   useEffect(() => {
     setLoading(true);
-    getGroupDetails(setGroup, currentUser._id)
+    individualExpense()
       .finally(() => setLoading(false));
   }, [currentUser]);
 
@@ -73,19 +109,22 @@ const Individual = () => {
             </h2>
           </div>
           <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
-            <Link to="/addgroup">
-              <button className="flex">
-                <PlusCircleIcon className="w-5" />
-                <span>ㅤ</span>Add Expense
-              </button>
-            </Link>
+            <button
+              onClick={() => {
+                setAddExpense(true);
+              }}
+              className="flex"
+            >
+              <PlusCircleIcon className="w-5 mr-2" />
+              Add Expense
+            </button>
           </div>
           <div className="flex flex-shrink-0 md:mt-0 md:ml-4 md:hidden">
-            <Link to="/addgroup">
-              <button className="">
-                <PlusCircleIcon className="w-5" />
-              </button>
-            </Link>
+            <button onClick={() => {
+              setAddExpense(true);
+            }}>
+              <PlusCircleIcon className="w-5" />
+            </button>
           </div>
         </div>
         {loading ? (
@@ -96,7 +135,7 @@ const Individual = () => {
           </div>
         ) : (
           <>
-            {groupList.length > 0 ? (
+            {expenseList.length > 0 ? (
               <div className="mt-12 overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-800 text-white">
@@ -116,26 +155,38 @@ const Individual = () => {
                       <th className="px-6 py-3 text-left text-sm font-semibold uppercase">
                         Description
                       </th>
-                      <th className="px-6 py-3"></th>
+                      <th className="px-6 py-3">
+
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {groupList.map((group) => (
+                    {expenseList.map((group) => (
                       <tr key={group._id}>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          {group.name}
+                          {new Date(group.date).toUTCString().slice(0, 17)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          {group.totalExpenses}
+                          {group.type}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          {group.totalExpenses}
+                          {group.category}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          {group.totalExpenses}
+                          {group.amount}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           {group.description}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <TrashIcon
+                            className="w-5 text-red-600"
+                            onClick={() => {
+                              setOpen(true);
+                              setTitle(`Remove this transaction.`);
+                              setDeleteExpense(group._id);
+                            }}
+                          />
                         </td>
                       </tr>
                     ))}
@@ -155,6 +206,22 @@ const Individual = () => {
             )}
           </>
         )}
+        <AddExpense
+          open={openAddExpense}
+          setOpen={setAddExpense}
+          currentUser={currentUser}
+        />
+        <EditExpense
+          title={title}
+          memberId={deleteExpense}
+          icon={<ExclamationIcon className="w-5 text-red-600" />}
+          open={open}
+          setOpen={setOpen}
+          text="Are you sure you want to delete this transaction?"
+          buttonText="Delete"
+          buttonType="danger"
+          handleDelete={handleExpenseDelete}
+        />
       </div>
     </div>
   );

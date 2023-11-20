@@ -132,13 +132,6 @@ const Friends = () => {
                             {group.name}
                         </h2>
                     </div>
-                    <div className="flex flex-shrink-0 md:mt-0 md:ml-4 md:hidden">
-                        <Link to={`/group/${group._id}/addexpense`}>
-                            <button>
-                                <PlusCircleIcon className="w-5" />
-                            </button>
-                        </Link>
-                    </div>
                 </div>
                 <div className="flex flex-col pt-6 sm:grid sm:h-[calc(100vh-180px)] sm:grid-cols-4 sm:space-x-4">
                     <div className="w-full overflow-y-auto sm:col-span-2">
