@@ -1,3 +1,5 @@
+import { css } from "@emotion/react";
+import { ClipLoader } from "react-spinners";
 import {
     ExclamationIcon,
     PlusCircleIcon,
@@ -5,14 +7,21 @@ import {
 } from "@heroicons/react/outline";
 import Tabs from "../../Components/Tabs";
 import Breadcrumb from "../../Components/BreadCrumb";
-import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import BeatLoader from "react-spinners/BeatLoader";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import AddExpense from "./AddExpense";
-import EditMembers from "./EditFriend"
+import EditMembers from "./EditFriend";
 import ExpenseList from "./ExpenseList";
 import getUserDeatils from "../../GetData/UserDetails";
 import axios from "axios";
 import SearchFriend from "../../Components/SearchFriendBox";
+
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+`;
 
 const Friends = () => {
     const navigate = useNavigate();
@@ -30,19 +39,24 @@ const Friends = () => {
 
     useEffect(() => {
         getUserDeatils(setCurrentUser);
-    }, [])
+    }, []);
 
     const fetchFriendsById = async (_id) => {
         if (!_id) return;
         setLoading(true);
-        const result = await axios.get(`/friends/${_id}`);
-        if (result) {
-            setFriendList(result.data.friends);
-        } else {
-            alert("Friend not found", "error");
-            navigate("/groups");
+        try {
+            const result = await axios.get(`/friends/${_id}`);
+            if (result) {
+                setFriendList(result.data.friends);
+            } else {
+                alert("Friend not found", "error");
+                navigate("/groups");
+            }
+        } catch (error) {
+            console.error("Error fetching friends:", error);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     useEffect(() => {
@@ -52,21 +66,23 @@ const Friends = () => {
     }, [currentUser]);
 
     const fetchExpenses = async () => {
-        const result = await axios.get(`http://localhost:4000/expense/user/${currentUser._id}`);
-        if (result) {
-            const { activeExpenses, settledExpenses } = result.data;
-            if (activeExpenses || settledExpenses) {
-                setExpenseList(activeExpenses || []);
-                setSettledExpenseList(settledExpenses || []);
+        try {
+            const result = await axios.get(`http://localhost:4000/expense/user/${currentUser._id}`);
+            if (result) {
+                const { activeExpenses, settledExpenses } = result.data;
+                if (activeExpenses || settledExpenses) {
+                    setExpenseList(activeExpenses || []);
+                    setSettledExpenseList(settledExpenses || []);
+                }
             }
+        } catch (error) {
+            console.error("Error fetching expenses:", error);
         }
     };
 
     useEffect(() => {
         fetchExpenses();
     }, [currentUser]);
-
-
 
     const handleAddMember = async (friendId) => {
         try {
@@ -77,154 +93,134 @@ const Friends = () => {
                 }
             }
         } catch (err) {
-            console.log(err);
+            console.error("Error adding friend:", err);
         }
     };
 
     const handleMemberDelete = async (memberId) => {
         if (memberId) {
-            const result = await axios.delete(`http://localhost:4000/friends/${currentUser._id}/friend/${memberId}`);
-            if (result) {
-                alert("Friend removed", "success");
-                fetchFriendsById(currentUser._id);
-                setOpen(false);
-                window.location.reload();
-                return;
+            try {
+                const result = await axios.delete(`http://localhost:4000/friends/${currentUser._id}/friend/${memberId}`);
+                if (result) {
+                    alert("Friend removed", "success");
+                    fetchFriendsById(currentUser._id);
+                    setOpen(false);
+                    window.location.reload();
+                    return;
+                }
+            } catch (error) {
+                console.error("Error deleting friend:", error);
             }
         }
         alert("Something went wrong", "error");
     };
 
-
-
-    // if (!group._id) return <h1>Loading</h1>;
-
     return (
         <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
             <div className="flex h-[calc(100vh-64px)] flex-1 flex-col px-4 pt-3  sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl">
-                {/* Page Header */}
-                <div>
-                    <Breadcrumb
-                        paths={[
-                            { name: "Friends", to: "/friends" },
-                        ]}
-                    />
-                    <div className="mt-2 flex md:items-center md:justify-between">
-                        <div className="min-w-0 flex-1">
-                            <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">
-                                {group.name}
-                            </h2>
-                        </div>
-                        {/* <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
-                            <Link to={`/friend/${currentUser._id}/addexpense`}>
-                                <button className="flex">
-                                    <PlusCircleIcon className="w-5 mr-2" />
-                                    Add Expense
-                                </button>
-                            </Link>
-                        </div> */}
-                        <div className="flex flex-shrink-0 md:mt-0 md:ml-4 md:hidden">
-                            <Link to={`/group/${group._id}/addexpense`}>
-                                <button>
-                                    <PlusCircleIcon className="w-5" />
-                                </button>
-                            </Link>
-                        </div>
+                <Breadcrumb
+                    paths={[
+                        { name: "Friends", to: "/friends" },
+                    ]}
+                />
+                <div className="mt-2 flex md:items-center md:justify-between">
+                    <div className="min-w-0 flex-1">
+                        <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">
+                            {group.name}
+                        </h2>
+                    </div>
+                    <div className="flex flex-shrink-0 md:mt-0 md:ml-4 md:hidden">
+                        <Link to={`/group/${group._id}/addexpense`}>
+                            <button>
+                                <PlusCircleIcon className="w-5" />
+                            </button>
+                        </Link>
                     </div>
                 </div>
-                <div className="flex flex-col pt-6 sm:grid sm:h-[calc(100vh-180px)] sm:grid-cols-4 sm:space-x-4">
-                    <div className="w-full overflow-y-auto sm:col-span-2">
-                        <p className="mb-2 text-sm font-medium uppercase text-gray-500">
-                            Expense List
-                        </p>
-                        <Tabs
-                            tabs={[
-                                {
-                                    label: "Active",
-                                    content: (
-                                        <ExpenseList currentUser={currentUser} expenseList={expenseList} />
-                                    ),
-                                },
-                                {
-                                    label: "Settled",
-                                    content: (
-                                        <ExpenseList currentUser={currentUser} expenseList={settledExpenseList} settled />
-                                    ),
-                                },
-                            ]}
-                        />
+                {Loading ? (
+                    <div className="flex justify-center items-center h-full">
+                        {/* <ClipLoader css={override} size={50} color={"#123abc"} loading={Loading} /> */}
+                        <BeatLoader />
                     </div>
-                    <div className="flex flex-col justify-start sm:col-span-2">
-                        <div className="my-2">
-                            <p className="text-sm font-medium uppercase text-gray-500">
-                                Add Friend
+                ) : (
+                    <div className="flex flex-col pt-6 sm:grid sm:h-[calc(100vh-180px)] sm:grid-cols-4 sm:space-x-4">
+                        <div className="w-full overflow-y-auto sm:col-span-2">
+                            <p className="mb-2 text-sm font-medium uppercase text-gray-500">
+                                Expense List
                             </p>
-                            <SearchFriend
-                                memberList={friendList}
-                                setMemberList={setFriendList}
-                                handleAdd={handleAddMember}
+                            <Tabs
+                                tabs={[
+                                    {
+                                        label: "Active",
+                                        content: (
+                                            <ExpenseList currentUser={currentUser} expenseList={expenseList} />
+                                        ),
+                                    },
+                                    {
+                                        label: "Settled",
+                                        content: (
+                                            <ExpenseList currentUser={currentUser} expenseList={settledExpenseList} settled />
+                                        ),
+                                    },
+                                ]}
                             />
                         </div>
-                        <div className="my-2 rounded border shadow-sm ">
-                            <p className=" rounded-t bg-gray-800 p-2 text-sm font-semibold uppercase text-white">
-                                Friends
-                            </p>
-                            <div className="divide-y-2 p-2">
-                                {(Loading ? <p>Loading</p> : friendList &&
-                                    friendList.length > 0 &&
-                                    friendList.map((member) => (
-                                        <div
-                                            key={member._id}
-                                            className="flex items-center justify-between"
-                                        >
-                                            <div>
-                                                <p className="mt-1 text-sm font-semibold text-gray-700 ">
-                                                    {member.name}
-                                                </p>
-                                                <p className="text-sm text-gray-600">{member.email}</p>
+                        <div className="flex flex-col justify-start sm:col-span-2">
+                            <div className="my-2">
+                                <p className="text-sm font-medium uppercase text-gray-500">
+                                    Add Friend
+                                </p>
+                                <SearchFriend
+                                    memberList={friendList}
+                                    setMemberList={setFriendList}
+                                    handleAdd={handleAddMember}
+                                />
+                            </div>
+                            <div className="my-2 rounded border shadow-sm ">
+                                <p className=" rounded-t bg-gray-800 p-2 text-sm font-semibold uppercase text-white">
+                                    Friends
+                                </p>
+                                <div className="divide-y-2 p-2">
+                                    {friendList &&
+                                        friendList.length > 0 &&
+                                        friendList.map((member) => (
+                                            <div
+                                                key={member._id}
+                                                className="flex items-center justify-between"
+                                            >
+                                                <div>
+                                                    <p className="mt-1 text-sm font-semibold text-gray-700 ">
+                                                        {member.name}
+                                                    </p>
+                                                    <p className="text-sm text-gray-600">{member.email}</p>
+                                                </div>
+                                                <div>
+                                                </div>
+                                                <div className="flex">
+                                                    <PlusCircleIcon
+                                                        className="cursor-pointer w-5 text-green mr-8"
+                                                        onClick={() => {
+                                                            setAddExpense(true);
+                                                            setFriend(member._id);
+                                                            console.log(friend);
+                                                        }}
+                                                    />
+                                                    <TrashIcon
+                                                        className="cursor-pointer w-5 text-red-600"
+                                                        onClick={() => {
+                                                            setOpen(true);
+                                                            setTitle(`Remove ${member.name}`);
+                                                            setDeleteMember(member._id);
+                                                        }}
+                                                    />
+                                                </div>
                                             </div>
-                                            <div>
-                                            </div>
-                                            <div className="flex">
-                                                <PlusCircleIcon
-                                                    className="cursor-pointer w-5 text-green mr-8"
-                                                    onClick={() => {
-                                                        setAddExpense(true);
-                                                        setFriend(member._id);
-                                                        console.log(friend);
-                                                        // setTitle(`Remove ${member.name}`);
-                                                        // setDeleteMember(member._id);
-                                                    }}
-                                                />
-                                                <TrashIcon
-                                                    className="cursor-pointer w-5 text-red-600"
-                                                    onClick={() => {
-                                                        setOpen(true);
-                                                        setTitle(`Remove ${member.name}`);
-                                                        setDeleteMember(member._id);
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                    )))}
+                                        ))}
+                                </div>
                             </div>
                         </div>
-                        {/* <div className="my-2 mt-6 rounded border-2 border-dashed border-red-200 p-2 shadow-sm">
-                            <p className="text-sm font-semibold uppercase text-red-600">
-                                Danger Zone
-                            </p>
-
-                            <Button
-                                type="secondaryDanger"
-                                width="w-full"
-                                margin="mt-4"
-                                onClick={() => setOpenDeleteModal(true)}
-                            >
-                                Delete Group
-                            </Button>
-                        </div> */}
                     </div>
-                </div>
+                )}
                 <AddExpense
                     open={openAddExpense}
                     setOpen={setAddExpense}

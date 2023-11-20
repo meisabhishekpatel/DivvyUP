@@ -8,16 +8,31 @@ const { updateMemberBalances } = require("../services/expenseServices.js")
 
 router.post("/addgroup", async (req, res) => {
     try {
+        const { name, description, members } = req.body;
+        if (!name || !description || !members) {
+            return res.status(400).json({ error: "Missing required fields" });
+        }
+
         const group = new Group({
-            name: req.body.name,
-            description: req.body.description,
-            members: req.body.members,
+            name,
+            description,
+            members,
         });
-        await group.save();
-        res.send(group);
-        // res.status(201).json({ message: "Group registered Successfully" });
+
+        const savedGroup = await group.save();
+
+        res.status(201).json({
+            success: true,
+            message: "Group registered successfully",
+            data: savedGroup,
+        });
     } catch (err) {
-        console.log(err);
+        console.error(err);
+
+        res.status(500).json({
+            success: false,
+            error: "Internal Server Error",
+        });
     }
 });
 

@@ -16,7 +16,14 @@ const Addexpense = ({
         groupId: groupId,
         paidBy: currentUser._id,
     });
-
+    useEffect(() => {
+        setData({
+            description: "",
+            amount: "",
+            groupId: groupId,
+            paidBy: currentUser._id,
+        })
+    }, [groupId])
 
     const handleChange = ({ currentTarget: input }) => {
         setData({ ...data, [input.name]: input.value });

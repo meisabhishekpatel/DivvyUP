@@ -113,12 +113,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                             <item.icon
                                                 className={(
                                                     item.current
-                                                        ? "mr-4 h-6 w-6 flex-shrink-0"
-                                                        : "mr-4 h-6 w-6 flex-shrink-0 text-zinc-600"
+                                                        ? "mr-4 h-6 w-6 flex-shrink-0 text-blue-600"
+                                                        : "mr-4 h-6 w-6 flex-shrink-0"
                                                 )}
                                                 aria-hidden="true"
                                             />
-                                            {item.name}
+                                            <p
+                                                className={(
+                                                    item.current
+                                                        ? "mr-4 h-6 w-6 flex-shrink-0 text-blue-600"
+                                                        : "mr-4 h-6 w-6 flex-shrink-0"
+                                                )}
+                                                aria-hidden="true"
+                                            >
+                                                {item.name}
+                                            </p>
                                         </Link>
                                     ))}
                                 </div>
@@ -161,12 +170,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                     <item.icon
                                         className={(
                                             item.current
-                                                ? "mr-4 h-6 w-6 flex-shrink-0"
-                                                : "mr-4 h-6 w-6 flex-shrink-0 text-zinc-600"
+                                                ? "mr-4 h-6 w-6 flex-shrink-0 text-blue-600"
+                                                : "mr-4 h-6 w-6 flex-shrink-0"
                                         )}
                                         aria-hidden="true"
                                     />
-                                    {item.name}
+                                    <p
+                                        className={(
+                                            item.current
+                                                ? "mr-4 h-6 w-6 flex-shrink-0 text-blue-600"
+                                                : "mr-4 h-6 w-6 flex-shrink-0"
+                                        )}
+                                        aria-hidden="true"
+                                    >
+                                        {item.name}
+                                    </p>
                                 </Link>
                             ))}
                         </div>

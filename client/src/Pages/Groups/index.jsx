@@ -10,7 +10,7 @@ import Button from "../../Components/Button";
 const Groups = () => {
     const [groupList, setGroup] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         setLoading(true);
@@ -91,7 +91,8 @@ const Groups = () => {
                 {loading ? (
                     <div className="flex items-center justify-center h-32">
                         {/* React-Spinners BeatLoader */}
-                        <BeatLoader color="#4F46E5" size={10} />
+                        {/* <BeatLoader color="#4F46E5" size={10} /> */}
+                        <BeatLoader />
                     </div>
                 ) : (
                     <>

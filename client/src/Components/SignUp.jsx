@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
+import axios from "axios";
 
 export default function SignUp() {
     const [user, setUser] = useState({
@@ -13,8 +14,8 @@ export default function SignUp() {
     const [isEmailValid, setIsEmailValid] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
     const [showCPassword, setShowCPassword] = useState(false);
-    const navigate = useNavigate();
     const [emailErrorMessage, setEmailErrorMessage] = useState("");
+    const navigate = useNavigate();
 
     const fadeIn = useSpring({
         opacity: 1,
@@ -49,20 +50,18 @@ export default function SignUp() {
         }
 
         try {
-            const res = await fetch("/user/signup", {
-                method: "POST",
+            const response = await axios.post("/user/signup", {
+                name,
+                email,
+                password,
+                confirmPassword,
+            }, {
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    name,
-                    email,
-                    password,
-                    confirmPassword,
-                }),
             });
 
-            const data = await res.json();
+            const data = response.data;
 
             if (!data.message || !data) {
                 alert(data.error);
@@ -70,8 +69,12 @@ export default function SignUp() {
                 alert("Signup successful");
                 navigate("/login");
             }
-        } catch (err) {
-            alert(err.response ? err.response.data.error : "An error occurred");
+        } catch (error) {
+            if (error.response) {
+                alert(error.response.data.error);
+            } else {
+                alert("An error occurred");
+            }
         }
     };
 
