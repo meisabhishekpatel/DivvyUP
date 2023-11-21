@@ -9,7 +9,9 @@ import { Link } from "react-router-dom";
 import { ReactComponent as PieChart } from "../images/pie-chart.svg";
 import { ReactComponent as CircleGroup } from "../images/circle-group.svg";
 import DashboardImg from "../images/dashboard.png";
+import FriendImg from "../images/friend.png"
 import GroupImg from "../images/group.png";
+import IndividualImg from "../images/individual.png";
 import NavBar from "../Components/NavBar";
 
 
@@ -131,9 +133,11 @@ export default function LandingPage() {
                                                 Want to share your expenses with group of friends? No
                                                 worries create groups and share it easily.
                                             </p>
-                                            <Link to="/signup" className="flex items-center justify-between">
-                                                <button className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700" width="w-full">Get Started</button>
-                                            </Link>
+                                            <div className="mt-6">
+                                                <Link to="/signup" className="flex items-center justify-between">
+                                                    <button className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700" width="w-full">Get Started</button>
+                                                </Link>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -142,6 +146,75 @@ export default function LandingPage() {
                                         <img
                                             className="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:right-0 lg:h-full lg:w-auto lg:max-w-none"
                                             src={GroupImg}
+                                            alt="dashboard"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="relative mt-24">
+                            <div className="lg:mx-auto lg:grid lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-2 lg:gap-24 lg:px-8">
+                                <div className="mx-auto max-w-xl px-4 sm:px-6 lg:mx-0 lg:max-w-none lg:py-16 lg:px-0">
+                                    <div>
+                                        <div>
+                                            <PieChart className="h-12 w-12" />
+                                        </div>
+                                        <div className="mt-6">
+                                            <h2 className="text-3xl font-extrabold tracking-tight text-gray-900">
+                                                Not got any common group for you friend list ?
+                                            </h2>
+                                            <p className="mt-4 text-lg text-gray-500">
+                                                We have got you covered. Use{" "}
+                                                <span className="font-bold">Divvy UP</span> You
+                                                can create a friend list of you choice and add expense individually.
+                                            </p>
+                                            <div className="mt-6">
+                                                <Link to="/signup" className="flex items-center justify-between">
+                                                    <button className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700" width="w-full">Get Started</button>
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="mt-12 sm:mt-16 lg:mt-0">
+                                    <div className="-mr-48 pl-4 sm:pl-6 md:-mr-16 lg:relative lg:m-0 lg:h-full lg:px-0">
+                                        <img
+                                            className="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:left-0 lg:h-full lg:w-auto lg:max-w-none"
+                                            src={FriendImg}
+                                            alt="dashboard"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="mt-24">
+                            <div className="lg:mx-auto lg:grid lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-2 lg:gap-24 lg:px-8">
+                                <div className="mx-auto max-w-xl px-4 sm:px-6 lg:col-start-2 lg:mx-0 lg:max-w-none lg:py-32 lg:px-0">
+                                    <div>
+                                        <div>
+                                            <UserIcon className="h-12 w-12" />
+                                        </div>
+                                        <div className="mt-6">
+                                            <h2 className="text-3xl font-extrabold tracking-tight text-gray-900">
+                                                Want to track all your expense ?
+                                            </h2>
+                                            <p className="mt-4 text-lg text-gray-500">
+                                                We have got it covered you add expenses. Take Expense reports
+                                                weekly, monthly, and yearly.
+                                            </p>
+                                            <div className="mt-6">
+                                                <Link to="/signup" className="flex items-center justify-between">
+                                                    <button className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700" width="w-full">Get Started</button>
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="mt-12 sm:mt-16 lg:col-start-1 lg:mt-0">
+                                    <div className="-ml-48 pr-4 sm:pr-6 md:-ml-16 lg:relative lg:m-0 lg:h-full lg:px-0">
+                                        <img
+                                            className="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:right-0 lg:h-full lg:w-auto lg:max-w-none"
+                                            src={IndividualImg}
                                             alt="dashboard"
                                         />
                                     </div>

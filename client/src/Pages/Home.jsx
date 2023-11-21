@@ -146,9 +146,9 @@ const Home = () => {
                     </div>
 
                     <div className="grid-col-1 mt-6 grid space-y-3 sm:place-content-center sm:place-items-center sm:space-y-0 md:grid-cols-2">
-                        {/* <div className="min-w-full  md:pl-8">
+                        <div className="min-w-full  md:pl-8">
                             <PieGraph currentUser={currentUser} />
-                        </div> */}
+                        </div>
                         <div className="min-w-full  md:pl-8">
                             <BarGraph />
                         </div>

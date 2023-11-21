@@ -1,20 +1,25 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+import { useState } from "react";
 // import { userService } from "services";
 
 const COLORS = ["#0088FE", "#FFBB28"];
 
 export default function PieGraph({ currentUser }) {
-    const [data, setData] = React.useState([{ name: "", value: 0 }]);
+    const [data, setData] = useState([{ name: "", value: 0 }]);
 
     const fetchExpenses = async () => {
-        const result = await axios.get(`http://localhost:3000/user/expenses/${currentUser._id}`);
-        console.log(result);
-        setData([
-            { name: "Lent", value: Number(result.lent) },
-            { name: "Owe", value: Math.abs(+result.owe) },
-        ]);
+
+        try {
+            const result = await axios.get(`http://localhost:3000/user/expenses/${currentUser._id}`);
+            setData([
+                { name: "Lent", value: Number(result.data.lent) },
+                { name: "Owe", value: Math.abs(+result.data.owe) },
+            ]);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     useEffect(() => {
