@@ -4,7 +4,7 @@ const router = express.Router();
 const GroupExpense = require("../modal/GroupExpense");
 const Group = require("../modal/Group");
 const User = require("../modal/User");
-const { calculateSplit, updateMemberBalances } = require("../services/expenseServices");
+const { calculateSplit, updateMemberBalances, simplifyDebts } = require("../services/expenseServices");
 const FriendExpense = require("../modal/FriendExpense");
 
 // Add Expense 
@@ -239,5 +239,28 @@ router.post("/:expenseId/friendrevert/:memberId", async (req, res) => {
     await expense.save();
     return res.send(expense);
 });
+
+//Simplify Debts
+router.post("/simplify/:groupId", async (req, res) => {
+    const groupId = req.params.groupId;
+    const expenses = await GroupExpense.find({ group: groupId });
+    console.log(expenses);
+    const newexpense = [];
+    expenses.forEach((expense) => {
+        participants = [];
+        expense.membersBalance.forEach((member) => {
+            participants.push(member.memberId)
+        })
+        newexpense.push({
+            payer: expense.paidBy,
+            participants: participants,
+            amount: expense.amount
+        })
+    })
+    const simplify = simplifyDebts(newexpense);
+    console.log(simplify);
+    /*console.log(expenses);*/
+    return res.status(201).send("success");
+})
 
 module.exports = router;
