@@ -1,7 +1,7 @@
 import { PlusCircleIcon, UserGroupIcon } from "@heroicons/react/outline";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UnorderedListOutlined, AreaChartOutlined } from "@ant-design/icons";
 import BeatLoader from "react-spinners/BeatLoader";
 import getGroupDetails from "../../GetData/GroupDetails";
@@ -32,6 +32,7 @@ const ExpenseReport = () => {
   const [allTransection, setAllTransection] = useState([]);
   const [viewData, setViewData] = useState("table");
   const [type, setType] = useState("all");
+  const navigate = useNavigate();
 
   const columns = [
     {
@@ -50,6 +51,10 @@ const ExpenseReport = () => {
     {
       title: "Category",
       dataIndex: "category",
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
     },
   ];
 
@@ -110,7 +115,12 @@ const ExpenseReport = () => {
                 </div>
               </li>
               <li>
-                <div className="flex items-center">
+                <div
+                  onClick={() => {
+                    navigate("/individual");
+                  }}
+                  className="cursor-pointer flex items-center"
+                >
                   <ChevronRightIcon
                     className="h-5 w-5 flex-shrink-0 text-gray-400"
                     aria-hidden="true"
@@ -185,14 +195,14 @@ const ExpenseReport = () => {
         </div>
         <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
           <CSVLink
-            data={exportdata}
+            data={allTransection}
             className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
             width="w-full"
           >
             Export
           </CSVLink>
         </div>
-        <div className="flex flex-shrink-0 md:mt-0 md:ml-4 md:hidden">
+        {/* <div className="flex flex-shrink-0 md:mt-0 md:ml-4 md:hidden">
           <button
             className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
             width="w-full"
@@ -202,7 +212,7 @@ const ExpenseReport = () => {
           >
             <PlusCircleIcon className="w-5" />
           </button>
-        </div>
+        </div> */}
         {/* {loading ? (
           <div className="flex items-center justify-center h-32">
             <BeatLoader />
