@@ -2,6 +2,7 @@ import { PlusCircleIcon, UserGroupIcon } from "@heroicons/react/outline";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { UnorderedListOutlined, AreaChartOutlined } from "@ant-design/icons";
 import BeatLoader from "react-spinners/BeatLoader";
 import getGroupDetails from "../../GetData/GroupDetails";
 import getUserDetails from "../../GetData/UserDetails";
@@ -11,7 +12,11 @@ import AddExpense from "./AddExpense";
 import axios from "axios";
 import EditExpense from "./EditExpense";
 import { CSVLink } from "react-csv";
+import { Select, Modal, Table, DatePicker } from "antd";
+const { RangePicker } = DatePicker;
+import moment from "moment";
 import InputCategory from "../../Components/InputCategory";
+import Analytics from "./Analytics";
 
 const ExpenseReport = () => {
   const [expenseList, setExpense] = useState([]);
@@ -22,60 +27,57 @@ const ExpenseReport = () => {
   const [title, setTitle] = useState();
   const [deleteExpense, setDeleteExpense] = useState(false);
   const [exportdata, setExportData] = useState([]);
+  const [frequency, setFrequency] = useState("7");
+  const [selectedDate, setSelectedate] = useState([]);
+  const [allTransection, setAllTransection] = useState([]);
+  const [viewData, setViewData] = useState("table");
+  const [type, setType] = useState("all");
+
+  const columns = [
+    {
+      title: "Date",
+      dataIndex: "date",
+      render: (text) => <span>{moment(text).format("YYYY-MM-DD")}</span>,
+    },
+    {
+      title: "Amount",
+      dataIndex: "amount",
+    },
+    {
+      title: "Type",
+      dataIndex: "type",
+    },
+    {
+      title: "Category",
+      dataIndex: "category",
+    },
+  ];
 
   useEffect(() => {
     getUserDetails(setCurrentUser);
   }, []);
 
-  const individualExpense = async () => {
+  const getAllTransactions = async () => {
     try {
-      const id = currentUser._id;
-      if (id) {
-        const res = await axios.get(
-          `http://localhost:4000/individual/get-expenses/${id}`
-        );
-        if (res.data) setExpense(res.data);
-        const temp = res.data;
-        console.log(temp);
-        let data = [];
-        temp.forEach((element) => {
-          data.push({
-            transactionId: element._id,
-            category: element.category,
-            type: element.type,
-            description: element.description,
-            paidBy: element.addedBy.name,
-            date: element.date,
-          });
-        });
-        setExportData(data);
-        // console.log(res.data);
-      }
-    } catch (err) {
-      console.log(err);
-      alert("something went wrong");
+      setLoading(true);
+      const res = await axios.post("/individual/getExpenseByDate", {
+        userid: currentUser._id,
+        frequency,
+        selectedDate,
+        type,
+      });
+      setLoading(false);
+      setAllTransection(res.data);
+      // console.log(res.data);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      // message.error("Ftech Issue With Tranction");
     }
   };
-  const handleExpenseDelete = async (Id) => {
-    if (Id) {
-      const result = await axios.delete(
-        `http://localhost:4000/individual/delete-expense/${Id}`
-      );
-      if (result) {
-        alert("Expense deleted", "success");
-        // fetchData(groupId);
-        setOpen(false);
-        window.location.reload();
-      }
-      return;
-    }
-    alert("Something went wrong", "error");
-  };
-
   useEffect(() => {
-    setLoading(true);
-    individualExpense().finally(() => setLoading(false));
-  }, [currentUser]);
+    getAllTransactions();
+  }, [frequency, selectedDate, type, currentUser]);
 
   const category = ["Weekly", "Monthly", "Yearly"];
 
@@ -139,38 +141,75 @@ const ExpenseReport = () => {
             </h2>
           </div>
           <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
-            <InputCategory values={category} />
-          </div>
-          <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
-            <CSVLink
-              data={exportdata}
-              className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
-              width="w-full"
+            {/* <InputCategory
+              values={category}
+              onValueChange={(values) => setFrequency(values)}
+            /> */}
+            <Select
+              value={frequency}
+              onChange={(values) => setFrequency(values)}
             >
-              Export
-            </CSVLink>
+              <Select.Option value="7">Weekly</Select.Option>
+              <Select.Option value="30">Monthly</Select.Option>
+              <Select.Option value="365">Yearly</Select.Option>
+              <Select.Option value="custom">custom</Select.Option>
+            </Select>
+            {frequency === "custom" && (
+              <RangePicker
+                value={selectedDate}
+                onChange={(values) => setSelectedate(values)}
+              />
+            )}
           </div>
-          <div className="flex flex-shrink-0 md:mt-0 md:ml-4 md:hidden">
-            <button
-              className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
-              width="w-full"
-              onClick={() => {
-                setAddExpense(true);
-              }}
-            >
-              <PlusCircleIcon className="w-5" />
-            </button>
+          <div className="switch-icons">
+            <UnorderedListOutlined
+              className={`mx-2 ${
+                viewData === "table" ? "active-icon" : "inactive-icon"
+              }`}
+              onClick={() => setViewData("table")}
+            />
+            <AreaChartOutlined
+              className={`mx-2 ${
+                viewData === "analytics" ? "active-icon" : "inactive-icon"
+              }`}
+              onClick={() => setViewData("analytics")}
+            />
           </div>
         </div>
-        {loading ? (
+        <div className="content">
+          {viewData === "table" ? (
+            <Table columns={columns} dataSource={allTransection} />
+          ) : (
+            <Analytics allTransection={allTransection} />
+          )}
+        </div>
+        <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
+          <CSVLink
+            data={exportdata}
+            className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
+            width="w-full"
+          >
+            Export
+          </CSVLink>
+        </div>
+        <div className="flex flex-shrink-0 md:mt-0 md:ml-4 md:hidden">
+          <button
+            className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
+            width="w-full"
+            onClick={() => {
+              setAddExpense(true);
+            }}
+          >
+            <PlusCircleIcon className="w-5" />
+          </button>
+        </div>
+        {/* {loading ? (
           <div className="flex items-center justify-center h-32">
-            {/* React-Spinners BeatLoader */}
-            {/* <BeatLoader color="#4F46E5" size={10} /> */}
             <BeatLoader />
           </div>
         ) : (
           <>
-            {expenseList.length > 0 ? (
+            {allTransection.length > 0 ? (
               <div className="mt-12 overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-800 text-white">
@@ -190,11 +229,10 @@ const ExpenseReport = () => {
                       <th className="px-6 py-3 text-left text-sm font-semibold uppercase">
                         Description
                       </th>
-                      <th className="px-6 py-3"></th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {expenseList.map((group) => (
+                    {allTransection.map((group) => (
                       <tr key={group._id}>
                         <td className="px-6 py-4 whitespace-nowrap">
                           {new Date(group.date).toUTCString().slice(0, 17)}
@@ -211,16 +249,6 @@ const ExpenseReport = () => {
                         <td className="px-6 py-4 whitespace-nowrap">
                           {group.description}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <TrashIcon
-                            className="w-5 text-red-600"
-                            onClick={() => {
-                              setOpen(true);
-                              setTitle(`Remove this transaction.`);
-                              setDeleteExpense(group._id);
-                            }}
-                          />
-                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -230,31 +258,15 @@ const ExpenseReport = () => {
               <div className="mt-10 flex h-52 w-full flex-col items-center justify-center border-2 border-dashed">
                 <UserGroupIcon className="w-10 stroke-1" />
                 <p className="mt-1 w-full text-center text-xl font-semibold sm:text-3xl">
-                  No Expense
+                  No Expense to show
                 </p>
                 <p className="text-md mt-2 text-gray-600 sm:text-lg">
                   Add an Expense
                 </p>
               </div>
-            )}
-          </>
-        )}
-        <AddExpense
-          open={openAddExpense}
-          setOpen={setAddExpense}
-          currentUser={currentUser}
-        />
-        <EditExpense
-          title={title}
-          memberId={deleteExpense}
-          icon={<ExclamationIcon className="w-5 text-red-600" />}
-          open={open}
-          setOpen={setOpen}
-          text="Are you sure you want to delete this transaction?"
-          buttonText="Delete"
-          buttonType="danger"
-          handleDelete={handleExpenseDelete}
-        />
+            )} */}
+        {/* </> */}
+        {/* )} */}
       </div>
     </div>
   );
