@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\client",
+    "\\client\\src",
+    "\\client\\src\\Components",
+    "\\client\\src\\hooks",
+    "\\client\\src\\Pages",
+    "\\client\\src\\Pages\\Individual",
+    "\\server",
+    "\\server\\router",
+    "\\server\\services"
+  ],
+  "SelectedNode": "\\client\\src\\Pages\\Individual\\AddExpense.jsx",
+  "PreviewInSolutionExplorer": false
+}

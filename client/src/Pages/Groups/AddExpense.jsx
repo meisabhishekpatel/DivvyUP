@@ -5,6 +5,8 @@ import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import InputCategory from "../../Components/InputCategory";
 import DateInput from "../../Components/InputDate";
+import InputBox from "../../Components/InputBox";
+import useCurrencyInfo from "../../context/useContext";
 
 const Addexpense = ({ currentUser, groupId, open = false, setOpen }) => {
   const [selectedDate, setSelectedDate] = useState("");
@@ -51,6 +53,17 @@ const Addexpense = ({ currentUser, groupId, open = false, setOpen }) => {
     "Travel",
     "Loans",
   ];
+  const [selectedValue,setSelectedValue]=useState();
+  const currencyInfo = useCurrencyInfo("inr");
+
+  const options = Object.keys(currencyInfo);
+
+  let newamount;
+  const handleCurrencyChange = (e) => {
+    newamount = data.amount / currencyInfo[e];
+    data.amount = newamount.toFixed(2);
+    // setSelectedValue(e);
+  };
 
   const doSubmit = async () => {
     try {
@@ -122,9 +135,15 @@ const Addexpense = ({ currentUser, groupId, open = false, setOpen }) => {
                       name="amount"
                       placeholder="0.00"
                       type="number"
-                      showLeadingIcon
                       value={data.amount}
                       onChange={handleChange}
+                    />
+                    <InputBox
+                      type="Currency"
+                      label="Currency"
+                      values={options}
+                      selectedValue={selectedValue}
+                      onValueChange={handleCurrencyChange}
                     />
                     <DateInput
                       selectedDate={selectedDate}
