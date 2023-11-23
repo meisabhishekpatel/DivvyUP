@@ -2,9 +2,10 @@ const mongoose = require('mongoose');
 
 
 const individualSchema = new mongoose.Schema({
-    addedBy:{
-        type:String,
-        required:true,
+    addedBy: {
+        type: String,
+        ref: "User",
+        required: true,
     },
     amount: {
         type: Number,
@@ -12,7 +13,7 @@ const individualSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        default:""
+        default: ""
     },
     date: {
         type: Date,
@@ -25,7 +26,7 @@ const individualSchema = new mongoose.Schema({
     description: {
         type: String,
     },
-}, {timestamps: true})
+}, { timestamps: true })
 
-const IndividualExpense=mongoose.model('individualExpense', individualSchema)
+const IndividualExpense = mongoose.model('individualExpense', individualSchema)
 module.exports = IndividualExpense;

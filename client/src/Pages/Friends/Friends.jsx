@@ -16,6 +16,7 @@ import ExpenseList from "./ExpenseList";
 import getUserDeatils from "../../GetData/UserDetails";
 import axios from "axios";
 import SearchFriend from "../../Components/SearchFriendBox";
+import { CSVLink } from "react-csv";
 
 const override = css`
   display: block;
@@ -36,6 +37,7 @@ const Friends = () => {
     const [currentUser, setCurrentUser] = useState({});
     const [Loading, setLoading] = useState(true);
     const [friend, setFriend] = useState();
+    const [exportdata, setExportData] = useState([]);
 
     useEffect(() => {
         getUserDeatils(setCurrentUser);
@@ -75,6 +77,36 @@ const Friends = () => {
                     setExpenseList(activeExpenses || []);
                     setSettledExpenseList(settledExpenses || []);
                 }
+                // console.log(activeExpenses);
+                // console.log(settledExpenses);
+                let temp = activeExpenses;
+                let data = [];
+                temp.forEach((element) => {
+                    data.push({
+                        transactionId: element._id,
+                        category: element.category,
+                        description: element.description,
+                        paidBy: element.paidBy.name,
+                        date: element.date,
+                        Friend: element.membersBalance[1].name,
+                        SettledMember: element.settledMembers,
+                        isSettled: element.isSettled
+                    })
+                })
+                temp = settledExpenses;
+                temp.forEach((element) => {
+                    data.push({
+                        transactionId: element._id,
+                        category: element.category,
+                        description: element.description,
+                        paidBy: element.paidBy.name,
+                        date: element.date,
+                        Friend: element.membersBalance[1].name,
+                        SettledMember: element.settledMembers,
+                        isSettled: element.isSettled
+                    })
+                })
+                setExportData(data);
             }
         } catch (error) {
             console.error("Error fetching expenses:", error);
@@ -126,11 +158,19 @@ const Friends = () => {
                         { name: "Friends", to: "/friends" },
                     ]}
                 />
+
                 <div className="mt-2 flex md:items-center md:justify-between">
                     <div className="min-w-0 flex-1">
                         <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">
                             {group.name}
                         </h2>
+                    </div>
+                    <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
+                        <CSVLink
+                            data={exportdata}
+                            className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700" width="w-full">
+                            Export
+                        </CSVLink>
                     </div>
                 </div>
                 <div className="flex flex-col pt-6 sm:grid sm:h-[calc(100vh-180px)] sm:grid-cols-4 sm:space-x-4">

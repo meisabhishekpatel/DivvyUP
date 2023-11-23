@@ -6,16 +6,14 @@ import BeatLoader from "react-spinners/BeatLoader";
 import getGroupDetails from "../../GetData/GroupDetails";
 import getUserDetails from "../../GetData/UserDetails";
 import Button from "../../Components/Button";
-import {
-  ExclamationIcon,
-  TrashIcon,
-} from "@heroicons/react/outline";
+import { ExclamationIcon, TrashIcon } from "@heroicons/react/outline";
 import AddExpense from "./AddExpense";
 import axios from "axios";
 import EditExpense from "./EditExpense";
 import { CSVLink } from "react-csv";
+import InputCategory from "../../Components/InputCategory";
 
-const Individual = () => {
+const ExpenseReport = () => {
   const [expenseList, setExpense] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [loading, setLoading] = useState(false);
@@ -26,16 +24,17 @@ const Individual = () => {
   const [exportdata, setExportData] = useState([]);
 
   useEffect(() => {
-    getUserDetails(setCurrentUser)
+    getUserDetails(setCurrentUser);
   }, []);
 
   const individualExpense = async () => {
     try {
       const id = currentUser._id;
       if (id) {
-        const res = await axios.get(`http://localhost:4000/individual/get-expenses/${id}`);
-        if (res.data)
-          setExpense(res.data);
+        const res = await axios.get(
+          `http://localhost:4000/individual/get-expenses/${id}`
+        );
+        if (res.data) setExpense(res.data);
         const temp = res.data;
         console.log(temp);
         let data = [];
@@ -47,16 +46,16 @@ const Individual = () => {
             description: element.description,
             paidBy: element.addedBy.name,
             date: element.date,
-          })
-        })
+          });
+        });
         setExportData(data);
         // console.log(res.data);
       }
     } catch (err) {
       console.log(err);
-      alert("something went wrong")
+      alert("something went wrong");
     }
-  }
+  };
   const handleExpenseDelete = async (Id) => {
     if (Id) {
       const result = await axios.delete(
@@ -75,9 +74,10 @@ const Individual = () => {
 
   useEffect(() => {
     setLoading(true);
-    individualExpense()
-      .finally(() => setLoading(false));
+    individualExpense().finally(() => setLoading(false));
   }, [currentUser]);
+
+  const category = ["Weekly", "Monthly", "Yearly"];
 
   return (
     <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
@@ -118,47 +118,46 @@ const Individual = () => {
                   </p>
                 </div>
               </li>
+              <li>
+                <div className="flex items-center">
+                  <ChevronRightIcon
+                    className="h-5 w-5 flex-shrink-0 text-gray-400"
+                    aria-hidden="true"
+                  />
+                  <p className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">
+                    Expense Report
+                  </p>
+                </div>
+              </li>
             </ol>
           </nav>
         </div>
         <div className="mt-2 flex items-center justify-between">
           <div className="min-w-0 flex-1">
             <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">
-              Your Expenses
+              Expense Report
             </h2>
           </div>
           <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
-            <Link
-              to={`/expense/report/${currentUser._id}`}
-              className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700" width="w-full"
-            >
-              Expense Report
-            </Link>
+            <InputCategory values={category} />
           </div>
           <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
             <CSVLink
               data={exportdata}
-              className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700" width="w-full">
+              className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
+              width="w-full"
+            >
               Export
             </CSVLink>
           </div>
-          <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
+          <div className="flex flex-shrink-0 md:mt-0 md:ml-4 md:hidden">
             <button
+              className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
+              width="w-full"
               onClick={() => {
                 setAddExpense(true);
               }}
-              className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700" width="w-full"
             >
-              <PlusCircleIcon className="w-5 mr-2" />
-              Add Expense
-            </button>
-          </div>
-          <div className="flex flex-shrink-0 md:mt-0 md:ml-4 md:hidden">
-            <button
-              className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700" width="w-full"
-              onClick={() => {
-                setAddExpense(true);
-              }}>
               <PlusCircleIcon className="w-5" />
             </button>
           </div>
@@ -191,9 +190,7 @@ const Individual = () => {
                       <th className="px-6 py-3 text-left text-sm font-semibold uppercase">
                         Description
                       </th>
-                      <th className="px-6 py-3">
-
-                      </th>
+                      <th className="px-6 py-3"></th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
@@ -263,4 +260,4 @@ const Individual = () => {
   );
 };
 
-export default Individual;
+export default ExpenseReport;

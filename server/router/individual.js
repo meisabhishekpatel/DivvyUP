@@ -4,7 +4,7 @@ const IndividualExpense = require("../modal/Individual")
 const router = express.Router();
 
 router.post("/add-expense", async (req, res) => {
-    const { addedBy, amount,type, category, description, date } = req.body
+    const { addedBy, amount, type, category, description, date } = req.body
     console.log(req.body);
     try {
         if (!addedBy || !category || !description || !type) {
@@ -13,7 +13,7 @@ router.post("/add-expense", async (req, res) => {
         if (amount <= 0 || !amount) {
             return res.status(400).json({ message: 'Amount must be a positive number!' })
         }
-        const income =new IndividualExpense({
+        const income = new IndividualExpense({
             addedBy,
             amount,
             type,
@@ -31,8 +31,11 @@ router.post("/add-expense", async (req, res) => {
 
 router.get("/get-expenses/:id", async (req, res) => {
     try {
-        const id=req.params.id;
-        const incomes = await IndividualExpense.find({addedBy:id});
+        const id = req.params.id;
+        const incomes = await IndividualExpense.find({ addedBy: id }).populate("addedBy", {
+            name: 1,
+            _id: 1,
+        });;
         return res.status(200).send(incomes)
     } catch (error) {
         res.status(500).json({ message: 'Server Error' })

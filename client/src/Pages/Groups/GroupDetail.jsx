@@ -17,6 +17,8 @@ import {
     TrashIcon,
 } from "@heroicons/react/outline";
 import BeatLoader from "react-spinners/BeatLoader";
+import SimplifyDebts from "./Simplify";
+import { CSVLink } from "react-csv"
 
 const GroupDetail = () => {
     const navigate = useNavigate();
@@ -32,6 +34,10 @@ const GroupDetail = () => {
     const [memberList, setMemberList] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
     const [loading, setLoading] = useState(true);
+    const [openSimplify, setOpenSimplify] = useState(false);
+    const [simplify, setSimplify] = useState({});
+    const [exportdata, setExportData] = useState([]);
+
 
     useEffect(() => {
         getUserDeatils(setCurrentUser);
@@ -61,32 +67,75 @@ const GroupDetail = () => {
         }
     }, [groupId]);
 
-    useEffect(() => {
-        const fetchExpenses = async (groupId) => {
-            setLoading(true);
-            try {
-                if (!groupId) return;
-                const result = await axios.get(
-                    `http://localhost:4000/expense/group/${groupId}/member/${currentUser._id}`
-                );
-                if (result) {
-                    const { activeExpenses, settledExpenses } = result.data;
-                    if (activeExpenses || settledExpenses) {
-                        setExpenseList(activeExpenses || []);
-                        setSettledExpenseList(settledExpenses || []);
-                    }
+    const fetchExpenses = async (groupId) => {
+        setLoading(true);
+        try {
+            if (!groupId) return;
+            const result = await axios.get(
+                `http://localhost:4000/expense/group/${groupId}/member/${currentUser._id}`
+            );
+            if (result) {
+                const { activeExpenses, settledExpenses } = result.data;
+                if (activeExpenses || settledExpenses) {
+                    setExpenseList(activeExpenses || []);
+                    setSettledExpenseList(settledExpenses || []);
                 }
-            } catch (err) {
-                console.log(err);
-            } finally {
-                setLoading(false);
+                const temp = activeExpenses;
+                let data = [];
+                temp.forEach((element) => {
+                    data.push({
+                        transactionId: element._id,
+                        category: element.category,
+                        description: element.description,
+                        paidBy: element.paidBy.name,
+                        date: element.date,
+                        NumberMembers: element.membersBalance.length,
+                        NumberSettledMembers: element.settledMembers.length,
+                        isSettled: element.isSettled
+                    })
+                })
+                setExportData(data);
             }
-        };
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    // const fetchSimplifyDebts = async (groupId) => {
+    //     try {
+    //         if (!groupId) return;
+    //         const result = await axios.get(
+    //             `http://localhost:4000/expense/simplify/${groupId}`
+    //         );
+    //         let transactions = result.data;
+    //         transactions.forEach(transaction => {
+    //             let f1;
+    //             let f2;
+    //             memberList.forEach(member => {
+    //                 if (member._id == transaction.from) {
+    //                     f1 = member.name;
+    //                 }
+    //                 if (member._id == transaction.to) {
+    //                     f2 = member.name;
+    //                 }
+    //             })
+    //             transaction.from = f1;
+    //             transaction.to = f2;
+    //         });
+    //         setSimplify(transactions);
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // }
+
+    useEffect(() => {
         if (groupId) {
             fetchExpenses(groupId);
+            // fetchSimplifyDebts(groupId);
         }
-    }, [groupId, currentUser]);
+    }, [groupId]);
 
     const groupDeleteTitle = useMemo(() => {
         return `Delete ${group.name}`;
@@ -151,6 +200,8 @@ const GroupDetail = () => {
         alert("Something went wrong", "error");
     };
 
+
+
     // if (loading) return <div className="flex justify-center"><BeatLoader /></div>;
     return (
         <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
@@ -171,18 +222,52 @@ const GroupDetail = () => {
                         <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
                             <button
                                 onClick={() => {
+                                    setOpenSimplify(true);
+                                }}
+                                className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700" width="w-full">
+                                Simplify Debts
+                            </button>
+                        </div>
+                        <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
+                            <CSVLink
+                                data={exportdata}
+                                className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700" width="w-full">
+                                Export
+                            </CSVLink>
+                        </div>
+                        <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
+                            <button
+                                onClick={() => {
                                     setAddExpense(true);
                                 }}
-                                className="flex"
+                                className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700" width="w-full"
                             >
                                 <PlusCircleIcon className="w-5 mr-2" />
                                 Add Expense
                             </button>
                         </div>
-                        <div className="flex flex-shrink-0 md:mt-0 md:ml-4 md:hidden">
-                            <button onClick={() => {
-                                setAddExpense(true);
-                            }}>
+                        <div className="flex flex-shrink-0 scale-[80%] md:mt-0 md:ml-4 md:hidden">
+                            <button
+                                onClick={() => {
+                                    setOpenSimplify(true);
+                                }}
+                                className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700" width="w-full">
+                                Simplify Debts
+                            </button>
+                        </div>
+                        <div className="flex flex-shrink-0 scale-[80%] md:mt-0 md:ml-4 md:hidden">
+                            <CSVLink
+                                data={exportdata}
+                                className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700" width="w-full">
+                                Export
+                            </CSVLink>
+                        </div>
+                        <div className="flex flex-shrink-0 scale-[80%] md:mt-0 md:ml-4 md:hidden">
+                            <button
+                                className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700" width="w-full"
+                                onClick={() => {
+                                    setAddExpense(true);
+                                }}>
                                 <PlusCircleIcon className="w-5" />
                             </button>
                         </div>
@@ -283,6 +368,13 @@ const GroupDetail = () => {
                         <CircularProgress />
                     </div>
                 )} */}
+
+                <SimplifyDebts
+                    memberList={memberList}
+                    open={openSimplify}
+                    setOpen={setOpenSimplify}
+                    groupId={groupId}
+                />
 
                 <AddgroupExpense
                     open={openAddExpense}

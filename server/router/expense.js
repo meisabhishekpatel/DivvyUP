@@ -50,7 +50,7 @@ router.post("/addFriendExpense", async (req, res) => {
         return res.status(404).send("User not found");
     }
 
-    const friends=[friendId,paidBy]
+    const friends = [friendId, paidBy]
     const members = await User.find(
         { _id: { $in: friends } },
         { name: 1, _id: 1 }
@@ -62,7 +62,7 @@ router.post("/addFriendExpense", async (req, res) => {
         description,
         amount,
         date: Date.now(),
-        friend:friendId,
+        friend: friendId,
         paidBy,
         membersBalance,
         settledMembers: [],
@@ -102,19 +102,19 @@ router.get("/group/:groupId/member/:memberId", async (req, res) => {
 
 //Get Friend Expense
 router.get("/user/:userId", async (req, res) => {
-    const userId= req.params.userId;
+    const userId = req.params.userId;
     // const friendId = req.params.friendId;
     const expenses = await FriendExpense.find({
-    $or: [
-            {friend:userId},
-            {paidBy:userId}
-    ]
+        $or: [
+            { friend: userId },
+            { paidBy: userId }
+        ]
     }).populate("paidBy", {
         name: 1,
         _id: 1,
-    }).populate("friend",{
-        name:1,
-        _id:1
+    }).populate("friend", {
+        name: 1,
+        _id: 1
     });
 
     const activeExpenses = expenses.filter((expense) => {
@@ -241,26 +241,30 @@ router.post("/:expenseId/friendrevert/:memberId", async (req, res) => {
 });
 
 //Simplify Debts
-router.post("/simplify/:groupId", async (req, res) => {
-    const groupId = req.params.groupId;
-    const expenses = await GroupExpense.find({ group: groupId });
-    console.log(expenses);
-    const newexpense = [];
-    expenses.forEach((expense) => {
-        participants = [];
-        expense.membersBalance.forEach((member) => {
-            participants.push(member.memberId)
+router.get("/simplify/:groupId", async (req, res) => {
+    try {
+        const groupId = req.params.groupId;
+        if (!groupId) return res.status(404).send("no id recieved");
+        const expenses = await GroupExpense.find({ group: groupId });
+        if (!expenses) return res.status(201).send("expense list is empty")
+        const newexpense = [];
+        expenses.forEach((expense) => {
+            participants = [];
+            expense.membersBalance.forEach((member) => {
+                participants.push(member.memberId)
+            })
+            newexpense.push({
+                payer: expense.paidBy,
+                participants: participants,
+                amount: expense.amount
+            })
         })
-        newexpense.push({
-            payer: expense.paidBy,
-            participants: participants,
-            amount: expense.amount
-        })
-    })
-    const simplify = simplifyDebts(newexpense);
-    console.log(simplify);
-    /*console.log(expenses);*/
-    return res.status(201).send("success");
+        const simplify = simplifyDebts(newexpense);
+        return res.status(201).send(simplify);
+    } catch (err) {
+        console.log(err);
+        return res.status(404).send(err);
+    }
 })
 
 module.exports = router;

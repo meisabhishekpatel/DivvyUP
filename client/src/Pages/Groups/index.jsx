@@ -74,7 +74,7 @@ const Groups = () => {
                     </div>
                     <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
                         <Link to="/addgroup">
-                            <button className="flex">
+                            <button className="flex bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700" width="w-full">
                                 <PlusCircleIcon className="w-5" />
                                 <span>ㅤ</span>Add Group
                             </button>
@@ -82,7 +82,7 @@ const Groups = () => {
                     </div>
                     <div className="flex flex-shrink-0 md:mt-0 md:ml-4 md:hidden">
                         <Link to="/addgroup">
-                            <button className="">
+                            <button className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700" width="w-full">
                                 <PlusCircleIcon className="w-5" />
                             </button>
                         </Link>

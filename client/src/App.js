@@ -12,6 +12,7 @@ import GroupDetail from './Pages/Groups/GroupDetail';
 import Individual from './Pages/Individual/Individual';
 import Friends from './Pages/Friends/Friends';
 import { QueryClient,QueryClientProvider } from '@tanstack/react-query';
+import ExpenseReport from './Pages/Individual/ExpenseReport';
 
 const queryClient = new QueryClient({
   defaultOptions:{
@@ -88,6 +89,15 @@ function App() {
             <>
             <Dashboard />
             <Individual />
+            </>
+          }
+        />
+        <Route
+          path='/expense/report/:id'
+          element={
+            <>
+            <Dashboard />
+            <ExpenseReport />
             </>
           }
         />
