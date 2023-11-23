@@ -17,6 +17,7 @@ import getUserDeatils from "../../GetData/UserDetails";
 import axios from "axios";
 import SearchFriend from "../../Components/SearchFriendBox";
 import { CSVLink } from "react-csv";
+import { BellIcon } from "@heroicons/react/solid";
 
 const override = css`
   display: block;
@@ -255,6 +256,12 @@ const Friends = () => {
                         </div>
                         <div></div>
                         <div className="flex">
+                          <BellIcon
+                            className="w-5 text-green-400 cursor-pointer mr-8"
+                            onClick={() => {
+                              navigate(`/email/${member.email}/${member.name}`);
+                            }}
+                          />
                           <PlusCircleIcon
                             className="cursor-pointer w-5 text-green mr-8"
                             onClick={() => {

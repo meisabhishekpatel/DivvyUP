@@ -15,6 +15,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ExpenseReport from "./Pages/Individual/ExpenseReport";
 import ExpenseGroupReport from "./Pages/Groups/ExpenseReport";
 import FriendExpenseGroupReport from "./Pages/Friends/FriendExpenseReport";
+import { ContactUs } from "./Components/EmailInput";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -107,6 +108,14 @@ function App() {
               <>
                 <Dashboard />
                 <FriendExpenseGroupReport />
+              </>
+            }
+          />
+          <Route
+            path="/email/:email/:name"
+            element={
+              <>
+                <ContactUs />
               </>
             }
           />

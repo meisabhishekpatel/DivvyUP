@@ -19,6 +19,8 @@ import {
 import BeatLoader from "react-spinners/BeatLoader";
 import SimplifyDebts from "./Simplify";
 import { CSVLink } from "react-csv";
+import emailjs from "@emailjs/browser";
+import { BellIcon } from "@heroicons/react/solid";
 
 const GroupDetail = () => {
   const navigate = useNavigate();
@@ -202,6 +204,30 @@ const GroupDetail = () => {
     alert("Something went wrong", "error");
   };
 
+  // const Email = (member) => {
+  //   emailjs
+  //     .sendForm(
+  //       "service_l06xrc1",
+  //       "template_5uey86x",
+  //       "template":{
+  //         to: member.email,
+  //         to_name: member.name,
+  //         from: currentUser.name,
+  //         message: "Please settle up the payment",
+  //         reply_to: currentUser.email,
+  //       },
+  //       "yuM3VYdd9UykUv1dn"
+  //     )
+  //     .then(
+  //       (result) => {
+  //         console.log(result.text);
+  //       },
+  //       (error) => {
+  //         console.log(error.text);
+  //       }
+  //     );
+  // };
+
   // if (loading) return <div className="flex justify-center"><BeatLoader /></div>;
   return (
     <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
@@ -374,9 +400,20 @@ const GroupDetail = () => {
                             {member.email}
                           </p>
                         </div>
-                        <div>
+                        {/* <div>
+                          <Link to={`/email/${member.email}/${member.name}`}>
+                            <BellIcon className="w-5 text-green-400" />
+                          </Link>
+                        </div> */}
+                        <div className="flex">
+                          <BellIcon
+                            className="w-5 text-green-400 mr-2 cursor-pointer"
+                            onClick={() => {
+                              navigate(`/email/${member.email}/${member.name}`);
+                            }}
+                          />
                           <TrashIcon
-                            className="w-5 text-red-600"
+                            className="w-5 text-red-600 cursor-pointer"
                             onClick={() => {
                               setOpen(true);
                               setTitle(`Remove ${member.name}`);
