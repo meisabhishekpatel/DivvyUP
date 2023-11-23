@@ -5,6 +5,8 @@ import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import InputCategory from "../../Components/InputCategory";
 import DateInput from "../../Components/InputDate";
+import useCurrencyInfo from "../../context/useContext";
+import InputBox from "../../Components/InputBox";
 
 const Addexpense = ({ currentUser, friend, open = false, setOpen }) => {
   const [data, setData] = useState({
@@ -68,6 +70,16 @@ const Addexpense = ({ currentUser, friend, open = false, setOpen }) => {
     data.category = value;
   };
 
+  const currencyInfo = useCurrencyInfo("inr");
+
+  const options = Object.keys(currencyInfo);
+
+  let newamount;
+  const handleCurrencyChange = (e) => {
+    newamount = data.amount / currencyInfo[e];
+    data.amount = newamount.toFixed(2);
+  };
+
   const categories = [
     "Other",
     "Food",
@@ -124,9 +136,14 @@ const Addexpense = ({ currentUser, friend, open = false, setOpen }) => {
                       name="amount"
                       placeholder="0.00"
                       type="number"
-                      showLeadingIcon
                       value={data.amount}
                       onChange={handleChange}
+                    />
+                    <InputBox
+                      type="Currency"
+                      label="Currency"
+                      values={options}
+                      onValueChange={handleCurrencyChange}
                     />
                     <DateInput
                       selectedDate={selectedDate}

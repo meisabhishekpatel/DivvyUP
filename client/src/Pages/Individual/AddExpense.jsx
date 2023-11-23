@@ -6,6 +6,8 @@ import axios from "axios";
 import { Form, Input, DatePicker } from "antd";
 import InputCategory from "../../Components/InputCategory";
 import DateInput from "../../Components/InputDate";
+import useCurrencyInfo from "../../context/useContext";
+import InputBox from "../../Components/InputBox";
 
 const AddExpense = ({ currentUser, open = false, setOpen }) => {
   const [data, setData] = useState({
@@ -30,7 +32,7 @@ const AddExpense = ({ currentUser, open = false, setOpen }) => {
 
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
-    console.log(data);
+    // console.log(data);
   };
 
   const handleAddExpense = async (e) => {
@@ -40,7 +42,7 @@ const AddExpense = ({ currentUser, open = false, setOpen }) => {
 
   const doSubmit = async () => {
     try {
-      console.log(data);
+      //   console.log(data);
       const result = await axios.post(
         "http://localhost:4000/individual/add-expense",
         data
@@ -74,6 +76,17 @@ const AddExpense = ({ currentUser, open = false, setOpen }) => {
     data.date = value;
     // console.log(data.date);
   };
+
+  const currencyInfo = useCurrencyInfo("inr");
+
+  const options = Object.keys(currencyInfo);
+
+  let newamount;
+  const handleCurrencyChange = (e) => {
+    newamount = data.amount / currencyInfo[e];
+    data.amount = newamount.toFixed(2);
+  };
+
   const categories = [
     "Other",
     "Food",
@@ -126,19 +139,24 @@ const AddExpense = ({ currentUser, open = false, setOpen }) => {
                       onValueChange={handleCategoryChange}
                     />
                     <FormInput
-                      label="Description"
-                      name="description"
-                      placeholder="Enter description"
-                      value={data.description}
-                      onChange={handleChange}
-                    />
-                    <FormInput
                       label="Amount"
                       name="amount"
                       placeholder="0.00"
                       type="number"
-                      showLeadingIcon
                       value={data.amount}
+                      onChange={handleChange}
+                    />
+                    <InputBox
+                      type="Currency"
+                      label="Currency"
+                      values={options}
+                      onValueChange={handleCurrencyChange}
+                    />
+                    <FormInput
+                      label="Description"
+                      name="description"
+                      placeholder="Enter description"
+                      value={data.description}
                       onChange={handleChange}
                     />
                     <DateInput
