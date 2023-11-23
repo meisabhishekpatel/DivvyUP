@@ -1,6 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { UnorderedListOutlined, AreaChartOutlined } from "@ant-design/icons";
 import getUserDetails from "../../GetData/UserDetails";
 import axios from "axios";
@@ -8,9 +8,11 @@ import { CSVLink } from "react-csv";
 import { Select, Modal, Table, DatePicker } from "antd";
 const { RangePicker } = DatePicker;
 import moment from "moment";
-import Analytics from "./Analytics";
+import Breadcrumb from "../../Components/BreadCrumb";
+import PieGraph from "../../Components/Graph/PieChart";
+// import Analytics from "./Analytics";
 
-const ExpenseReport = () => {
+const ExpenseGroupReport = () => {
   const [expenseList, setExpense] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [loading, setLoading] = useState(false);
@@ -20,6 +22,7 @@ const ExpenseReport = () => {
   const [viewData, setViewData] = useState("table");
   const [type, setType] = useState("all");
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const columns = [
     {
@@ -32,10 +35,6 @@ const ExpenseReport = () => {
       dataIndex: "amount",
     },
     {
-      title: "Type",
-      dataIndex: "type",
-    },
-    {
       title: "Category",
       dataIndex: "category",
     },
@@ -43,6 +42,10 @@ const ExpenseReport = () => {
       title: "Description",
       dataIndex: "description",
     },
+    // {
+    //   title: "Settled",
+    //   dataIndex: "isSettled",
+    // },
   ];
 
   useEffect(() => {
@@ -52,8 +55,8 @@ const ExpenseReport = () => {
   const getAllTransactions = async () => {
     try {
       setLoading(true);
-      const res = await axios.post("/individual/getExpenseByDate", {
-        userid: currentUser._id,
+      const res = await axios.post("/expense/getGroupExpenseByDate", {
+        userid: id,
         frequency,
         selectedDate,
         type,
@@ -77,59 +80,16 @@ const ExpenseReport = () => {
     <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
       <div className="mt-4 flex flex-1 flex-col justify-end px-4 sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl">
         <div>
-          <nav className="sm:hidden" aria-label="Back">
-            <Link
-              to="/"
-              className="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700"
-            >
-              <ChevronLeftIcon
-                className="-ml-1 mr-1 h-5 w-5 flex-shrink-0 text-gray-400"
-                aria-hidden="true"
-              />
-              Back
-            </Link>
-          </nav>
-          <nav className="hidden sm:flex" aria-label="Breadcrumb">
-            <ol className="flex items-center space-x-4">
-              <li>
-                <div className="flex">
-                  <Link
-                    to="/home"
-                    className="text-sm font-medium text-gray-500 hover:text-gray-700"
-                  >
-                    Home
-                  </Link>
-                </div>
-              </li>
-              <li>
-                <div
-                  onClick={() => {
-                    navigate("/individual");
-                  }}
-                  className="cursor-pointer flex items-center"
-                >
-                  <ChevronRightIcon
-                    className="h-5 w-5 flex-shrink-0 text-gray-400"
-                    aria-hidden="true"
-                  />
-                  <p className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">
-                    Your Expense List
-                  </p>
-                </div>
-              </li>
-              <li>
-                <div className="flex items-center">
-                  <ChevronRightIcon
-                    className="h-5 w-5 flex-shrink-0 text-gray-400"
-                    aria-hidden="true"
-                  />
-                  <p className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">
-                    Expense Report
-                  </p>
-                </div>
-              </li>
-            </ol>
-          </nav>
+          <Breadcrumb
+            paths={[
+              { name: "Groups", to: "/groups" },
+              { name: "Group Detail", to: `/group/detail/${id}` },
+              {
+                name: "Expense Report",
+                to: `/group/groupexpense/report/${id}`,
+              },
+            ]}
+          />
         </div>
         <div className="mt-2 flex items-center justify-between">
           <div className="min-w-0 flex-1">
@@ -177,7 +137,7 @@ const ExpenseReport = () => {
           {viewData === "table" ? (
             <Table columns={columns} dataSource={allTransection} />
           ) : (
-            <Analytics allTransection={allTransection} />
+            <PieGraph currentUser={currentUser} />
           )}
         </div>
         <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
@@ -269,4 +229,4 @@ const ExpenseReport = () => {
   );
 };
 
-export default ExpenseReport;
+export default ExpenseGroupReport;

@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.post("/add-expense", async (req, res) => {
   const { addedBy, amount, type, category, description, date } = req.body;
-  console.log(req.body);
   try {
     if (!addedBy || !category || !description || !type) {
       return res.status(400).json({ message: "All fields are required!" });
@@ -53,7 +52,7 @@ router.post("/getExpenseBydate", async (req, res) => {
       addedBy: req.body.userid,
       ...(type !== "all" && { type }),
     });
-    console.log(transections);
+    // console.log(transections);
     res.status(200).json(transections);
   } catch (error) {
     console.log(error);
