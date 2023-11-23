@@ -1,6 +1,6 @@
+import moment from "moment";
 import Breadcrumb from "../../Components/BreadCrumb";
 import Analytics from "./Analaytics";
-import moment from "moment";
 import PieGraph from "./PieChart";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import { useEffect, useState } from "react";

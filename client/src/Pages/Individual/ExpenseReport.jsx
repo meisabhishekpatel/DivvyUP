@@ -1,10 +1,10 @@
 import Analytics from "./Analytics";
-import getUserDetails from "../../GetData/UserDetails";
 import moment from "moment";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UnorderedListOutlined, AreaChartOutlined } from "@ant-design/icons";
+import getUserDetails from "../../GetData/UserDetails";
 import axios from "axios";
 import { CSVLink } from "react-csv";
 import { Select, Modal, Table, DatePicker } from "antd";
