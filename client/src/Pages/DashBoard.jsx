@@ -3,6 +3,8 @@ import { Outlet } from "react-router-dom";
 import { MenuIcon } from "@heroicons/react/outline";
 import Sidebar from "../Components/SideBar";
 import Profile from "../Components/Profile";
+import NavBar from "../Components/NavBar";
+import ThemeBtn from "../Components/ThemeBtn";
 
 export default function Dashboard() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -34,6 +36,7 @@ export default function Dashboard() {
                                 >
                                     <span className="sr-only">View notifications</span>
                                 </button>
+                                <ThemeBtn />
                                 <Profile />
                             </div>
                         </div>

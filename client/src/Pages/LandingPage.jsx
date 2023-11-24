@@ -90,7 +90,7 @@ export default function LandingPage() {
                                             <PieChart className="h-12 w-12" />
                                         </div>
                                         <div className="mt-6">
-                                            <h2 className="text-3xl font-extrabold tracking-tight text-gray-900">
+                                            <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-blue-400F">
                                                 Stay on top of your bills
                                             </h2>
                                             <p className="mt-4 text-lg text-gray-500">

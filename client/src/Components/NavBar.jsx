@@ -1,7 +1,11 @@
 import { NavLink, Link } from "react-router-dom";
 import SignUp from "./SignUp";
+import ThemeBtn from "./ThemeBtn";
+import { useContext } from "react";
+import useTheme from "../context/theme";
 
 export default function NavBar() {
+  const theme=useContext(useTheme);
   return (
     <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
       <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
@@ -16,6 +20,7 @@ export default function NavBar() {
           </span>
         </Link>
         <div className="flex items-center lg:order-2">
+          {/* <ThemeBtn /> */}
           <Link
             to="/login"
             className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
@@ -55,7 +60,12 @@ export default function NavBar() {
               >
                 Team
               </Link>
+              
             </li>
+            <div>
+            <ThemeBtn/>
+            </div>
+           
           </ul>
         </div>
       </div>

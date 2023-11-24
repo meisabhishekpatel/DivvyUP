@@ -64,7 +64,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         leaveFrom="translate-x-0"
                         leaveTo="-translate-x-full"
                     >
-                        <div className="relative flex w-full max-w-xs flex-1 flex-col bg-white pt-5 pb-4">
+                        <div className="relative flex w-full max-w-xs flex-1 flex-col bg-white pt-5 pb-4 dark:bg-black">
                             <Transition.Child
                                 as={Fragment}
                                 enter="ease-in-out duration-300"

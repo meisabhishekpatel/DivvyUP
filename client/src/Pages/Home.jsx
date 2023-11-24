@@ -10,6 +10,7 @@ import getUserDeatils from "../GetData/UserDetails";
 import Button from "../Components/Button";
 import axios from 'axios';
 import { BeatLoader } from "react-spinners";
+import NavBar from "../Components/NavBar";
 
 const Home = () => {
     const navigate = useNavigate();
@@ -50,8 +51,8 @@ const Home = () => {
 
 
     return (
-        <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
-            <div className="my-10 px-0 sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl">
+        <div className="dark:bg-gray-900 md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
+            <div className="my-10 px-0 sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl dark:bg-gray-900">
                 {/* Group Overview */}
                 <div className="my-12">
                     <div className="flex justify-between border-b pb-6">
@@ -76,7 +77,7 @@ const Home = () => {
                                 >
                                     <div className="p-2 py-3 px-6">
                                         <div className="mb-3 flex flex-col  justify-between border-b pb-2">
-                                            <p className=" truncate text-2xl font-bold text-gray-800 ">
+                                            <p className=" truncate text-2xl font-bold text-gray-800 dark:text-white">
                                                 {group.name}
                                             </p>
                                             <p className="mt-2 truncate text-sm text-gray-500">

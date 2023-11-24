@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
+import { useEffect, useState } from 'react'
 import Login from "./Components/Login";
 import NavBar from "./Components/NavBar";
 import SignUp from "./Components/SignUp";
@@ -16,7 +17,8 @@ import ExpenseReport from "./Pages/Individual/ExpenseReport";
 import ExpenseGroupReport from "./Pages/Groups/ExpenseReport";
 import FriendExpenseGroupReport from "./Pages/Friends/FriendExpenseReport";
 import { ContactUs } from "./Components/EmailInput";
-
+import { ThemeProvider } from './context/theme'
+import ThemeBtn from './Components/ThemeBtn'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -24,9 +26,29 @@ const queryClient = new QueryClient({
     },
   },
 });
+
 function App() {
+  const [themeMode, setThemeMode] = useState("light")
+
+  const lightTheme = () => {
+    setThemeMode("light")
+  }
+
+  const darkTheme = () => {
+    setThemeMode("dark")
+  }
+
+  // actual change in theme
+
+  useEffect(() => {
+    document.querySelector('html').classList.remove("light", "dark")
+    document.querySelector('html').classList.add(themeMode)
+  }, [themeMode])
+  
+
   return (
     <QueryClientProvider client={queryClient}>
+    <ThemeProvider value={{themeMode, lightTheme, darkTheme}}>
       <BrowserRouter>
         <Routes>
           <Route
@@ -130,8 +152,8 @@ function App() {
           />
         </Routes>
       </BrowserRouter>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
-
 export default App;
