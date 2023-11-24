@@ -33,7 +33,7 @@ const Addexpense = ({ currentUser, groupId, open = false, setOpen }) => {
 
   const handleAddExpense = async (e) => {
     e.preventDefault();
-    doSubmit();
+    doSubmit(e);
   };
 
   const handleCategoryChange = (value) => {
@@ -53,6 +53,29 @@ const Addexpense = ({ currentUser, groupId, open = false, setOpen }) => {
     "Travel",
     "Loans",
   ];
+  const [file, setFile] = useState("");
+  const [title, setTitle] = useState("");
+
+  const handleFile = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleAddFile = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("group", groupId);
+    const result = await axios.post(
+      "http://localhost:4000/upload-files",
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
+    if (result.data) {
+      alert("Uploaded Successfully!!!");
+    }
+  };
 
   const currencyInfo = useCurrencyInfo("inr");
 
@@ -64,9 +87,8 @@ const Addexpense = ({ currentUser, groupId, open = false, setOpen }) => {
     data.amount = newamount.toFixed(2);
   };
 
-  const doSubmit = async () => {
+  const doSubmit = async (e) => {
     try {
-      console.log(data);
       const result = await axios.post(
         "http://localhost:4000/expense/addExpense",
         data
@@ -137,6 +159,7 @@ const Addexpense = ({ currentUser, groupId, open = false, setOpen }) => {
                       value={data.amount}
                       onChange={handleChange}
                     />
+
                     <InputBox
                       type="Currency"
                       label="Currency"
@@ -147,6 +170,28 @@ const Addexpense = ({ currentUser, groupId, open = false, setOpen }) => {
                       selectedDate={selectedDate}
                       onValueChange={handleDateChange}
                     />
+
+                    <label
+                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      for="file_input"
+                    >
+                      Upload Receipt
+                    </label>
+                    <div className="flex">
+                      <input
+                        class="text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                        id="file_input"
+                        type="file"
+                        accept="application/pdf"
+                        onChange={handleFile}
+                      />
+                      <button
+                        onClick={handleAddFile}
+                        className="ml-4 px-4 py-2 text-decoration-none tracking-wide text-white transition-colors duration-200 transform bg-blue-700 rounded-md hover:bg-blue-800 focus:outline-none focus:bg-blue-600"
+                      >
+                        Upload
+                      </button>
+                    </div>
 
                     <p className="mt-3 max-w-fit border border-green-600 px-3 py-1 bg-green-100 text-green-700 font-medium rounded-full text-sm">
                       Split Equally

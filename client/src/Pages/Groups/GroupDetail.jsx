@@ -21,6 +21,8 @@ import SimplifyDebts from "./Simplify";
 import { CSVLink } from "react-csv";
 import emailjs from "@emailjs/browser";
 import { BellIcon } from "@heroicons/react/solid";
+import DropDown from "../../Components/DropDown";
+import Receipt from "./ReceiptModel";
 
 const GroupDetail = () => {
   const navigate = useNavigate();
@@ -38,7 +40,7 @@ const GroupDetail = () => {
   const [currentUser, setCurrentUser] = useState({});
   const [loading, setLoading] = useState(true);
   const [openSimplify, setOpenSimplify] = useState(false);
-  const [simplify, setSimplify] = useState({});
+  const [receipt, setReceipt] = useState(false);
   const [exportdata, setExportData] = useState([]);
 
   useEffect(() => {
@@ -244,6 +246,18 @@ const GroupDetail = () => {
               <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">
                 {group.name}
               </h2>
+            </div>
+
+            <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
+              <button
+                onClick={() => {
+                  setReceipt(true);
+                }}
+                className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
+                width="w-full"
+              >
+                Receipt
+              </button>
             </div>
             <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
               <button
@@ -452,6 +466,12 @@ const GroupDetail = () => {
           memberList={memberList}
           open={openSimplify}
           setOpen={setOpenSimplify}
+          groupId={groupId}
+        />
+        <Receipt
+          memberList={memberList}
+          open={receipt}
+          setOpen={setReceipt}
           groupId={groupId}
         />
 

@@ -232,7 +232,7 @@ const Friends = () => {
               />
             </div>
             <div className="my-2 rounded border shadow-sm ">
-              <p className=" rounded-t bg-gray-800 p-2 text-sm font-semibold uppercase text-white">
+              <p className=" rounded-t bg-gray-800 p-2 text-sm font-semibold uppercase text-white dark:text-black dark:bg-white">
                 Friends
               </p>
               {Loading ? (
