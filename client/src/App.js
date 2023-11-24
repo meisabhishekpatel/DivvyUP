@@ -71,7 +71,7 @@ function App() {
           <Route
             path="/groups"
             element={
-              <div className="">
+              <div className="bg-gray-900 dark:bg-gray-900">
                 <Dashboard />
                 <Groups />
               </div>
@@ -144,7 +144,7 @@ function App() {
           <Route
             path="/friends"
             element={
-              <div className="">
+              <div className="bg-black w-full h-full">
                 <Dashboard />
                 <Friends />
               </div>

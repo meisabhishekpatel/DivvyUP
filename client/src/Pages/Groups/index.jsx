@@ -23,40 +23,40 @@ const Groups = () => {
   }, [currentUser]);
 
   return (
-    <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
-      <div className="mt-4 flex flex-1 flex-col justify-end px-4 sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl">
+    <div className="dark:bg-gray-900 md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
+      <div className=" dark:bg-gray-900 mt-4 flex flex-1 flex-col justify-end px-4 sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl">
         <div>
-          <nav className="sm:hidden" aria-label="Back">
+          <nav className="dark:bg-gray-900 sm:hidden" aria-label="Back">
             <Link
               to="/"
-              className="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700"
+              className="dark:bg-gray-900 flex items-center text-sm font-medium text-gray-500 hover:text-gray-700"
             >
               <ChevronLeftIcon
-                className="-ml-1 mr-1 h-5 w-5 flex-shrink-0 text-gray-400"
+                className="dark:bg-gray-900 -ml-1 mr-1 h-5 w-5 flex-shrink-0 text-gray-400"
                 aria-hidden="true"
               />
               Back
             </Link>
           </nav>
-          <nav className="hidden sm:flex" aria-label="Breadcrumb">
+          <nav className="dark:bg-gray-900 hidden sm:flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
               <li>
                 <div className="flex">
                   <Link
                     to="/home"
-                    className="text-sm font-medium text-gray-500 hover:text-gray-700"
+                    className="dark:bg-gray-900 text-sm font-medium text-gray-500 dark:text-white dark:text-black hover:text-gray-700"
                   >
                     Home
                   </Link>
                 </div>
               </li>
               <li>
-                <div className="flex items-center">
+                <div className=" dark:bg-gray-900 flex items-center">
                   <ChevronRightIcon
-                    className="h-5 w-5 flex-shrink-0 text-gray-400"
+                    className="dark:bg-gray-900 h-5 w-5 flex-shrink-0 text-gray-400"
                     aria-hidden="true"
                   />
-                  <p className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">
+                  <p className="dark:bg-gray-900 ml-4 text-sm font-medium text-gray-500 dark:text-white dark:text-black hover:text-gray-700">
                     Groups
                   </p>
                 </div>
@@ -66,14 +66,14 @@ const Groups = () => {
         </div>
         <div className="mt-2 flex items-center justify-between">
           <div className="min-w-0 flex-1">
-            <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">
+            <h2 className="text-2xl font-bold leading-7 text-gray-900 dark:text-white dark:text-black sm:truncate sm:text-3xl">
               Your Groups
             </h2>
           </div>
-          <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
+          <div className="dark:text-white dark:text-black mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
             <Link to="/addgroup">
               <button
-                className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
+                className="dark:text-white dark:text-black bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white dark:text-black bg-brand-600 hover:bg-brand-700"
                 width="w-full"
               >
                 <PlusCircleIcon className="w-5" />
@@ -81,10 +81,10 @@ const Groups = () => {
               </button>
             </Link>
           </div>
-          <div className="flex flex-shrink-0 md:mt-0 md:ml-4 md:hidden">
+          <div className="dark:bg-gray-900 flex flex-shrink-0 md:mt-0 md:ml-4 md:hidden">
             <Link to="/addgroup">
               <button
-                className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
+                className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white dark:text-black bg-brand-600 hover:bg-brand-700"
                 width="w-full"
               >
                 <PlusCircleIcon className="w-5" />
@@ -93,7 +93,7 @@ const Groups = () => {
           </div>
         </div>
         {loading ? (
-          <div className="flex items-center justify-center h-32">
+          <div className="dark:bg-gray-900 dark:text-white dark:text-black flex items-center justify-center h-32">
             {/* React-Spinners BeatLoader */}
             {/* <BeatLoader color="#4F46E5" size={10} /> */}
             <BeatLoader />
@@ -101,26 +101,26 @@ const Groups = () => {
         ) : (
           <>
             {groupList.length > 0 ? (
-              <div className="mt-12 overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-800 text-white">
+              <div className="dark:text-blue-500 mt-12 overflow-x-auto">
+                <table className=" min-w-full divide-y divide-gray-200 dark:divide-black">
+                  <thead className="bg-gray-800 dark:bg-white text-white dark:text-black">
                     <tr>
-                      <th className="px-6 py-3 text-left text-sm font-semibold uppercase">
+                      <th className="dark:bg-gray-800 dark:text-white px-6 py-3 text-left text-sm font-semibold uppercase">
                         Name
                       </th>
-                      <th className="px-6 py-3 text-left text-sm font-semibold uppercase">
+                      <th className="dark:bg-gray-800 dark:text-white px-6 py-3 text-left text-sm font-semibold uppercase">
                         Description
                       </th>
-                      <th className="px-6 py-3 text-left text-sm font-semibold uppercase">
+                      <th className="px-6 py-3 dark:text-white dark:bg-gray-800 text-left text-sm font-semibold uppercase">
                         Members
                       </th>
-                      <th className="px-6 py-3 text-left text-sm font-semibold uppercase">
+                      <th className="dark:bg-gray-800 dark:text-white px-6 py-3 text-left text-sm font-semibold uppercase">
                         Total Expenses
                       </th>
-                      <th className="px-6 py-3"></th>
+                      <th className="dark:bg-gray-800 dark:text-white px-6 py-3"></th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="dark:bg-gray-800 dark:text-white bg-white divide-y divide-gray-200">
                     {groupList.map((group) => (
                       <tr key={group._id}>
                         <td className="px-6 py-4 whitespace-nowrap">

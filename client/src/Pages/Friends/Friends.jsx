@@ -158,13 +158,13 @@ const Friends = () => {
   };
 
         return (
-          <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%] dark:bg-black">
-            <div className="flex h-[calc(100vh-64px)] flex-1 flex-col px-4 pt-3  sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl dark:bg-black">
+          <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%] dark:bg-gray-900">
+            <div className="flex h-[calc(100vh-64px)] flex-1 flex-col px-4 pt-3  sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl dark:bg-gray-900">
               <Breadcrumb paths={[{ name: "Friends", to: "/friends" }]} />
 
-              <div className="mt-2 flex md:items-center md:justify-between dark:bg-black">
+              <div className="mt-2 flex md:items-center md:justify-between dark:bg-gray-900">
                 <div className="min-w-0 flex-1">
-                  <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl dark:bg-black">
+                  <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl dark:bg-gray-900">
                     {group.name}
                   </h2>
                 </div>
@@ -220,9 +220,9 @@ const Friends = () => {
                     />
                   )}
                 </div>
-                <div className="flex flex-col justify-start sm:col-span-2 dark:bg-black">
+                <div className="flex flex-col justify-start sm:col-span-2 dark:bg-gray-900">
                   <div className="my-2">
-                    <p className="text-sm font-medium uppercase text-gray-500 dark:bg-black dark:text-white">
+                    <p className="text-sm font-medium uppercase text-gray-500 dark:bg-gray-900 dark:text-white">
                       Add Friend
                     </p>
                     <SearchFriend
@@ -232,7 +232,7 @@ const Friends = () => {
                     />
                   </div>
                   <div className="my-2 rounded border shadow-sm ">
-                    <p className=" rounded-t bg-gray-800 p-2 text-sm font-semibold uppercase text-white dark:text-white dark:bg-black">
+                    <p className=" rounded-t bg-gray-800 p-2 text-sm font-semibold uppercase text-white dark:text-white dark:bg-gray-900">
                       Friends
                     </p>
                     {Loading ? (
