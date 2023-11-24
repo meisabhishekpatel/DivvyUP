@@ -57,7 +57,7 @@ export default function LandingPage() {
                             <div className="relative sm:overflow-hidden">
                                 <div className="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">
                                     <h1 className="text-center text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-                                        <span className="block text-blue-400">
+                                        <span className="block text-black dark:text-blue-400">
                                             Split bills with your friends
                                         </span>
                                         <span className="block text-blue-600">
@@ -192,7 +192,7 @@ export default function LandingPage() {
                                 <div className="mx-auto max-w-xl px-4 sm:px-6 lg:col-start-2 lg:mx-0 lg:max-w-none lg:py-32 lg:px-0">
                                     <div>
                                         <div>
-                                            <UserIcon className="h-12 w-12" />
+                                            <UserIcon className="h-12 w-12 dark:text-white" />
                                         </div>
                                         <div className="mt-6">
                                             <h2 className="text-3xl font-extrabold tracking-tight text-gray-900">
@@ -270,39 +270,8 @@ export default function LandingPage() {
                                 </a>
                             </div>
                             <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
-                                <div>
-                                    <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Resources</h2>
-                                    <ul class="text-gray-600 dark:text-gray-400">
-                                        <li class="mb-4">
-                                            <a href="#" class="hover:underline">Flowbite</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="hover:underline">Tailwind CSS</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Follow us</h2>
-                                    <ul class="text-gray-600 dark:text-gray-400">
-                                        <li class="mb-4">
-                                            <a href="#" class="hover:underline ">Github</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="hover:underline">Discord</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Legal</h2>
-                                    <ul class="text-gray-600 dark:text-gray-400">
-                                        <li class="mb-4">
-                                            <a href="#" class="hover:underline">Privacy Policy</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="hover:underline">Terms &amp; Conditions</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                
+                                
                             </div>
                         </div>
                         <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />

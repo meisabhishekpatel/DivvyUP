@@ -8,7 +8,6 @@ import {
 } from "@heroicons/react/outline";
 import { Link, useLocation } from "react-router-dom";
 import Button from "./Button";
-
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     const [navigation, setNavigation] = useState([
         { name: "Home", href: "/home", icon: HomeIcon, current: false },
@@ -89,7 +88,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                 <Link to="/">
                                     <span className="sr-only">Divvy UP</span>
                                     <p className="text-2xl font-bold">
-                                        Divvy <span className="text-blue-600">UP</span>
+                                        Divvy <span className="text-blue-600 dark:text-white">UP</span>
                                     </p>
                                 </Link>
                             </div>
