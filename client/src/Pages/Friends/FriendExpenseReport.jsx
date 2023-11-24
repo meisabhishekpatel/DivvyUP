@@ -78,8 +78,8 @@ const FriendExpenseGroupReport = () => {
   const category = ["Weekly", "Monthly", "Yearly"];
 
   return (
-    <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
-      <div className="mt-4 flex flex-1 flex-col justify-end px-4 sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl">
+    <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%] dark:bg-black">
+      <div className="mt-4 flex flex-1 flex-col justify-end px-4 sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl dark:bg-black">
         <div>
           <Breadcrumb
             paths={[
@@ -91,9 +91,9 @@ const FriendExpenseGroupReport = () => {
             ]}
           />
         </div>
-        <div className="mt-2 flex items-center justify-between">
-          <div className="min-w-0 flex-1">
-            <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">
+        <div className="mt-2 flex items-center justify-between dark:bg-black">
+          <div className="min-w-0 flex-1 dark:bg-black">
+            <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl  dark:text-white">
               Expense Report
             </h2>
           </div>

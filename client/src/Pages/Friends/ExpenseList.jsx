@@ -13,7 +13,7 @@ const ExpenseList = ({ currentUser, expenseList, settled = false }) => {
                     {expenseList.map((expense) => (
                         <div
                             key={expense._id}
-                            className=" grid grid-cols-3 items-center px-3 py-1 hover:cursor-pointer hover:bg-gray-50 sm:grid-cols-5"
+                            className=" grid grid-cols-3 items-center px-3 py-1 hover:cursor-pointer hover:bg-gray-50 sm:grid-cols-5  dark:hover:bg-gray-700"
                             onClick={() => {
                                 setShowExpenseDetail(true);
                                 setSelectedExpense(expense);
