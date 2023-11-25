@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { useEffect, useState } from "react";
 import Login from "./Components/Login";
+import axios from "axios"
 import NavBar from "./Components/NavBar";
 import SignUp from "./Components/SignUp";
 import LandingPage from "./Pages/LandingPage";
