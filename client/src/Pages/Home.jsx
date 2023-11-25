@@ -56,7 +56,7 @@ const Home = () => {
                 {/* Group Overview */}
                 <div className="my-12">
                     <div className="flex justify-between border-b pb-6">
-                        <h1 className="text-2xl font-bold dark:text-white">Your Groups</h1>
+                        <h1 className="text-2xl font-bold">Your Groups</h1>
                         {groupList.length > 3 && (
                             <Link to="/groups">
                                 <Button
@@ -80,28 +80,28 @@ const Home = () => {
                                             <p className=" truncate text-2xl font-bold text-gray-800 dark:text-white">
                                                 {group.name}
                                             </p>
-                                            <p className="mt-2 truncate text-sm text-gray-500 dark:text-white">
+                                            <p className="mt-2 truncate text-sm text-gray-500">
                                                 {group.description}
                                             </p>
                                         </div>
                                         <div>
-                                            <p className="flex items-center text-sm font-semibold uppercase text-gray-500 dark:text-white">
+                                            <p className="flex items-center text-sm font-semibold uppercase text-gray-500">
                                                 <span className="mr-2">
                                                     <MoneyBag className="h-6 w-6" />
                                                 </span>
                                                 Total Expenses :
-                                                <span className="ml-1 text-2xl font-semibold text-gray-800 dark:text-white">
+                                                <span className="ml-1 text-2xl font-semibold text-gray-800">
                                                     {group.totalExpenses}
                                                 </span>
                                             </p>
                                         </div>
                                         <div className="mt-3 flex flex-col items-start">
-                                            <p className="flex items-center text-sm font-semibold uppercase text-gray-500 dark:text-white">
+                                            <p className="flex items-center text-sm font-semibold uppercase text-gray-500">
                                                 <span className="mr-2">
                                                     <Group className="h-6 w-6" />
                                                 </span>
                                                 Members :
-                                                <span className="ml-1 text-2xl font-semibold text-gray-800 dark:text-white">
+                                                <span className="ml-1 text-2xl font-semibold text-gray-800">
                                                     {group.members.length}
                                                 </span>
                                             </p>
@@ -143,7 +143,7 @@ const Home = () => {
                 {/* Expense Overview */}
                 <div className="mt-12">
                     <div className="border-b pb-6">
-                        <h1 className="text-2xl font-bold dark:text-white">Expense Overview</h1>
+                        <h1 className="text-2xl font-bold">Expense Overview</h1>
                     </div>
 
                     <div className="grid-col-1 mt-6 grid space-y-3 sm:place-content-center sm:place-items-center sm:space-y-0 md:grid-cols-2">

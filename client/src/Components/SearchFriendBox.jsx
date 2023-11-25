@@ -60,7 +60,7 @@ const SearchFriend = ({
 
     return (
         <>
-            <div className="flex items-start">
+            <div className="flex items-start dark:bg-black">
                 <SearchInput
                     name="email"
                     placeholder="Search by email"
@@ -69,14 +69,14 @@ const SearchFriend = ({
                     foundUser={foundUser}
                 />
 
-                <div className="ml-5">
+                <div className="ml-5 dark:bg-black">
                     {foundUser ? (
                         <button
                             leftIcon={<CheckIcon className="w-5 " />}
                             onClick={handleAddMember}
-                            className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700" width="w-full">Add</button>
+                            className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700 dark:bg-black" width="w-full">Add</button>
                     ) : (
-                        <button onClick={handleSearch} className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700" width="w-full">Search</button>
+                        <button onClick={handleSearch} className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700 dark:bg-black " width="w-full">Search</button>
                     )}
                 </div>
             </div>

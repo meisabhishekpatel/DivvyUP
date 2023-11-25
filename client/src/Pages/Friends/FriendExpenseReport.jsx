@@ -97,7 +97,7 @@ const FriendExpenseGroupReport = () => {
               Expense Report
             </h2>
           </div>
-          <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
+          <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex  dark:bg-gray-900">
             {/* <InputCategory
               values={category}
               onValueChange={(values) => setFrequency(values)}
@@ -133,7 +133,7 @@ const FriendExpenseGroupReport = () => {
             />
           </div>
         </div>
-        <div className="content">
+        <div className="content ">
           {viewData === "table" ? (
             <Table columns={columns} dataSource={allTransection} />
           ) : (
@@ -143,7 +143,7 @@ const FriendExpenseGroupReport = () => {
         <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
           <CSVLink
             data={allTransection}
-            className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
+            className=" dark:bg-gray-900 bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
             width="w-full"
           >
             Export
