@@ -51,12 +51,12 @@ const Home = () => {
 
 
     return (
-        <div className="dark:bg-gray-900 md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
-            <div className="my-10 px-0 sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl dark:bg-gray-900">
+        <div className="dark:bg-gray-900 dark-text-white md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
+            <div className="dark:bg-gray-900 dark-text-white my-10 px-0 sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl dark:bg-gray-900">
                 {/* Group Overview */}
-                <div className="my-12">
-                    <div className="flex justify-between border-b pb-6">
-                        <h1 className="text-2xl font-bold dark:text-white">Your Groups</h1>
+                <div className="dark:bg-gray-900 dark:text-white my-12">
+                    <div className="dark:bg-gray-900 dark:bgflex justify-between border-b pb-6">
+                        <h1 className="dark:bg-gray-900 dark:text-white text-2xl font-bold dark:text-white">Your Groups</h1>
                         {groupList.length > 3 && (
                             <Link to="/groups">
                                 <Button
@@ -69,25 +69,25 @@ const Home = () => {
                         )}
                     </div>
                     {groupList ? (
-                        <div className="mt-6 grid w-full space-y-3 sm:place-content-center sm:place-items-center sm:space-y-0 md:grid-cols-2 lg:grid-cols-3">
+                        <div className="dark:bg-gray-900 dark:text-white mt-6 grid w-full space-y-3 sm:place-content-center sm:place-items-center sm:space-y-0 md:grid-cols-2 lg:grid-cols-3">
                             {groupList.slice(0, 3).map((group) => (
                                 <div
                                     key={group._id}
-                                    className="flex h-56 w-3/4 min-w-full flex-col justify-between rounded border-2 shadow-sm sm:min-w-0"
+                                    className="dark:bg-gray-900 dark:text-white flex h-56 w-3/4 min-w-full flex-col justify-between rounded border-2 shadow-sm sm:min-w-0"
                                 >
-                                    <div className="p-2 py-3 px-6">
-                                        <div className="mb-3 flex flex-col  justify-between border-b pb-2">
-                                            <p className=" truncate text-2xl font-bold text-gray-800 dark:text-white">
+                                    <div className="dark:bg-gray-900 dark:text-white p-2 py-3 px-6">
+                                        <div className="dark:bg-gray-900 dark:text-white mb-3 flex flex-col  justify-between border-b pb-2">
+                                            <p className=" dark:bg-gray-900 dark:text-white truncate text-2xl font-bold text-gray-800 dark:text-white">
                                                 {group.name}
                                             </p>
-                                            <p className="mt-2 truncate text-sm text-gray-500 dark:text-white">
+                                            <p className="dark:bg-gray-900 dark:text-white mt-2 truncate text-sm text-gray-500 dark:text-white">
                                                 {group.description}
                                             </p>
                                         </div>
                                         <div>
-                                            <p className="flex items-center text-sm font-semibold uppercase text-gray-500 dark:text-white">
-                                                <span className="mr-2">
-                                                    <MoneyBag className="h-6 w-6" />
+                                            <p className="dark:bg-gray-900 dark:text-white flex items-center text-sm font-semibold uppercase text-gray-500 dark:text-white">
+                                                <span className="dark:bg-gray-900 dark:text-white mr-2">
+                                                    <MoneyBag className="dark:bg-gray-900 dark:text-white h-6 w-6" />
                                                 </span>
                                                 Total Expenses :
                                                 <span className="ml-1 text-2xl font-semibold text-gray-800 dark:text-white">
@@ -141,16 +141,16 @@ const Home = () => {
                     )}
                 </div>
                 {/* Expense Overview */}
-                <div className="mt-12">
-                    <div className="border-b pb-6">
-                        <h1 className="text-2xl font-bold dark:text-white">Expense Overview</h1>
+                <div className="dark:bg-gray-900 dark:text-white mt-12">
+                    <div className="dark:bg-gray-900 dark:text-white border-b pb-6">
+                        <h1 className="dark:bg-gray-900 dark:text-white text-2xl font-bold dark:text-white">Expense Overview</h1>
                     </div>
 
-                    <div className="grid-col-1 mt-6 grid space-y-3 sm:place-content-center sm:place-items-center sm:space-y-0 md:grid-cols-2">
-                        <div className="min-w-full  md:pl-8">
+                    <div className="dark:bg-gray-900 dark:text-white grid-col-1 mt-6 grid space-y-3 sm:place-content-center sm:place-items-center sm:space-y-0 md:grid-cols-2">
+                        <div className="dark:bg-gray-900 dark:text-white min-w-full  md:pl-8">
                             <PieGraph currentUser={currentUser} />
                         </div>
-                        <div className="min-w-full  md:pl-8">
+                        <div className="dark:bg-gray-900 dark:text-white min-w-full  md:pl-8">
                             <BarGraph />
                         </div>
                     </div>

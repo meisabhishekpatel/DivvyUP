@@ -15,16 +15,16 @@ const Profile = () => {
         getUserDeatils(setUser);
     }, [])
     return (
-        <Menu as="div" className="relative ml-3">
+        <Menu as="div" className="dark:bg-gray-700 dark:text-white relative ml-3">
             <div>
-                <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50">
+                <Menu.Button className="dark:bg-gray-700 dark:text-white flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50">
                     <img
-                        className="h-8 w-8 rounded-full"
+                        className="dark:bg-gray-700 dark:text-white h-8 w-8 rounded-full"
                         src={`https://ui-avatars.com/api/?name=${currentUser.name}&background=2463EB&color=fff`}
                         alt=""
                     />
-                    <span className="ml-3 hidden text-sm font-medium text-gray-700 lg:block">
-                        <span className="sr-only">Open user menu for </span>
+                    <span className="dark:bg-gray-700 dark:text-white ml-3 hidden text-sm font-medium text-gray-700 lg:block">
+                        <span className="dark:bg-gray-700 dark:text-white sr-only">Open user menu for </span>
                         {currentUser.name}
                     </span>
                     <ChevronDownIcon

@@ -9,16 +9,16 @@ const Tabs = (props) => {
     };
 
     return (
-        <div className="flex flex-col">
-            <div className="flex">
+        <div className="dark:bg-gray-900 dark:text-white flex flex-col">
+            <div className="dark:bg-gray-900 dark:text-white flex">
                 {tabs.map((tab, index) => {
                     const { label } = tab;
                     return (
                         <div
                             key={index}
                             className={`${activeTab === index
-                                    ? "border-b-2 border-blue-500 text-blue-600"
-                                    : "bg-white"
+                                    ? "dark:bg-gray-900 dark:text-white border-b-2 border-blue-500 text-blue-600"
+                                    : "bg-white dark:bg-gray-900"
                                 } p-2 cursor-pointer mb-2 font-medium`}
                             onClick={() => handleClick(index)}
                         >
@@ -27,8 +27,8 @@ const Tabs = (props) => {
                     );
                 })}
             </div>
-            <div className="flex flex-col">
-                <div className="p-2">
+            <div className="dark:bg-gray-900 dark:text-white flex flex-col">
+                <div className="dark:bg-gray-900 dark:text-white p-2">
                     {tabs.find((_, index) => index === activeTab)?.content}
                 </div>
             </div>

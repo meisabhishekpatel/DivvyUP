@@ -92,7 +92,7 @@ const ExpenseList = ({
           <div className="flex justify-center">
             <CurrencyRupeeIcon className="w-10 stroke-slate-600 stroke-1" />
           </div>
-          <h3 className="text mt-2 font-medium text-gray-900">
+          <h3 className="text mt-2 font-medium text-gray-900 dark:bg-gray-900 dark:text-white">
             {settled || approved ? "Nothing to Show" : "No Active Expenses"}
           </h3>
           <p className="text mt-1 text-gray-500">

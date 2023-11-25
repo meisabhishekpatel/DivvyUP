@@ -232,8 +232,8 @@ const GroupDetail = () => {
 
   // if (loading) return <div className="flex justify-center"><BeatLoader /></div>;
   return (
-    <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
-      <div className="flex h-[calc(100vh-64px)] flex-1 flex-col px-4 pt-3  sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl">
+    <div className="dark:bg-gray-900 dark:text-white md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
+      <div className="dark:bg-gray-900 dark:text-white flex h-[calc(100vh-64px)] flex-1 flex-col px-4 pt-3  sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl">
         <div>
           <Breadcrumb
             paths={[
@@ -241,88 +241,88 @@ const GroupDetail = () => {
               { name: "Group Detail", to: `/group/detail/${group._id}` },
             ]}
           />
-          <div className="mt-2 flex md:items-center md:justify-between">
-            <div className="min-w-0 flex-1">
-              <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">
+          <div className="dark:bg-gray-900 dark:text-white mt-2 flex md:items-center md:justify-between">
+            <div className="dark:bg-gray-900 dark:text-white min-w-0 flex-1">
+              <h2 className="dark:bg-gray-900 dark:text-white text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">
                 {group.name}
               </h2>
             </div>
 
-            <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
+            <div className="dark:bg-gray-900 dark:text-white dark:bg-gray-900 dark:text-white dark:bg-gray-900 dark:text-white mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
               <button
                 onClick={() => {
                   setReceipt(true);
                 }}
-                className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
+                className="  dark:bg-gray-900 dark:text-white bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
                 width="w-full"
               >
                 Receipt
               </button>
             </div>
-            <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
+            <div className="dark:bg-gray-900 dark:text-white mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
               <button
                 onClick={() => {
                   setOpenSimplify(true);
                 }}
-                className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
+                className=" dark:bg-gray-900 dark:text-white bg-blue-900 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
                 width="w-full"
               >
                 Simplify Debts
               </button>
             </div>
-            <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
+            <div className="dark:bg-gray-900 dark:text-white mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
               <CSVLink
                 data={exportdata}
-                className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
+                className=" dark:bg-gray-900 dark:text-white bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
                 width="w-full"
               >
                 Export
               </CSVLink>
             </div>
-            <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
+            <div className="dark:bg-gray-900 dark:text-white mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
               <button
                 onClick={() => {
                   setAddExpense(true);
                 }}
-                className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
+                className=" dark:bg-gray-900 dark:text-white bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
                 width="w-full"
               >
                 <PlusCircleIcon className="w-5 mr-2" />
                 Add Expense
               </button>
             </div>
-            <div className="flex flex-shrink-0 scale-[80%] md:mt-0 md:ml-4 md:hidden">
+            <div className="dark:bg-gray-900 dark:text-white flex flex-shrink-0 scale-[80%] md:mt-0 md:ml-4 md:hidden">
               <button
                 onClick={() => {
                   setOpenSimplify(true);
                 }}
-                className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
+                className=" dark:bg-gray-900 dark:text-white bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
                 width="w-full"
               >
                 Simplify Debts
               </button>
             </div>
-            <div className="mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
+            <div className="dark:bg-gray-900 dark:text-white mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
               <Link
                 to={`/groupexpense/report/${groupId}`}
-                className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
+                className=" dark:bg-gray-900 dark:text-white bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
                 width="w-full"
               >
                 Expense Report
               </Link>
             </div>
-            <div className="flex flex-shrink-0 scale-[80%] md:mt-0 md:ml-4 md:hidden">
+            <div className="dark:bg-gray-900 dark:text-white flex flex-shrink-0 scale-[80%] md:mt-0 md:ml-4 md:hidden">
               <CSVLink
                 data={exportdata}
-                className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
+                className=" dark:bg-gray-900 dark:text-white bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
                 width="w-full"
               >
                 Export
               </CSVLink>
             </div>
-            <div className="flex flex-shrink-0 scale-[80%] md:mt-0 md:ml-4 md:hidden">
+            <div className="dark:bg-gray-900 dark:text-white flex flex-shrink-0 scale-[80%] md:mt-0 md:ml-4 md:hidden">
               <button
-                className=" bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
+                className=" dark:bg-gray-900 dark:text-white bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white bg-brand-600 hover:bg-brand-700"
                 width="w-full"
                 onClick={() => {
                   setAddExpense(true);
@@ -333,9 +333,9 @@ const GroupDetail = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col pt-6 sm:grid sm:h-[calc(100vh-180px)] sm:grid-cols-4 sm:space-x-4">
-          <div className="w-full overflow-y-auto sm:col-span-2">
-            <p className="mb-2 text-sm font-medium uppercase text-gray-500">
+        <div className="dark:bg-gray-900 dark:text-white flex flex-col pt-6 sm:grid sm:h-[calc(100vh-180px)] sm:grid-cols-4 sm:space-x-4">
+          <div className="dark:bg-gray-900 dark:text-white w-full overflow-y-auto sm:col-span-2">
+            <p className="dark:bg-gray-900 dark:text-white mb-2 text-sm font-medium uppercase text-gray-500">
               Expense List
             </p>
             {loading ? (
@@ -344,7 +344,7 @@ const GroupDetail = () => {
               <Tabs
                 tabs={[
                   {
-                    label: "Active",
+                    label : "Active",
                     content: (
                       <>
                         <ExpenseList
@@ -380,7 +380,7 @@ const GroupDetail = () => {
               />
             )}
           </div>
-          <div className="flex flex-col justify-start sm:col-span-2">
+          <div className="dark:bg-gray-900 dark:text-white flex flex-col justify-start sm:col-span-2">
             <div className="my-2">
               <p className="text-sm font-medium uppercase text-gray-500">
                 Add Member
@@ -440,7 +440,7 @@ const GroupDetail = () => {
                 </div>
               )}
             </div>
-            <div className="my-2 mt-6 rounded border-2 border-dashed border-red-200 p-2 shadow-sm">
+            <div className="dark:bg-gray-900 dark:text-white my-2 mt-6 rounded border-2 border-dashed border-red-200 p-2 shadow-sm">
               <p className="text-sm font-semibold uppercase text-red-600">
                 Danger Zone
               </p>
