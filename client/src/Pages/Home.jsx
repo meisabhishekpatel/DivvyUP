@@ -90,18 +90,18 @@ const Home = () => {
                                                     <MoneyBag className="dark:bg-gray-900 dark:text-white h-6 w-6" />
                                                 </span>
                                                 Total Expenses :
-                                                <span className="ml-1 text-2xl font-semibold text-gray-800 dark:text-white">
+                                                <span className="ml-1 text-2xl font-semibold text-gray-800">
                                                     {group.totalExpenses}
                                                 </span>
                                             </p>
                                         </div>
                                         <div className="mt-3 flex flex-col items-start">
-                                            <p className="flex items-center text-sm font-semibold uppercase text-gray-500 dark:text-white">
+                                            <p className="flex items-center text-sm font-semibold uppercase text-gray-500">
                                                 <span className="mr-2">
                                                     <Group className="h-6 w-6" />
                                                 </span>
                                                 Members :
-                                                <span className="ml-1 text-2xl font-semibold text-gray-800 dark:text-white">
+                                                <span className="ml-1 text-2xl font-semibold text-gray-800">
                                                     {group.members.length}
                                                 </span>
                                             </p>
