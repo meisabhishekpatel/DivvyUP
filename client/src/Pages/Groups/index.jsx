@@ -47,7 +47,7 @@ const Groups = () => {
                 <div className="flex">
                   <Link
                     to="/home"
-                    className="dark:bg-gray-900 text-sm font-medium text-gray-500 dark:text-white dark:text-black hover:text-gray-700"
+                    className="dark:bg-gray-900 text-sm font-medium text-gray-500 dark:text-white  hover:text-gray-700"
                   >
                     Home
                   </Link>
@@ -59,7 +59,7 @@ const Groups = () => {
                     className="dark:bg-gray-900 h-5 w-5 flex-shrink-0 text-gray-400"
                     aria-hidden="true"
                   />
-                  <p className="dark:bg-gray-900 ml-4 text-sm font-medium text-gray-500 dark:text-white dark:text-black hover:text-gray-700">
+                  <p className="dark:bg-gray-900 ml-4 text-sm font-medium text-gray-500 dark:text-white  hover:text-gray-700">
                     Groups
                   </p>
                 </div>
@@ -69,14 +69,14 @@ const Groups = () => {
         </div>
         <div className="mt-2 flex items-center justify-between">
           <div className="min-w-0 flex-1">
-            <h2 className="text-2xl font-bold leading-7 text-gray-900 dark:text-white dark:text-black sm:truncate sm:text-3xl">
+            <h2 className="text-2xl font-bold leading-7 text-gray-900 dark:text-white  sm:truncate sm:text-3xl">
               Your Groups
             </h2>
           </div>
-          <div className="dark:text-white dark:text-black mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
+          <div className="dark:text-white  mt-4 hidden flex-shrink-0 md:mt-0 md:ml-4 md:flex">
             <Link to="/addgroup">
               <button
-                className="dark:text-white dark:text-black bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white dark:text-black bg-brand-600 hover:bg-brand-700"
+                className="dark:text-white  bg-blue-700 flex items-center justify-between cursor-pointer px-4 py-2 md:px-6 rounded font-medium active:ring-2 ring-brand-200 text-white  bg-brand-600 hover:bg-brand-700"
                 width="w-full"
               >
                 <PlusCircleIcon className="w-5" />
@@ -96,7 +96,7 @@ const Groups = () => {
           </div>
         </div>
         {loading ? (
-          <div className="dark:bg-gray-900 dark:text-white dark:text-black flex items-center justify-center h-32">
+          <div className="dark:bg-gray-900 dark:text-white  flex items-center justify-center h-32">
             {/* React-Spinners BeatLoader */}
             {/* <BeatLoader color="#4F46E5" size={10} /> */}
             <BeatLoader />

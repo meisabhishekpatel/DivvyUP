@@ -64,7 +64,7 @@ export default function Login() {
         password,
       });
       if (!res.data.error) {
-        alert(res.data.message);
+        // alert(res.data.message);
         navigate("/home");
       } else {
         alert(res.data.error);
@@ -82,7 +82,7 @@ export default function Login() {
         email,
       });
       if (!res.data.error) {
-        alert(res.data.message);
+        // alert(res.data.message);
         navigate("/home");
       } else {
         alert(res.data.error);

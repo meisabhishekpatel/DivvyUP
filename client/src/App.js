@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { useEffect, useState } from "react";
 import Login from "./Components/Login";
-import axios from "axios"
+import axios from "axios";
 import NavBar from "./Components/NavBar";
 import SignUp from "./Components/SignUp";
 import LandingPage from "./Pages/LandingPage";
@@ -31,17 +31,7 @@ const queryClient = new QueryClient({
 
 function App() {
   const [themeMode, setThemeMode] = useState("light");
-  const [user, setUser] = useState(null);
 
-  const getUser = async () => {
-    try {
-      const url = "http://localhost:4000/auth/login/success";
-      const { data } = await axios.get(url, { withCredentials: true });
-      setUser(data.user._json);
-    } catch (err) {
-      console.log(err);
-    }
-  };
   const lightTheme = () => {
     setThemeMode("light");
   };
@@ -56,10 +46,6 @@ function App() {
     document.querySelector("html").classList.remove("light", "dark");
     document.querySelector("html").classList.add(themeMode);
   }, [themeMode]);
-
-  useEffect(() => {
-    getUser();
-  }, []);
 
   return (
     <GoogleOAuthProvider clientId="979404826140-4kr357pq71slm1j1as2f2j9p4ifmi40r.apps.googleusercontent.com">
