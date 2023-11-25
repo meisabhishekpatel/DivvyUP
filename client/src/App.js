@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 import Login from "./Components/Login";
 import NavBar from "./Components/NavBar";
 import SignUp from "./Components/SignUp";
@@ -17,8 +17,9 @@ import ExpenseReport from "./Pages/Individual/ExpenseReport";
 import ExpenseGroupReport from "./Pages/Groups/ExpenseReport";
 import FriendExpenseGroupReport from "./Pages/Friends/FriendExpenseReport";
 import { ContactUs } from "./Components/EmailInput";
-import { ThemeProvider } from './context/theme'
-import ThemeBtn from './Components/ThemeBtn'
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { ThemeProvider } from "./context/theme";
+import ThemeBtn from "./Components/ThemeBtn";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -28,132 +29,147 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  const [themeMode, setThemeMode] = useState("light")
+  const [themeMode, setThemeMode] = useState("light");
+  const [user, setUser] = useState(null);
 
+  const getUser = async () => {
+    try {
+      const url = "http://localhost:4000/auth/login/success";
+      const { data } = await axios.get(url, { withCredentials: true });
+      setUser(data.user._json);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const lightTheme = () => {
-    setThemeMode("light")
-  }
+    setThemeMode("light");
+  };
 
   const darkTheme = () => {
-    setThemeMode("dark")
-  }
+    setThemeMode("dark");
+  };
 
   // actual change in theme
 
   useEffect(() => {
-    document.querySelector('html').classList.remove("light", "dark")
-    document.querySelector('html').classList.add(themeMode)
-  }, [themeMode])
-  
+    document.querySelector("html").classList.remove("light", "dark");
+    document.querySelector("html").classList.add(themeMode);
+  }, [themeMode]);
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-    <ThemeProvider value={{themeMode, lightTheme, darkTheme}}>
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <div>
-                <LandingPage />
-              </div>
-            }
-          />
-          <Route
-            path="/home"
-            element={
-              <div className="">
-                <Dashboard />
-                <Home />
-              </div>
-            }
-          />
-          <Route
-            path="/groups"
-            element={
-              <div className="bg-gray-900 dark:bg-gray-900">
-                <Dashboard />
-                <Groups />
-              </div>
-            }
-          />
-          <Route
-            path="/group/detail/:groupId"
-            element={
-              <div className="">
-                <Dashboard />
-                <GroupDetail />
-              </div>
-            }
-          />
-          <Route
-            path="/addgroup"
-            element={
-              <div className="">
-                <Dashboard />
-                <AddGroup />
-              </div>
-            }
-          />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route
-            path="/individual"
-            element={
-              <>
-                <Dashboard />
-                <Individual />
-              </>
-            }
-          />
-          <Route
-            path="/expense/report/:id"
-            element={
-              <>
-                <Dashboard />
-                <ExpenseReport />
-              </>
-            }
-          />
-          <Route
-            path="/groupexpense/report/:id"
-            element={
-              <>
-                <Dashboard />
-                <ExpenseGroupReport />
-              </>
-            }
-          />
-          <Route
-            path="/friendexpense/report/:id"
-            element={
-              <>
-                <Dashboard />
-                <FriendExpenseGroupReport />
-              </>
-            }
-          />
-          <Route
-            path="/email/:email/:name"
-            element={
-              <>
-                <ContactUs />
-              </>
-            }
-          />
-          <Route
-            path="/friends"
-            element={
-              <div className="bg-black w-full h-full">
-                <Dashboard />
-                <Friends />
-              </div>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-      </ThemeProvider>
-    </QueryClientProvider>
+    <GoogleOAuthProvider clientId="979404826140-4kr357pq71slm1j1as2f2j9p4ifmi40r.apps.googleusercontent.com">
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider value={{ themeMode, lightTheme, darkTheme }}>
+          <BrowserRouter>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <div>
+                    <LandingPage />
+                  </div>
+                }
+              />
+              <Route
+                path="/home"
+                element={
+                  <div className="">
+                    <Dashboard />
+                    <Home />
+                  </div>
+                }
+              />
+              <Route
+                path="/groups"
+                element={
+                  <div className="">
+                    <Dashboard />
+                    <Groups />
+                  </div>
+                }
+              />
+              <Route
+                path="/group/detail/:groupId"
+                element={
+                  <div className="">
+                    <Dashboard />
+                    <GroupDetail />
+                  </div>
+                }
+              />
+              <Route
+                path="/addgroup"
+                element={
+                  <div className="">
+                    <Dashboard />
+                    <AddGroup />
+                  </div>
+                }
+              />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route
+                path="/individual"
+                element={
+                  <>
+                    <Dashboard />
+                    <Individual />
+                  </>
+                }
+              />
+              <Route
+                path="/expense/report/:id"
+                element={
+                  <>
+                    <Dashboard />
+                    <ExpenseReport />
+                  </>
+                }
+              />
+              <Route
+                path="/groupexpense/report/:id"
+                element={
+                  <>
+                    <Dashboard />
+                    <ExpenseGroupReport />
+                  </>
+                }
+              />
+              <Route
+                path="/friendexpense/report/:id"
+                element={
+                  <>
+                    <Dashboard />
+                    <FriendExpenseGroupReport />
+                  </>
+                }
+              />
+              <Route
+                path="/email/:email/:name"
+                element={
+                  <>
+                    <ContactUs />
+                  </>
+                }
+              />
+              <Route
+                path="/friends"
+                element={
+                  <div className="">
+                    <Dashboard />
+                    <Friends />
+                  </div>
+                }
+              />
+            </Routes>
+          </BrowserRouter>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </GoogleOAuthProvider>
   );
 }
 export default App;

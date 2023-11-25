@@ -14,7 +14,7 @@ router.use(cookieParser());
 router.post("/signup", async (req, res) => {
   const { name, email, password, confirmpassword } = req.body;
   if (!name || !email || !password) {
-    return res.status(422).json({ error: "please fill the field properly" })
+    return res.status(422).json({ error: "please fill the field properly" });
   }
   try {
     const userExist = await User.findOne({ email: email });
@@ -27,46 +27,90 @@ router.post("/signup", async (req, res) => {
       await user.save();
       res.status(201).json({ message: "User registered Successfully" });
     }
-  }
-  catch (e) {
+  } catch (e) {
     console.log(e);
   }
-}
-);
-router.post(
-  "/login", async (req, res) => {
-    try {
-      const { email, password } = req.body;
-      if (!email || !password) {
-        return res.status(400).json({ error: "incomplete details" })
-      }
+});
+router.post("/googlesignup", async (req, res) => {
+  const { name, email } = req.body;
+  if (!name || !email) {
+    return res.status(422).json({ error: "please fill the field properly" });
+  }
+  try {
+    const userExist = await User.findOne({ email: email });
+    if (userExist) {
+      return res.status(422).json({ error: "user already exists" });
+    } else {
+      const user = new User({ name, email });
+      await user.save();
       const userLogin = await User.findOne({ email: email });
-      if (userLogin) {
-        isMatch = await bcrypt.compare(password, userLogin.password);
+      const token = await userLogin.generateAuthToken();
+      res.cookie("jwttoken", token, {
+        expires: new Date(Date.now() + 25892000000),
+        httpOnly: true,
+      });
+      res.status(201).json({ message: "User registered Successfully" });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+});
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ error: "incomplete details" });
+    }
+    const userLogin = await User.findOne({ email: email });
+    if (userLogin) {
+      const isMatch = bcrypt.compare(password, userLogin.password);
+      // const token = await userLogin.generateAuthToken();
+      // // console.log(token);
+      // res.cookie("jwttoken", token, {
+      //   expires: new Date(Date.now() + 25892000000),
+      //   httpOnly: true,
+      // });
+      if (isMatch) {
         const token = await userLogin.generateAuthToken();
         // console.log(token);
         res.cookie("jwttoken", token, {
           expires: new Date(Date.now() + 25892000000),
-          httpOnly: true
-        })
-        if (isMatch)
-          res.json({ message: "user signin sucessfull" });
-        else {
-          res.status(422).json({ error: "invalid Credentials" })
-        }
+          httpOnly: true,
+        });
+        res.json({ message: "user signin sucessfull" });
+      } else {
+        res.status(422).json({ error: "invalid Credentials" });
       }
-      else {
-        res.json({ error: "invalid Credentials" })
-
-      }
-    } catch (e) {
-      console.log(e);
-
+    } else {
+      res.json({ error: "invalid Credentials" });
     }
+  } catch (e) {
+    console.log(e);
   }
-);
+});
+router.post("/googlelogin", async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ error: "incomplete details" });
+    }
+    const userLogin = await User.findOne({ email: email });
+    if (userLogin) {
+      const token = await userLogin.generateAuthToken();
+      res.cookie("jwttoken", token, {
+        expires: new Date(Date.now() + 25892000000),
+        httpOnly: true,
+      });
+      res.json({ message: "user signin sucessfull" });
+    } else {
+      res.json({ error: "invalid Credentials" });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+});
 
-router.get('/getDetailsByEmail/:email', async (req, res) => {
+router.get("/getDetailsByEmail/:email", async (req, res) => {
   try {
     const user = await User.findOne({ email: req.params.email });
     if (!user) return res.status(404).json("User not found.");
@@ -79,17 +123,16 @@ router.get('/getDetailsByEmail/:email', async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-})
+});
 
 router.get("/settledMembers", async (req, res) => {
   const { userIds } = req.query;
 
-  if (!userIds) return res.send("no id received")
+  if (!userIds) return res.send("no id received");
 
   const parsedUserIds = JSON.parse(userIds);
 
-  if (!parsedUserIds || parsedUserIds.length < 1)
-    return res.send([]);
+  if (!parsedUserIds || parsedUserIds.length < 1) return res.send([]);
 
   const result = await User.find(
     {
@@ -102,10 +145,9 @@ router.get("/settledMembers", async (req, res) => {
   return res.send(result);
 });
 
-router.get('/details', Authenticate, (req, res) => {
+router.get("/details", Authenticate, (req, res) => {
   res.send(req.rootUser);
-})
-
+});
 
 router.get("/expenses/:userId", async (req, res) => {
   try {
@@ -145,14 +187,19 @@ router.get("/expenses/:userId", async (req, res) => {
 
       const updatedBalance =
         Number(myBalance) +
-        (settledExpenses ? settledExpenses.reduce((acc, val) => acc + Number(val), 0) : 0);
+        (settledExpenses
+          ? settledExpenses.reduce((acc, val) => acc + Number(val), 0)
+          : 0);
 
       return previousValue + Number(updatedBalance);
     }, 0);
 
     // Calculate Owe
     const owe = owedExpenses.reduce((previousValue, currentValue) => {
-      if (currentValue.membersBalance.length < 1 || currentValue.settledMembers.includes(userId)) {
+      if (
+        currentValue.membersBalance.length < 1 ||
+        currentValue.settledMembers.includes(userId)
+      ) {
         return previousValue;
       }
 
@@ -166,13 +213,10 @@ router.get("/expenses/:userId", async (req, res) => {
     return res.send({ lent, owe });
   } catch (error) {
     console.error(error);
-    return res.status(500).send({ error: 'Internal Server Error' });
+    return res.status(500).send({ error: "Internal Server Error" });
   }
 });
 
 module.exports = router;
-
-
-
 
 module.exports = router;
