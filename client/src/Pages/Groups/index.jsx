@@ -23,7 +23,7 @@ const Groups = () => {
   }, [currentUser]);
 
   return (
-    <div className="dark:bg-gray-900 md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
+    <div className="dark:bg-gray-900 md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%] h-full">
       <div className=" dark:bg-gray-900 mt-4 flex flex-1 flex-col justify-end px-4 sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl">
         <div>
           <nav className="dark:bg-gray-900 sm:hidden" aria-label="Back">
@@ -38,7 +38,10 @@ const Groups = () => {
               Back
             </Link>
           </nav>
-          <nav className="dark:bg-gray-900 hidden sm:flex" aria-label="Breadcrumb">
+          <nav
+            className="dark:bg-gray-900 hidden sm:flex"
+            aria-label="Breadcrumb"
+          >
             <ol className="flex items-center space-x-4">
               <li>
                 <div className="flex">
