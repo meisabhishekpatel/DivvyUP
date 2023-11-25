@@ -74,7 +74,7 @@ const ExpenseReport = () => {
   const category = ["Weekly", "Monthly", "Yearly"];
 
   return (
-    <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%]">
+    <div className="md:relative md:float-right md:w-[90%] lg:relative lg:float-right lg:w-[90%] dark:bg-gray-900">
       <div className="mt-4 flex flex-1 flex-col justify-end px-4 sm:px-6 lg:mx-auto lg:px-8 xl:max-w-6xl">
         <div>
           <nav className="sm:hidden" aria-label="Back">

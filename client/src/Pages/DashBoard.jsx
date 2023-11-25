@@ -17,7 +17,7 @@ export default function Dashboard() {
         <>
             <div className="dark:bg-gray-800">
                 <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-                <div className="dark:bg-gray-900 dark:text-white lg:pl-64 flex flex-col flex-1 h-full dark:bg-gray-800">
+                <div className=" dark:text-white lg:pl-64 flex flex-col flex-1 h-full dark:bg-gray-800">
                     <div className="dark:bg-gray-900 dark:text-white last:relative z-10 flex-shrink-0 flex h-16 bg-white border-b border-gray-200">
                         <button
                             type="button"
