@@ -38,8 +38,6 @@ const updateMemberBalances = async (expenses, members) => {
 
     return Promise.all(updatedMemberBalances);
 };
-
-
 const simplifyDebts = (expenses) => {
     // Step 1: Calculate the total amount each person owes or is owed
     let balances = {};
