@@ -2,7 +2,7 @@
 
 ## Getting Started
 Welcome to a smarter way to manage your finances! In a world where every penny counts, our App is your key to financial empowerment. Our app is designed to simplify and elevate your money management experience.
-Managing shared expenses can be a daunting task, leading to confusion, disagreements, and time-consuming calculations. Enter DivvyUP, the ultimate solution to streamline shared finances and alleviate the common challenges associated with communal expenses
+Managing shared expenses can be a daunting task, leading to confusion, disagreements, and time-consuming calculations. Enter DivvyUP, the ultimate solution to streamline shared finances and alleviate the common challenges associated with communal expenses.
 
 ## PPT Link
 [Link](https://www.canva.com/design/DAF1tQYKKUQ/Rztt5evaACJZRzpJ66EQ8g/edit?utm_content=DAF1tQYKKUQ&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
