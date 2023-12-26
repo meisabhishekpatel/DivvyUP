@@ -52,7 +52,7 @@ Team Name: SunnySideUp
 7. Realtime currency exchange.
 8. Easy to understand visualization of transactions.
 9. Get notified on due payments.
-10.Export expenses to spreadsheet.
+10. Export expenses to spreadsheet.
 
 ## Screenshots
 <p align="center">
